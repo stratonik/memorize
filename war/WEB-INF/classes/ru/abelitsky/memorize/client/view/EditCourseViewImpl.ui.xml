@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+                         xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:VerticalPanel>
+		<g:Label ui:field="title" styleName="title" />
+		<g:Grid>
+			<g:row>
+				<g:cell>Название:</g:cell>
+				<g:customCell>
+					<g:TextBox ui:field="name" width="500px" />
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:cell>Описание:</g:cell>
+				<g:customCell>
+					<g:TextArea ui:field="description" width="500px" visibleLines="7" />
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+		<g:HorizontalPanel styleName="actions">
+			<g:Button ui:field="save" />
+			<g:Button ui:field="cancel" text="Отмена" />
+		</g:HorizontalPanel>
+	</g:VerticalPanel>
+</ui:UiBinder>

@@ -1,0 +1,80 @@
+/** Add css rules here for your application. */
+/** Example rules used by the template application (remove for your app) */
+h1 {
+	font-size: 2em;
+	font-weight: bold;
+	color: #777777;
+	margin: 20px 0px 20px;
+	text-align: center;
+}
+
+/** Most GWT widgets already have a style name defined */
+.gwt-DialogBox {
+	width: 400px;
+}
+
+.dialogVPanel {
+	margin: 5px;
+}
+
+.serverResponseLabelError {
+	color: red;
+}
+
+.gwt-Button {
+	white-space: nowrap;
+}
+
+/** Set ids using widget.getElement().setId("idOfElement") */
+#closeButton {
+	margin: 15px 6px 6px;
+}
+
+.navigation {
+	cursor: pointer;
+	padding: 5px;
+}
+
+.title {
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #777777;
+	margin: 10px 0px 10px;
+}
+
+.actions {
+	padding: 10px;
+}
+
+.actions td {
+	padding: 1px;
+}
+
+.course {
+	padding: 10px;
+	border: solid silver thin;
+	width: 100%;
+	color: #3E3E3E;
+}
+
+.course .course-title {
+	font-size: 18px;
+	line-height: 24px;
+	font-weight: bold;
+}
+
+.course a.course-title {
+	color: #3E3E3E;
+	cursor: pointer;
+}
+
+.course .course-status,.course .course-words {
+	font-size: 12px;
+	color: #BBB;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+.translation {
+	white-space: pre-line;
+}

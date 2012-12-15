@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:VerticalPanel styleName="course">
+		<g:Anchor ui:field="title" styleName="course-title" />
+		<g:Label ui:field="status" styleName="course-status" />
+		<g:Label ui:field="description" styleName="course-description" />
+	</g:VerticalPanel>
+</ui:UiBinder>
