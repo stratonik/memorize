@@ -1,0 +1,2 @@
+serviceClass: ru.abelitsky.memorize.client.service.TrainingService
+path: 0A80B306AD88296D336511A792E8457C.gwt.rpc
