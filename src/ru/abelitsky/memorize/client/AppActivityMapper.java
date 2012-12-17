@@ -4,12 +4,14 @@ import ru.abelitsky.memorize.client.activity.AllCoursesActivity;
 import ru.abelitsky.memorize.client.activity.CurrentCoursesActivity;
 import ru.abelitsky.memorize.client.activity.EditCourseActivity;
 import ru.abelitsky.memorize.client.activity.LoadWordsActivity;
+import ru.abelitsky.memorize.client.activity.TrainingActivity;
 import ru.abelitsky.memorize.client.activity.ViewCourseActivity;
 import ru.abelitsky.memorize.client.place.AllCoursesPlace;
 import ru.abelitsky.memorize.client.place.ChangeCoursePlace;
 import ru.abelitsky.memorize.client.place.CurrentCoursesPlace;
 import ru.abelitsky.memorize.client.place.LoadWordsPlace;
 import ru.abelitsky.memorize.client.place.NewCoursePlace;
+import ru.abelitsky.memorize.client.place.TrainingPlace;
 import ru.abelitsky.memorize.client.place.ViewCoursePlace;
 
 import com.google.gwt.activity.shared.Activity;
@@ -42,6 +44,8 @@ public class AppActivityMapper implements ActivityMapper {
 					clientFactory);
 		} else if (place instanceof LoadWordsPlace) {
 			return new LoadWordsActivity((LoadWordsPlace) place, clientFactory);
+		} else if (place instanceof TrainingPlace) {
+			return new TrainingActivity((TrainingPlace) place, clientFactory);
 		}
 		return new CurrentCoursesActivity(new CurrentCoursesPlace(),
 				clientFactory);

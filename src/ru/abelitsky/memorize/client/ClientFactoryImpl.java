@@ -2,6 +2,8 @@ package ru.abelitsky.memorize.client;
 
 import ru.abelitsky.memorize.client.service.CoursesService;
 import ru.abelitsky.memorize.client.service.CoursesServiceAsync;
+import ru.abelitsky.memorize.client.service.TrainingService;
+import ru.abelitsky.memorize.client.service.TrainingServiceAsync;
 import ru.abelitsky.memorize.client.view.AllCoursesView;
 import ru.abelitsky.memorize.client.view.AllCoursesViewImpl;
 import ru.abelitsky.memorize.client.view.CurrentCoursesView;
@@ -10,6 +12,8 @@ import ru.abelitsky.memorize.client.view.EditCourseView;
 import ru.abelitsky.memorize.client.view.EditCourseViewImpl;
 import ru.abelitsky.memorize.client.view.LoadWordsView;
 import ru.abelitsky.memorize.client.view.LoadWordsViewImpl;
+import ru.abelitsky.memorize.client.view.TrainingView;
+import ru.abelitsky.memorize.client.view.TrainingViewImpl;
 import ru.abelitsky.memorize.client.view.ViewCourseView;
 import ru.abelitsky.memorize.client.view.ViewCourseViewImpl;
 import ru.abelitsky.memorize.client.widget.LoadingDialog;
@@ -28,6 +32,8 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private final CoursesServiceAsync coursesService = GWT
 			.create(CoursesService.class);
+	private final TrainingServiceAsync trainingService = GWT
+			.create(TrainingService.class);
 
 	private final LoadingDialog loadingDialog = new LoadingDialog();
 	private final RPCFaultDialog rpcFaultDialog = new RPCFaultDialog();
@@ -36,6 +42,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private final CurrentCoursesView currentCoursesView = new CurrentCoursesViewImpl();
 	private final EditCourseView editCourseView = new EditCourseViewImpl();
 	private final LoadWordsView loadWordsView = new LoadWordsViewImpl();
+	private final TrainingView trainingView = new TrainingViewImpl();
 	private final ViewCourseView viewCourseView = new ViewCourseViewImpl();
 
 	@Override
@@ -81,6 +88,16 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public RPCFaultDialog getRPCFaultDialog() {
 		return rpcFaultDialog;
+	}
+
+	@Override
+	public TrainingServiceAsync getTrainingService() {
+		return trainingService;
+	}
+
+	@Override
+	public TrainingView getTrainingView() {
+		return trainingView;
 	}
 
 	@Override

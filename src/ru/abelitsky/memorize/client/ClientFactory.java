@@ -1,10 +1,12 @@
 package ru.abelitsky.memorize.client;
 
 import ru.abelitsky.memorize.client.service.CoursesServiceAsync;
+import ru.abelitsky.memorize.client.service.TrainingServiceAsync;
 import ru.abelitsky.memorize.client.view.AllCoursesView;
 import ru.abelitsky.memorize.client.view.CurrentCoursesView;
 import ru.abelitsky.memorize.client.view.EditCourseView;
 import ru.abelitsky.memorize.client.view.LoadWordsView;
+import ru.abelitsky.memorize.client.view.TrainingView;
 import ru.abelitsky.memorize.client.view.ViewCourseView;
 import ru.abelitsky.memorize.client.widget.LoadingDialog;
 import ru.abelitsky.memorize.client.widget.RPCFaultDialog;
@@ -25,12 +27,16 @@ public interface ClientFactory {
 	EventBus getEventBus();
 
 	LoadingDialog getLoadingDialog();
-	
+
 	LoadWordsView getLoadWordsView();
 
 	PlaceController getPlaceController();
 
 	RPCFaultDialog getRPCFaultDialog();
+
+	TrainingServiceAsync getTrainingService();
+
+	TrainingView getTrainingView();
 
 	ViewCourseView getViewCourseView();
 
