@@ -1,23 +1,21 @@
 package ru.abelitsky.memorize.client.place;
 
+import java.util.Map;
+
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 
 public class ViewCoursePlace extends Place {
 
-	public enum BackPlace {
-		allCourses, currentCourses
-	};
-
 	private final Long courseId;
-	private final BackPlace backPlace;
+	private final Place backPlace;
 
-	public ViewCoursePlace(Long courseId, BackPlace backPlace) {
+	public ViewCoursePlace(Long courseId, Place backPlace) {
 		this.courseId = courseId;
 		this.backPlace = backPlace;
 	}
 
-	public BackPlace getBackPlace() {
+	public Place getBackPlace() {
 		return backPlace;
 	}
 
@@ -29,18 +27,30 @@ public class ViewCoursePlace extends Place {
 
 		@Override
 		public ViewCoursePlace getPlace(String token) {
-			String[] params = token.split("&");
-			BackPlace backPlace = BackPlace.currentCourses;
-			if (params.length > 1) {
-				backPlace = BackPlace.valueOf(params[1]);
+			Map<String, String> params = ParameterNames.parseParamsToken(token);
+
+			Place backPlace;
+			String returnParam = params.get(ParameterNames.RETURN_PARAM);
+			if (ParameterNames.ALL_COURSES_PLACE.equals(returnParam)) {
+				backPlace = new AllCoursesPlace();
+			} else {
+				backPlace = new CurrentCoursesPlace();
 			}
-			return new ViewCoursePlace(Long.parseLong(params[0]), backPlace);
+
+			return new ViewCoursePlace(Long.parseLong(params
+					.get(ParameterNames.COURSE_PARAM)), backPlace);
 		}
 
 		@Override
 		public String getToken(ViewCoursePlace place) {
-			return String.valueOf(place.getCourseId()) + "&"
-					+ place.getBackPlace().name();
+			String backPlaceString;
+			if (place.getBackPlace() instanceof AllCoursesPlace) {
+				backPlaceString = ParameterNames.ALL_COURSES_PLACE;
+			} else {
+				backPlaceString = ParameterNames.CURRENT_COURSES_PLACE;
+			}
+			return ParameterNames.COURSE_PARAM + "=" + place.getCourseId()
+					+ "&" + ParameterNames.RETURN_PARAM + "=" + backPlaceString;
 		}
 
 	}

@@ -3,11 +3,8 @@ package ru.abelitsky.memorize.client.activity;
 import java.util.List;
 
 import ru.abelitsky.memorize.client.ClientFactory;
-import ru.abelitsky.memorize.client.place.AllCoursesPlace;
-import ru.abelitsky.memorize.client.place.CurrentCoursesPlace;
 import ru.abelitsky.memorize.client.place.LoadWordsPlace;
 import ru.abelitsky.memorize.client.place.ViewCoursePlace;
-import ru.abelitsky.memorize.client.place.ViewCoursePlace.BackPlace;
 import ru.abelitsky.memorize.client.view.ViewCourseView;
 import ru.abelitsky.memorize.client.view.ViewCourseView.Presenter;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
@@ -22,34 +19,27 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	private ClientFactory clientFactory;
-
-	private Long courseId;
-	private BackPlace backPlace;
+	private ViewCoursePlace place;
 
 	public ViewCourseActivity(ViewCoursePlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
-		this.courseId = place.getCourseId();
-		this.backPlace = place.getBackPlace();
+		this.place = place;
 	}
 
 	@Override
 	public Place getBackPlace() {
-		if (backPlace == BackPlace.currentCourses) {
-			return new CurrentCoursesPlace();
-		} else {
-			return new AllCoursesPlace();
-		}
+		return place.getBackPlace();
 	}
 
 	@Override
 	public Place getLoadWordsPlace() {
-		return new LoadWordsPlace(courseId, backPlace);
+		return new LoadWordsPlace(place);
 	}
 
 	@Override
 	public void getWords(int from, int count) {
-		clientFactory.getCoursesService().getWords(courseId, from + 1, count,
-				new AsyncCallback<List<WordDTO>>() {
+		clientFactory.getCoursesService().getWords(place.getCourseId(),
+				from + 1, count, new AsyncCallback<List<WordDTO>>() {
 					public void onFailure(Throwable caught) {
 						clientFactory.getRPCFaultDialog().show(caught);
 					}
@@ -72,7 +62,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 		panel.setWidget(view);
 
 		view.prepareView();
-		clientFactory.getCoursesService().getCourseInfo(courseId,
+		clientFactory.getCoursesService().getCourseInfo(place.getCourseId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
 						clientFactory.getRPCFaultDialog().show(caught);

@@ -1,44 +1,36 @@
 package ru.abelitsky.memorize.client.place;
 
-import ru.abelitsky.memorize.client.place.ViewCoursePlace.BackPlace;
-
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 
 public class LoadWordsPlace extends Place {
 
-	private final Long courseId;
-	private final BackPlace backPlace;
+	private final ViewCoursePlace viewCoursePlace;
 
-	public LoadWordsPlace(Long courseId, BackPlace backPlace) {
-		this.courseId = courseId;
-		this.backPlace = backPlace;
+	public LoadWordsPlace(ViewCoursePlace backPlace) {
+		this.viewCoursePlace = backPlace;
 	}
 
-	public BackPlace getBackPlace() {
-		return backPlace;
+	public ViewCoursePlace getBackPlace() {
+		return viewCoursePlace;
 	}
 
 	public Long getCourseId() {
-		return courseId;
+		return viewCoursePlace.getCourseId();
 	}
 
 	public static class Tokenizer implements PlaceTokenizer<LoadWordsPlace> {
 
 		@Override
 		public LoadWordsPlace getPlace(String token) {
-			String[] params = token.split("&");
-			BackPlace backPlace = BackPlace.currentCourses;
-			if (params.length > 1) {
-				backPlace = BackPlace.valueOf(params[1]);
-			}
-			return new LoadWordsPlace(Long.parseLong(params[0]), backPlace);
+			ViewCoursePlace.Tokenizer tokenizer = new ViewCoursePlace.Tokenizer();
+			return new LoadWordsPlace(tokenizer.getPlace(token));
 		}
 
 		@Override
 		public String getToken(LoadWordsPlace place) {
-			return String.valueOf(place.getCourseId()) + "&"
-					+ place.getBackPlace().name();
+			ViewCoursePlace.Tokenizer tokenizer = new ViewCoursePlace.Tokenizer();
+			return tokenizer.getToken(place.getBackPlace());
 		}
 
 	}

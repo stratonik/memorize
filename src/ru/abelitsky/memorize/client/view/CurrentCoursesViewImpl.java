@@ -3,8 +3,8 @@ package ru.abelitsky.memorize.client.view;
 import java.util.List;
 
 import ru.abelitsky.memorize.client.place.AllCoursesPlace;
+import ru.abelitsky.memorize.client.place.CurrentCoursesPlace;
 import ru.abelitsky.memorize.client.place.ViewCoursePlace;
-import ru.abelitsky.memorize.client.place.ViewCoursePlace.BackPlace;
 import ru.abelitsky.memorize.client.widget.CourseStatusWidget;
 import ru.abelitsky.memorize.client.widget.CourseStatusWidget.Delegator;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
@@ -45,7 +45,7 @@ public class CurrentCoursesViewImpl extends Composite implements
 	@Override
 	public void selectCourse(CourseInfo courseInfo) {
 		presenter.goTo(new ViewCoursePlace(courseInfo.getCourse().getId(),
-				BackPlace.currentCourses));
+				new CurrentCoursesPlace()));
 	}
 
 	@Override

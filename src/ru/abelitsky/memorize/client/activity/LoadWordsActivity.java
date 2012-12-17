@@ -2,8 +2,6 @@ package ru.abelitsky.memorize.client.activity;
 
 import ru.abelitsky.memorize.client.ClientFactory;
 import ru.abelitsky.memorize.client.place.LoadWordsPlace;
-import ru.abelitsky.memorize.client.place.ViewCoursePlace;
-import ru.abelitsky.memorize.client.place.ViewCoursePlace.BackPlace;
 import ru.abelitsky.memorize.client.view.LoadWordsView;
 import ru.abelitsky.memorize.client.view.LoadWordsView.Presenter;
 
@@ -16,19 +14,16 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 public class LoadWordsActivity extends AbstractActivity implements Presenter {
 
 	private ClientFactory clientFactory;
-
-	private Long courseId;
-	private BackPlace backPlace;
+	private LoadWordsPlace place;
 
 	public LoadWordsActivity(LoadWordsPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
-		this.courseId = place.getCourseId();
-		this.backPlace = place.getBackPlace();
+		this.place = place;
 	}
 
 	@Override
 	public Place getBackPlace() {
-		return new ViewCoursePlace(courseId, backPlace);
+		return place.getBackPlace();
 	}
 
 	@Override
@@ -39,7 +34,7 @@ public class LoadWordsActivity extends AbstractActivity implements Presenter {
 	@Override
 	public void load(String data) {
 		clientFactory.getLoadingDialog().center();
-		clientFactory.getCoursesService().loadWords(courseId, data,
+		clientFactory.getCoursesService().loadWords(place.getCourseId(), data,
 				new AsyncCallback<Void>() {
 					@Override
 					public void onFailure(Throwable caught) {

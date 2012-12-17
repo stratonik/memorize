@@ -1,6 +1,6 @@
 package ru.abelitsky.memorize.client.place;
 
-import ru.abelitsky.memorize.client.place.ViewCoursePlace.BackPlace;
+import java.util.Map;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
@@ -8,47 +8,48 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 public class TrainingPlace extends Place {
 
 	private final Long courseStatusId;
-	private final Long courseId;
-	private final BackPlace backPlace;
+	private final String mode;
+	private final ViewCoursePlace viewCoursePlace;
 
-	public TrainingPlace(Long courseStatusId, Long courseId, BackPlace backPlace) {
+	public TrainingPlace(Long courseStatusId, String mode,
+			ViewCoursePlace backPlace) {
 		this.courseStatusId = courseStatusId;
-		this.courseId = courseId;
-		this.backPlace = backPlace;
+		this.mode = mode;
+		this.viewCoursePlace = backPlace;
 	}
 
-	public BackPlace getBackPlace() {
-		return backPlace;
-	}
-
-	public Long getCourseId() {
-		return courseId;
+	public ViewCoursePlace getBackPlace() {
+		return viewCoursePlace;
 	}
 
 	public Long getCourseStatusId() {
 		return courseStatusId;
 	}
 
+	public String getMode() {
+		return mode;
+	}
+
 	public static class Tokenizer implements PlaceTokenizer<TrainingPlace> {
 
 		@Override
 		public TrainingPlace getPlace(String token) {
-			String[] params = token.split("&");
-			BackPlace backPlace = BackPlace.currentCourses;
-			if (params.length > 1) {
-				backPlace = BackPlace.valueOf(params[1]);
-			}
-			return new TrainingPlace(Long.parseLong(params[0]),
-					Long.parseLong(params[1]), backPlace);
+			Map<String, String> params = ParameterNames.parseParamsToken(token);
+			ViewCoursePlace.Tokenizer tokenizer = new ViewCoursePlace.Tokenizer();
+			return new TrainingPlace(Long.parseLong(params
+					.get(ParameterNames.TRAINING_PARAM)),
+					params.get(ParameterNames.MODE_PARAM),
+					tokenizer.getPlace(token));
 		}
 
 		@Override
 		public String getToken(TrainingPlace place) {
-			return String.valueOf(place.getCourseStatusId()) + "&"
-					+ String.valueOf(place.getCourseId()) + "&"
-					+ place.getBackPlace().name();
+			ViewCoursePlace.Tokenizer tokenizer = new ViewCoursePlace.Tokenizer();
+			return ParameterNames.TRAINING_PARAM + "="
+					+ place.getCourseStatusId() + "&"
+					+ ParameterNames.MODE_PARAM + "=" + place.getMode() + "&"
+					+ tokenizer.getToken(place.getBackPlace());
 		}
-
 	}
 
 }

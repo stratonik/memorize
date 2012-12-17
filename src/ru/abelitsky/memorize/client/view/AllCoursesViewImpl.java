@@ -2,11 +2,11 @@ package ru.abelitsky.memorize.client.view;
 
 import java.util.List;
 
+import ru.abelitsky.memorize.client.place.AllCoursesPlace;
 import ru.abelitsky.memorize.client.place.ChangeCoursePlace;
 import ru.abelitsky.memorize.client.place.CurrentCoursesPlace;
 import ru.abelitsky.memorize.client.place.NewCoursePlace;
 import ru.abelitsky.memorize.client.place.ViewCoursePlace;
-import ru.abelitsky.memorize.client.place.ViewCoursePlace.BackPlace;
 import ru.abelitsky.memorize.client.widget.CourseWidget;
 import ru.abelitsky.memorize.client.widget.CourseWidget.Delegator;
 import ru.abelitsky.memorize.shared.dto.CourseDTO;
@@ -64,8 +64,8 @@ public class AllCoursesViewImpl extends Composite implements AllCoursesView,
 
 	@Override
 	public void selectCourse(CourseDTO course) {
-		presenter
-				.goTo(new ViewCoursePlace(course.getId(), BackPlace.allCourses));
+		presenter.goTo(new ViewCoursePlace(course.getId(),
+				new AllCoursesPlace()));
 	}
 
 	@Override
