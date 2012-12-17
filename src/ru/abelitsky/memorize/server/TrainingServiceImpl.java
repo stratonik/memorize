@@ -1,5 +1,7 @@
 package ru.abelitsky.memorize.server;
 
+import static ru.abelitsky.memorize.server.OfyService.ofy;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +17,6 @@ import ru.abelitsky.memorize.shared.dto.TrainingTest;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.VoidWork;
 
 public class TrainingServiceImpl extends RemoteServiceServlet implements
@@ -25,10 +26,9 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public List<TrainingTest> addNewWordsForTraining(Long courseStatusId) {
-		Objectify ofy = OfyService.ofy();
 		Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
 				courseStatusId);
-		final CourseStatus status = ofy.load().key(statusKey).get();
+		final CourseStatus status = ofy().load().key(statusKey).get();
 		List<Word> words = selectNewWordsForTraining(status);
 
 		final List<WordStatus> wordStatuses = new ArrayList<WordStatus>(
@@ -45,15 +45,14 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 			tests.add(TrainingTestBuilder.createWriteKanjiTest(wordStatus));
 		}
 
-		ofy.transact(new VoidWork() {
+		ofy().transact(new VoidWork() {
 			@Override
 			public void vrun() {
-				Objectify ofy = OfyService.ofy();
-				status.setKnownWordsNumber(ofy.load().type(WordStatus.class)
+				status.setKnownWordsNumber(ofy().load().type(WordStatus.class)
 						.ancestor(status).count()
 						+ wordStatuses.size());
-				ofy.save().entity(status);
-				ofy.save().entities(wordStatuses);
+				ofy().save().entity(status);
+				ofy().save().entities(wordStatuses);
 			}
 		});
 		return tests;
@@ -66,15 +65,14 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 	}
 
 	private List<Word> selectNewWordsForTraining(CourseStatus status) {
-		Objectify ofy = OfyService.ofy();
-		List<WordStatus> wordStatuses = ofy.load().type(WordStatus.class)
+		List<WordStatus> wordStatuses = ofy().load().type(WordStatus.class)
 				.ancestor(status).list();
 		Set<Integer> wordIndexes = new HashSet<Integer>(wordStatuses.size());
 		for (WordStatus wordStatus : wordStatuses) {
 			wordIndexes.add(wordStatus.getWord().getIndex());
 		}
 		List<Word> words = new ArrayList<Word>();
-		for (Word word : ofy.load().type(Word.class)
+		for (Word word : ofy().load().type(Word.class)
 				.ancestor(status.getCourse()).order("index")) {
 			if (!wordIndexes.contains(word.getIndex())) {
 				words.add(word);
