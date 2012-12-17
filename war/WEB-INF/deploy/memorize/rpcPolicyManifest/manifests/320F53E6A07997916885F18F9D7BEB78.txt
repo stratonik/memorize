@@ -1,2 +1,0 @@
-serviceClass: ru.abelitsky.memorize.client.service.CoursesService
-path: 3D7C2DC8C49A867BB1D8326FFDE179E8.gwt.rpc

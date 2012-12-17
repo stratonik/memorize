@@ -1,8 +1,7 @@
 package ru.abelitsky.memorize.client.place;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import com.google.gwt.dev.util.collect.HashMap;
 
 public class ParameterNames {
 

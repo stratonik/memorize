@@ -228,19 +228,19 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 		List<CourseStatus> courseStatuses = ofy.load().type(CourseStatus.class)
 				.filter("course", courseRef).list();
 		for (final CourseStatus courseStatus : courseStatuses) {
+			final List<WordStatus> obsoleteWordStatuses = new LinkedList<WordStatus>();
+			final List<WordStatus> wordStatuses = ofy.load()
+					.type(WordStatus.class).ancestor(courseStatus).list();
+			for (WordStatus wordStatus : wordStatuses) {
+				if (wordStatus.getWord() == null) {
+					obsoleteWordStatuses.add(wordStatus);
+				}
+			}
+
 			ofy.transact(new VoidWork() {
 				@Override
 				public void vrun() {
 					Objectify ofy = OfyService.ofy();
-					List<WordStatus> obsoleteWordStatuses = new LinkedList<WordStatus>();
-					List<WordStatus> wordStatuses = ofy.load()
-							.type(WordStatus.class).ancestor(courseStatus)
-							.list();
-					for (WordStatus wordStatus : wordStatuses) {
-						if (wordStatus.getWord() == null) {
-							obsoleteWordStatuses.add(wordStatus);
-						}
-					}
 					ofy.delete().entities(obsoleteWordStatuses).now();
 					courseStatus.setKnownWordsNumber(wordStatuses.size()
 							- obsoleteWordStatuses.size());

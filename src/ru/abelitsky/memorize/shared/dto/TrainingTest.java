@@ -1,6 +1,8 @@
 package ru.abelitsky.memorize.shared.dto;
 
-public class TrainingTest {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class TrainingTest implements IsSerializable {
 
 	public enum TrainingTestAction {
 		showInfo, writeAnswer, selectVariant, selectTranslation

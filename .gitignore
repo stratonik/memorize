@@ -1,4 +1,5 @@
 *.class
 gwt-unitCache
 war/memorize
+war/WEB-INF/deploy
 

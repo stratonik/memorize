@@ -2,6 +2,7 @@ package ru.abelitsky.memorize.client.view;
 
 import java.util.List;
 
+import ru.abelitsky.memorize.client.place.ParameterNames;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
 
@@ -116,6 +117,11 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		presenter.goTo(presenter.getBackPlace());
 	}
 
+	@UiHandler("learnNewWords")
+	void onClickLearnNewWords(ClickEvent event) {
+		presenter.startTraining(courseInfo, ParameterNames.ADD_NEW_WORDS);
+	}
+
 	@UiHandler("loadWords")
 	void onClickLoadWords(ClickEvent event) {
 		presenter.goTo(presenter.getLoadWordsPlace());
@@ -150,7 +156,15 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 
 		title.setText(courseInfo.getCourse().getName());
 		description.setText(courseInfo.getCourse().getDescription());
-		wordsNumber.setText("Слов: " + courseInfo.getCourse().getWordsNumber());
+		if (courseInfo.getStatus() == null) {
+			wordsNumber.setText("Слов: "
+					+ courseInfo.getCourse().getWordsNumber());
+		} else {
+			wordsNumber.setText("Слов: "
+					+ courseInfo.getCourse().getWordsNumber()
+					+ " (из них изучено: "
+					+ courseInfo.getStatus().getKnownWordsNumber() + ")");
+		}
 		startCourse.setVisible(courseInfo.getStatus() == null);
 		stopCourse.setVisible(courseInfo.getStatus() != null);
 		actions.setVisible(courseInfo.getStatus() != null);

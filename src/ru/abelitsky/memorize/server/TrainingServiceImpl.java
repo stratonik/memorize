@@ -1,6 +1,7 @@
 package ru.abelitsky.memorize.server;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +17,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.VoidWork;
-import com.ibm.icu.util.Calendar;
 
 public class TrainingServiceImpl extends RemoteServiceServlet implements
 		TrainingService {
@@ -26,9 +26,9 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public List<TrainingTest> addNewWordsForTraining(Long courseStatusId) {
 		Objectify ofy = OfyService.ofy();
-		final Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
+		Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
 				courseStatusId);
-		CourseStatus status = ofy.load().key(statusKey).get();
+		final CourseStatus status = ofy.load().key(statusKey).get();
 		List<Word> words = selectNewWordsForTraining(status);
 
 		final List<WordStatus> wordStatuses = new ArrayList<WordStatus>(
@@ -37,6 +37,8 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 		for (Word word : words) {
 			WordStatus wordStatus = new WordStatus(status, word);
 			wordStatus.setNextTrainingDate(getNextTrainingDate(wordStatus));
+			wordStatuses.add(wordStatus);
+
 			tests.add(TrainingTestBuilder.createShowKanaTest(wordStatus));
 			tests.add(TrainingTestBuilder.createWriteKanaTest(wordStatus));
 			tests.add(TrainingTestBuilder.createShowKanjiTest(wordStatus));
@@ -47,8 +49,8 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 			@Override
 			public void vrun() {
 				Objectify ofy = OfyService.ofy();
-				CourseStatus status = ofy.load().key(statusKey).get();
-				status.setKnownWordsNumber(status.getKnownWordsNumber()
+				status.setKnownWordsNumber(ofy.load().type(WordStatus.class)
+						.ancestor(status).count()
 						+ wordStatuses.size());
 				ofy.save().entity(status);
 				ofy.save().entities(wordStatuses);

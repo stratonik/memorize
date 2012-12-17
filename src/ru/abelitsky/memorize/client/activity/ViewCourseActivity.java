@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.abelitsky.memorize.client.ClientFactory;
 import ru.abelitsky.memorize.client.place.LoadWordsPlace;
+import ru.abelitsky.memorize.client.place.TrainingPlace;
 import ru.abelitsky.memorize.client.place.ViewCoursePlace;
 import ru.abelitsky.memorize.client.view.ViewCourseView;
 import ru.abelitsky.memorize.client.view.ViewCourseView.Presenter;
@@ -88,6 +89,11 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 						clientFactory.getViewCourseView().setData(info);
 					}
 				});
+	}
+
+	@Override
+	public void startTraining(CourseInfo courseInfo, String mode) {
+		goTo(new TrainingPlace(courseInfo.getStatus().getId(), mode, place));
 	}
 
 	@Override

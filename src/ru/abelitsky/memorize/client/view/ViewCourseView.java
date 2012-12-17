@@ -32,6 +32,8 @@ public interface ViewCourseView extends IsWidget {
 
 		void startCourse(CourseInfo courseInfo);
 
+		void startTraining(CourseInfo courseInfo, String mode);
+
 		void stopCourse(CourseInfo courseInfo);
 
 	}
