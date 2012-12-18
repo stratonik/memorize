@@ -2,11 +2,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<g:HorizontalPanel verticalAlignment="middle" width="100%">
-		<g:Button ui:field="stop" text="Прервать" />
+	<g:HorizontalPanel width="100%">
+		<g:Button ui:field="stop" text="Прервать" addStyleNames="trainingButton" />
 		<g:cell width="100%" horizontalAlignment="center">
-			<g:SimplePanel ui:field="testWidget" width="100%" />
+			<g:SimplePanel ui:field="testWidget" styleName="trainingWidget" />
 		</g:cell>
-		<g:Button ui:field="next" text="Дальше >" />
+		<g:Button ui:field="next" text="Дальше >" addStyleNames="trainingButton" />
 	</g:HorizontalPanel>
 </ui:UiBinder>

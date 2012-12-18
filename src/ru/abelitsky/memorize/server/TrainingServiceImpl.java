@@ -41,8 +41,10 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 
 			tests.add(TrainingTestBuilder.createShowKanaTest(wordStatus));
 			tests.add(TrainingTestBuilder.createWriteKanaTest(wordStatus));
-			tests.add(TrainingTestBuilder.createShowKanjiTest(wordStatus));
-			tests.add(TrainingTestBuilder.createWriteKanjiTest(wordStatus));
+			if ((word.getKanji() != null) && !word.getKanji().isEmpty()) {
+				tests.add(TrainingTestBuilder.createShowKanjiTest(wordStatus));
+				tests.add(TrainingTestBuilder.createWriteKanjiTest(wordStatus));
+			}
 		}
 
 		ofy().transact(new VoidWork() {

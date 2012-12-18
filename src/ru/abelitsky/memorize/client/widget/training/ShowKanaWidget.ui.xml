@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:VerticalPanel width="100%">
+		<g:Label ui:field="additional" styleName="additional" />
+		<g:HorizontalPanel width="100%" verticalAlignment="middle">
+			<g:Label ui:field="kana" styleName="kana-big" />
+			<g:cell horizontalAlignment="right">
+				<g:Label ui:field="kanji" styleName="kanji-small" />
+			</g:cell>
+		</g:HorizontalPanel>
+		<g:HTML>
+			<hr />
+		</g:HTML>
+		<g:Label ui:field="translation" styleName="translation" />
+	</g:VerticalPanel>
+</ui:UiBinder>

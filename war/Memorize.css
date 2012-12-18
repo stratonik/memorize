@@ -75,6 +75,53 @@ h1 {
 	margin-top: 5px;
 }
 
+.trainingWidget {
+	color: #3E3E3E;
+	margin: 20px;
+	width: 500px;
+}
+
+.trainingButton {
+	margin: 50px;
+}
+
+.answerField {
+	margin: 20px;
+	font-size: 18px;
+	width: 400px;
+}
+
+.answerField.right {
+	background-color: lime;
+}
+
+.answerField.wrong {
+	background-color: red;
+}
+
+.kanji-big {
+	font-size: 36px;
+	padding: 5px;
+}
+
+.kanji-small {
+	font-size: 24px;
+}
+
+.kana-big {
+	font-size: 36px;
+	padding: 5px;
+}
+
+.kana-small {
+	font-size: 18px;
+}
+
+.additional {
+	font-size: 12px;
+	color: #999;
+}
+
 .translation {
 	white-space: pre-line;
 }
