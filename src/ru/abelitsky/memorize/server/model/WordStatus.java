@@ -65,7 +65,11 @@ public class WordStatus {
 	}
 
 	public void setLevel(int level) {
-		this.level = level;
+		if (level <= 6) {
+			this.level = level;
+		} else {
+			this.level = 6;
+		}
 	}
 
 	public void setNextTrainingDate(Date nextTrainingDate) {

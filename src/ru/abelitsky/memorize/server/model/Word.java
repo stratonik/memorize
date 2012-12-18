@@ -58,6 +58,10 @@ public class Word {
 		return translation;
 	}
 
+	public boolean hasKanji() {
+		return (kanji != null) && !kanji.trim().isEmpty();
+	}
+
 	public void setAdditionalInfo(String additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}

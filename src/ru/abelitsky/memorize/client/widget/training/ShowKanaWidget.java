@@ -34,7 +34,7 @@ public class ShowKanaWidget extends Composite implements TrainingWidget {
 
 	@Override
 	public boolean checkAnswer() {
-		return false;
+		return true;
 	}
 
 	@Override

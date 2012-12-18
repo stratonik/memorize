@@ -42,9 +42,11 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	private Presenter presenter;
 
 	private final Map<TrainingTestType, Map<TrainingTestAction, TrainingWidget>> widgets;
+	private final Map<TrainingTestType, TrainingWidget> showAnswerWidgets;
 
 	private List<TrainingTest> tests;
 	private TrainingTest currentTest;
+	private boolean showAnswerMode;
 
 	@UiField
 	Button stop;
@@ -76,6 +78,18 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 				new ShowKanaWidget());
 		widgets.get(TrainingTestType.kana).put(TrainingTestAction.writeAnswer,
 				new WriteKanaWidget());
+
+		showAnswerWidgets = new EnumMap<TrainingTestType, TrainingWidget>(
+				TrainingTestType.class);
+		showAnswerWidgets.put(TrainingTestType.kana, new ShowKanaWidget());
+		showAnswerWidgets.put(TrainingTestType.kanji, new ShowKanjiWidget());
+	}
+
+	private void goToAnswer() {
+		TrainingWidget widget = showAnswerWidgets.get(currentTest.getType());
+		widget.setData(currentTest);
+		testWidget.setWidget(widget);
+		showAnswerMode = true;
 	}
 
 	private void goToNextTest() {
@@ -85,6 +99,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 					currentTest.getAction());
 			widget.setData(currentTest);
 			testWidget.setWidget(widget);
+			showAnswerMode = false;
 		} else {
 			stop.click();
 		}
@@ -92,16 +107,33 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 
 	@UiHandler("next")
 	void onClickNext(ClickEvent event) {
-		TrainingWidget widget = widgets.get(currentTest.getType()).get(
-				currentTest.getAction());
-		widget.checkAnswer();
-
-		new Timer() {
-			@Override
-			public void run() {
-				goToNextTest();
+		if (showAnswerMode) {
+			TrainingWidget widget = showAnswerWidgets
+					.get(currentTest.getType());
+			if (widget.checkAnswer()) {
+				new Timer() {
+					@Override
+					public void run() {
+						goToNextTest();
+					}
+				}.schedule(1000);
 			}
-		}.schedule(1000);
+		} else {
+			TrainingWidget widget = widgets.get(currentTest.getType()).get(
+					currentTest.getAction());
+			final boolean result = widget.checkAnswer();
+			presenter.saveResult(currentTest.getWordStatusId(), result);
+			new Timer() {
+				@Override
+				public void run() {
+					if (result) {
+						goToNextTest();
+					} else {
+						goToAnswer();
+					}
+				}
+			}.schedule(1000);
+		}
 	}
 
 	@UiHandler("stop")

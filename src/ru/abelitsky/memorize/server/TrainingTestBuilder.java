@@ -62,7 +62,8 @@ public class TrainingTestBuilder {
 	}
 
 	public static TrainingTest createShowKanaTest(WordStatus wordStatus) {
-		TrainingTest test = createTrainingTestObject(wordStatus);
+		TrainingTest test = new TrainingTest();
+		test.setWord(wordStatus.getWord().toDto());
 
 		test.setType(TrainingTestType.kana);
 		test.setAction(TrainingTestAction.showInfo);
@@ -73,7 +74,8 @@ public class TrainingTestBuilder {
 	}
 
 	public static TrainingTest createShowKanjiTest(WordStatus wordStatus) {
-		TrainingTest test = createTrainingTestObject(wordStatus);
+		TrainingTest test = new TrainingTest();
+		test.setWord(wordStatus.getWord().toDto());
 
 		test.setType(TrainingTestType.kanji);
 		test.setAction(TrainingTestAction.showInfo);
@@ -86,16 +88,8 @@ public class TrainingTestBuilder {
 	public static TrainingTest createTest(WordStatus wordStatus) {
 		switch (wordStatus.getSubLevel()) {
 		case 0:
-			return createSelectTranslationByKanaTest(wordStatus);
-		case 1:
-			return createSelectKanaTest(wordStatus);
-		case 2:
 			return createWriteKanaTest(wordStatus);
-		case 3:
-			return createSelectTranslationByKanjiTest(wordStatus);
-		case 4:
-			return createSelectKanjiTest(wordStatus);
-		case 5:
+		case 1:
 			return createWriteKanjiTest(wordStatus);
 		}
 		return null;

@@ -11,7 +11,23 @@ public interface TrainingServiceAsync {
 	/**
 	 * Добавить новые слова в изучение.
 	 */
-	void addNewWordsForTraining(Long courseStatusId,
+	void addNewWordsToTraining(Long courseStatusId,
 			AsyncCallback<List<TrainingTest>> callback);
+
+	/**
+	 * Проверка слова прошла неудачно.
+	 */
+	void fail(Long wordStatusId, AsyncCallback<Void> callback);
+
+	/**
+	 * Получить слова для повторения.
+	 */
+	void getWordsForTraining(Long courseStatusId,
+			AsyncCallback<List<TrainingTest>> callback);
+
+	/**
+	 * Проверка слова прошла удачно.
+	 */
+	void pass(Long wordStatusId, AsyncCallback<Void> callback);
 
 }

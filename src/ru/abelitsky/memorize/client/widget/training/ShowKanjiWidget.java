@@ -34,7 +34,7 @@ public class ShowKanjiWidget extends Composite implements TrainingWidget {
 
 	@Override
 	public boolean checkAnswer() {
-		return false;
+		return true;
 	}
 
 	@Override

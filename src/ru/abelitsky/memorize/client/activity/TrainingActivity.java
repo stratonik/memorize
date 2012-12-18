@@ -36,6 +36,39 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 	}
 
 	@Override
+	public void saveResult(Long wordStatusId, boolean pass) {
+		if (wordStatusId != null) {
+			if (pass) {
+				clientFactory.getTrainingService().pass(wordStatusId,
+						new AsyncCallback<Void>() {
+							@Override
+							public void onSuccess(Void result) {
+								// Ничего не делаем
+							}
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// Ничего не делаем
+							}
+						});
+			} else {
+				clientFactory.getTrainingService().fail(wordStatusId,
+						new AsyncCallback<Void>() {
+							@Override
+							public void onSuccess(Void result) {
+								// Ничего не делаем
+							}
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// Ничего не делаем
+							}
+						});
+			}
+		}
+	}
+
+	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		TrainingView view = clientFactory.getTrainingView();
 		view.setPresenter(this);
@@ -43,7 +76,21 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 
 		view.prepareView();
 		if (ParameterNames.ADD_NEW_WORDS.equals(place.getMode())) {
-			clientFactory.getTrainingService().addNewWordsForTraining(
+			clientFactory.getTrainingService().addNewWordsToTraining(
+					place.getCourseStatusId(),
+					new AsyncCallback<List<TrainingTest>>() {
+						@Override
+						public void onFailure(Throwable caught) {
+							clientFactory.getRPCFaultDialog().show(caught);
+						}
+
+						@Override
+						public void onSuccess(List<TrainingTest> result) {
+							clientFactory.getTrainingView().setData(result);
+						}
+					});
+		} else {
+			clientFactory.getTrainingService().getWordsForTraining(
 					place.getCourseStatusId(),
 					new AsyncCallback<List<TrainingTest>>() {
 						@Override

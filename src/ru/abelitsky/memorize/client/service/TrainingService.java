@@ -17,6 +17,31 @@ public interface TrainingService extends RemoteService {
 	 *            идентификатор статуса прохождения курса
 	 * @return список начальных тестов для добавленных слов
 	 */
-	List<TrainingTest> addNewWordsForTraining(Long courseStatusId);
+	List<TrainingTest> addNewWordsToTraining(Long courseStatusId);
+
+	/**
+	 * Проверка слова прошла неудачно.
+	 * 
+	 * @param wordStatusId
+	 *            идентификатор записи статуса изучения слова
+	 */
+	void fail(Long wordStatusId);
+
+	/**
+	 * Получить слова для повторения.
+	 * 
+	 * @param courseStatusId
+	 *            идентификатор статуса прохождения курса
+	 * @return список тестов слов, которые пора повторить
+	 */
+	List<TrainingTest> getWordsForTraining(Long courseStatusId);
+
+	/**
+	 * Проверка слова прошла удачно.
+	 * 
+	 * @param wordStatusId
+	 *            идентификатор записи статуса изучения слова
+	 */
+	void pass(Long wordStatusId);
 
 }
