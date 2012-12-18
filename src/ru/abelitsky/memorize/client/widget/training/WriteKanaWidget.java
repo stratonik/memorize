@@ -60,6 +60,7 @@ public class WriteKanaWidget extends Composite implements TrainingWidget {
 		answer.setText("");
 		answer.removeStyleName("right");
 		answer.removeStyleName("wrong");
+		answer.setFocus(true);
 	}
 
 }

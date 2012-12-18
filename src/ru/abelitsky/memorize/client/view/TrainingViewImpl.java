@@ -87,8 +87,8 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 
 	private void goToAnswer() {
 		TrainingWidget widget = showAnswerWidgets.get(currentTest.getType());
-		widget.setData(currentTest);
 		testWidget.setWidget(widget);
+		widget.setData(currentTest);
 		showAnswerMode = true;
 	}
 
@@ -97,8 +97,8 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 			currentTest = tests.remove(0);
 			TrainingWidget widget = widgets.get(currentTest.getType()).get(
 					currentTest.getAction());
-			widget.setData(currentTest);
 			testWidget.setWidget(widget);
+			widget.setData(currentTest);
 			showAnswerMode = false;
 		} else {
 			stop.click();
