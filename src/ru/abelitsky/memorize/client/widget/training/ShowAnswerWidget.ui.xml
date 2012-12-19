@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:VerticalPanel width="100%">
+		<g:SimplePanel ui:field="info" />
+		<g:HTML>
+			<hr />
+		</g:HTML>
+		<g:cell horizontalAlignment="center">
+			<g:TextBox ui:field="answer" addStyleNames="answerField" />
+		</g:cell>
+	</g:VerticalPanel>
+</ui:UiBinder>

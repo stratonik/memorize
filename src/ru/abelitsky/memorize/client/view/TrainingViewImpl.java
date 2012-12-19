@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.abelitsky.memorize.client.widget.training.ShowAnswerWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowKanaWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowKanjiWidget;
 import ru.abelitsky.memorize.client.widget.training.TrainingWidget;
@@ -42,7 +43,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	private Presenter presenter;
 
 	private final Map<TrainingTestType, Map<TrainingTestAction, TrainingWidget>> widgets;
-	private final Map<TrainingTestType, TrainingWidget> showAnswerWidgets;
+	private final TrainingWidget showAnswerWidget = new ShowAnswerWidget();
 
 	private List<TrainingTest> tests;
 	private TrainingTest currentTest;
@@ -78,17 +79,11 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 				new ShowKanaWidget());
 		widgets.get(TrainingTestType.kana).put(TrainingTestAction.writeAnswer,
 				new WriteKanaWidget());
-
-		showAnswerWidgets = new EnumMap<TrainingTestType, TrainingWidget>(
-				TrainingTestType.class);
-		showAnswerWidgets.put(TrainingTestType.kana, new ShowKanaWidget());
-		showAnswerWidgets.put(TrainingTestType.kanji, new ShowKanjiWidget());
 	}
 
 	private void goToAnswer() {
-		TrainingWidget widget = showAnswerWidgets.get(currentTest.getType());
-		testWidget.setWidget(widget);
-		widget.setData(currentTest);
+		testWidget.setWidget(showAnswerWidget);
+		showAnswerWidget.setData(currentTest);
 		showAnswerMode = true;
 	}
 
@@ -108,9 +103,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	@UiHandler("next")
 	void onClickNext(ClickEvent event) {
 		if (showAnswerMode) {
-			TrainingWidget widget = showAnswerWidgets
-					.get(currentTest.getType());
-			if (widget.checkAnswer()) {
+			if (showAnswerWidget.checkAnswer()) {
 				new Timer() {
 					@Override
 					public void run() {
