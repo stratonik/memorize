@@ -2,6 +2,8 @@ package ru.abelitsky.memorize.server.model;
 
 import ru.abelitsky.memorize.shared.dto.CourseStatusDTO;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
@@ -14,6 +16,8 @@ public class CourseStatus {
 
 	@Id
 	private Long id;
+	@Index
+	private User user;
 	@Load
 	@Index
 	private Ref<Course> course;
@@ -24,6 +28,7 @@ public class CourseStatus {
 
 	public CourseStatus(Key<Course> course) {
 		setCourse(course);
+		setUser(UserServiceFactory.getUserService().getCurrentUser());
 	}
 
 	public void fromDto(CourseStatusDTO dto) {
@@ -42,6 +47,10 @@ public class CourseStatus {
 		return knownWordsNumber;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
 	public void setCourse(Course course) {
 		this.course = Ref.create(course);
 	}
@@ -52,6 +61,10 @@ public class CourseStatus {
 
 	public void setKnownWordsNumber(int knownWordsNumber) {
 		this.knownWordsNumber = knownWordsNumber;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public CourseStatusDTO toDto() {

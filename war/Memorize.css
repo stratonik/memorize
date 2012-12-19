@@ -8,6 +8,11 @@ h1 {
 	text-align: center;
 }
 
+#logout {
+	font-size: 12px;
+	text-align: right;
+}
+
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
 	width: 400px;

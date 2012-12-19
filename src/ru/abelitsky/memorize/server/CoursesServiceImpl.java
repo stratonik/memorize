@@ -20,6 +20,7 @@ import ru.abelitsky.memorize.shared.dto.CourseInfo;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
@@ -103,8 +104,13 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public CourseInfo getCourseInfo(Long id) {
 		Key<Course> courseKey = Key.create(Course.class, id);
-		CourseStatus status = ofy().load().type(CourseStatus.class)
-				.filter("course", courseKey).first().get();
+		CourseStatus status = ofy()
+				.load()
+				.type(CourseStatus.class)
+				.filter("course", courseKey)
+				.filter("user",
+						UserServiceFactory.getUserService().getCurrentUser())
+				.first().get();
 
 		CourseInfo info;
 		if (status != null) {
@@ -130,7 +136,11 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public List<CourseInfo> getStatuses() {
-		List<CourseStatus> statuses = ofy().load().type(CourseStatus.class)
+		List<CourseStatus> statuses = ofy()
+				.load()
+				.type(CourseStatus.class)
+				.filter("user",
+						UserServiceFactory.getUserService().getCurrentUser())
 				.list();
 		List<CourseInfo> infos = new ArrayList<CourseInfo>(statuses.size());
 		for (CourseStatus status : statuses) {
