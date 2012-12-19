@@ -19,6 +19,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -27,6 +28,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -55,8 +57,11 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	Button next;
 	@UiField
 	SimplePanel testWidget;
+	@UiField
+	Label timer;
 
 	private HandlerRegistration enterDownHandler;
+	private Timer testTimer;
 
 	public TrainingViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -82,19 +87,24 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	}
 
 	private void goToAnswer() {
+		showAnswerMode = true;
 		testWidget.setWidget(showAnswerWidget);
 		showAnswerWidget.setData(currentTest);
-		showAnswerMode = true;
 	}
 
 	private void goToNextTest() {
+		showAnswerMode = false;
 		if (tests.size() > 0) {
 			currentTest = tests.remove(0);
 			TrainingWidget widget = widgets.get(currentTest.getType()).get(
 					currentTest.getAction());
 			testWidget.setWidget(widget);
 			widget.setData(currentTest);
-			showAnswerMode = false;
+
+			if (currentTest.getAction() != TrainingTestAction.showInfo) {
+				testTimer = new TestTimer();
+				testTimer.scheduleRepeating(1000);
+			}
 		} else {
 			stop.click();
 		}
@@ -112,6 +122,11 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 				}.schedule(1000);
 			}
 		} else {
+			if (testTimer != null) {
+				testTimer.cancel();
+				testTimer = null;
+			}
+
 			TrainingWidget widget = widgets.get(currentTest.getType()).get(
 					currentTest.getAction());
 			final boolean result = widget.checkAnswer();
@@ -119,6 +134,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 			new Timer() {
 				@Override
 				public void run() {
+					timer.setText("");
 					if (result) {
 						goToNextTest();
 					} else {
@@ -164,6 +180,29 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
+	}
+
+	private class TestTimer extends Timer {
+
+		private int seconds = 60;
+
+		public TestTimer() {
+			timer.setText(getSeconds());
+		}
+
+		@Override
+		public void run() {
+			seconds--;
+			timer.setText(getSeconds());
+			if (seconds <= 0) {
+				next.click();
+			}
+		}
+
+		public String getSeconds() {
+			return NumberFormat.getFormat("00").format(seconds);
+		}
+
 	}
 
 }

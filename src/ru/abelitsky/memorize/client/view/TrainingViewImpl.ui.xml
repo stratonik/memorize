@@ -7,6 +7,9 @@
 		<g:cell width="100%" horizontalAlignment="center">
 			<g:SimplePanel ui:field="testWidget" styleName="trainingWidget" />
 		</g:cell>
-		<g:Button ui:field="next" text="Дальше >" addStyleNames="trainingButton" />
+		<g:VerticalPanel horizontalAlignment="center">
+			<g:Button ui:field="next" text="Дальше >" addStyleNames="trainingButton" />
+			<g:Label ui:field="timer" addStyleNames="trainingTimer" />
+		</g:VerticalPanel>
 	</g:HorizontalPanel>
 </ui:UiBinder>

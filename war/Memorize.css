@@ -85,6 +85,16 @@ h1 {
 	margin: 50px;
 }
 
+.trainingButton {
+	margin: 50px;
+	margin-bottom: 20px;
+}
+
+.trainingTimer {
+	font-size: 48px;
+	color: #CCC;
+}
+
 .answerField {
 	margin: 20px;
 	font-size: 26px;
