@@ -36,10 +36,10 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 	}
 
 	@Override
-	public void saveResult(Long wordStatusId, boolean pass) {
-		if (wordStatusId != null) {
+	public void saveResult(String wordStatusKey, boolean pass) {
+		if (wordStatusKey != null) {
 			if (pass) {
-				clientFactory.getTrainingService().pass(wordStatusId,
+				clientFactory.getTrainingService().pass(wordStatusKey,
 						new AsyncCallback<Void>() {
 							@Override
 							public void onSuccess(Void result) {
@@ -52,7 +52,7 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 							}
 						});
 			} else {
-				clientFactory.getTrainingService().fail(wordStatusId,
+				clientFactory.getTrainingService().fail(wordStatusKey,
 						new AsyncCallback<Void>() {
 							@Override
 							public void onSuccess(Void result) {

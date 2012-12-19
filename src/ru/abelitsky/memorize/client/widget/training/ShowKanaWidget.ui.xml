@@ -4,9 +4,9 @@
 	<g:VerticalPanel width="100%">
 		<g:Label ui:field="additional" styleName="additional" />
 		<g:HorizontalPanel width="100%" verticalAlignment="middle">
-			<g:Label ui:field="kana" styleName="kana-big" />
+			<g:Label ui:field="kana" styleName="value-main" />
 			<g:cell horizontalAlignment="right">
-				<g:Label ui:field="kanji" styleName="kanji-small" />
+				<g:Label ui:field="kanji" styleName="value-second" />
 			</g:cell>
 		</g:HorizontalPanel>
 		<g:HTML>

@@ -122,7 +122,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 			TrainingWidget widget = widgets.get(currentTest.getType()).get(
 					currentTest.getAction());
 			final boolean result = widget.checkAnswer();
-			presenter.saveResult(currentTest.getWordStatusId(), result);
+			presenter.saveResult(currentTest.getWordStatusKey(), result);
 			new Timer() {
 				@Override
 				public void run() {

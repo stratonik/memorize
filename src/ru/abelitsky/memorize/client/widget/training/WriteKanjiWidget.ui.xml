@@ -11,7 +11,7 @@
 				<g:HorizontalPanel width="100%" verticalAlignment="top">
 					<g:Label ui:field="translation" styleName="translation" />
 					<g:cell horizontalAlignment="right">
-						<g:Label ui:field="kana" styleName="kana-small" />
+						<g:Label ui:field="kana" styleName="value-second" />
 					</g:cell>
 				</g:HorizontalPanel>
 			</g:VerticalPanel>

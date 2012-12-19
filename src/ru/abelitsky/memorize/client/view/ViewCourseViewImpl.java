@@ -127,6 +127,11 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		presenter.goTo(presenter.getLoadWordsPlace());
 	}
 
+	@UiHandler("repeatWords")
+	void onClickRepeatWords(ClickEvent event) {
+		presenter.startTraining(courseInfo, ParameterNames.REPEAT_WORDS);
+	}
+
 	@UiHandler("startCourse")
 	void onClickStartCourse(ClickEvent event) {
 		presenter.startCourse(courseInfo);

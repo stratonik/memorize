@@ -1,5 +1,6 @@
 package ru.abelitsky.memorize.server.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import com.googlecode.objectify.Key;
@@ -32,6 +33,11 @@ public class WordStatus {
 		setWord(word);
 	}
 
+	public void fail() {
+		setLevel(0);
+		setNextTrainingDateInFourHours();
+	}
+
 	public CourseStatus getCourseStatus() {
 		return courseStatus.get();
 	}
@@ -56,6 +62,18 @@ public class WordStatus {
 		return word.get();
 	}
 
+	public void pass() {
+		setSubLevel(getSubLevel() + 1);
+		if ((!getWord().hasKanji() && (getSubLevel() >= 1))
+				|| (getSubLevel() >= 2)) {
+			setSubLevel(0);
+			setLevel(Math.min(getLevel() + 1, 6));
+			setNextTrainingDateForCurrentLevel();
+		} else {
+			setNextTrainingDateInFourHours();
+		}
+	}
+
 	public void setCourseStatus(CourseStatus status) {
 		this.courseStatus = Ref.create(status);
 	}
@@ -65,15 +83,42 @@ public class WordStatus {
 	}
 
 	public void setLevel(int level) {
-		if (level <= 6) {
-			this.level = level;
-		} else {
-			this.level = 6;
-		}
+		this.level = level;
 	}
 
 	public void setNextTrainingDate(Date nextTrainingDate) {
 		this.nextTrainingDate = nextTrainingDate;
+	}
+
+	private void setNextTrainingDateForCurrentLevel() {
+		Calendar cal = Calendar.getInstance();
+		switch (getLevel()) {
+		case 1:
+			cal.add(Calendar.DAY_OF_MONTH, 3);
+			break;
+		case 2:
+			cal.add(Calendar.WEEK_OF_YEAR, 1);
+			break;
+		case 3:
+			cal.add(Calendar.WEEK_OF_YEAR, 2);
+			break;
+		case 4:
+			cal.add(Calendar.MONTH, 1);
+			break;
+		case 5:
+			cal.add(Calendar.MONTH, 2);
+			break;
+		case 6:
+			cal.add(Calendar.MONTH, 3);
+			break;
+		}
+		setNextTrainingDate(cal.getTime());
+	}
+
+	public void setNextTrainingDateInFourHours() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.HOUR_OF_DAY, 4);
+		setNextTrainingDate(cal.getTime());
 	}
 
 	public void setSubLevel(int subLevel) {

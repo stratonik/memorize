@@ -25,7 +25,7 @@ public interface TrainingService extends RemoteService {
 	 * @param wordStatusId
 	 *            идентификатор записи статуса изучения слова
 	 */
-	void fail(Long wordStatusId);
+	void fail(String wordStatusKey);
 
 	/**
 	 * Получить слова для повторения.
@@ -42,6 +42,6 @@ public interface TrainingService extends RemoteService {
 	 * @param wordStatusId
 	 *            идентификатор записи статуса изучения слова
 	 */
-	void pass(Long wordStatusId);
+	void pass(String wordStatusKey);
 
 }

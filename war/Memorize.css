@@ -87,7 +87,7 @@ h1 {
 
 .answerField {
 	margin: 20px;
-	font-size: 18px;
+	font-size: 26px;
 	width: 400px;
 }
 
@@ -99,22 +99,15 @@ h1 {
 	background-color: red;
 }
 
-.kanji-big {
-	font-size: 36px;
+.value-main {
+	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
+	font-size: 4em;
 	padding: 5px;
 }
 
-.kanji-small {
-	font-size: 24px;
-}
-
-.kana-big {
-	font-size: 36px;
-	padding: 5px;
-}
-
-.kana-small {
-	font-size: 18px;
+.value-second {
+	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
+	font-size: 1.5em;
 }
 
 .additional {

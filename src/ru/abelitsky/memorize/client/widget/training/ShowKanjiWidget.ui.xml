@@ -3,8 +3,8 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:VerticalPanel width="100%">
 		<g:Label ui:field="additional" styleName="additional" />
-		<g:Label ui:field="kanji" styleName="kanji-big" />
-		<g:Label ui:field="kana" styleName="kana-small" />
+		<g:Label ui:field="kanji" styleName="value-main" />
+		<g:Label ui:field="kana" styleName="value-second" />
 		<g:HTML>
 			<hr />
 		</g:HTML>

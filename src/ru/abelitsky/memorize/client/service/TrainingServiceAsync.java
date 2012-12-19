@@ -17,7 +17,7 @@ public interface TrainingServiceAsync {
 	/**
 	 * Проверка слова прошла неудачно.
 	 */
-	void fail(Long wordStatusId, AsyncCallback<Void> callback);
+	void fail(String wordStatusKey, AsyncCallback<Void> callback);
 
 	/**
 	 * Получить слова для повторения.
@@ -28,6 +28,6 @@ public interface TrainingServiceAsync {
 	/**
 	 * Проверка слова прошла удачно.
 	 */
-	void pass(Long wordStatusId, AsyncCallback<Void> callback);
+	void pass(String wordStatusKey, AsyncCallback<Void> callback);
 
 }

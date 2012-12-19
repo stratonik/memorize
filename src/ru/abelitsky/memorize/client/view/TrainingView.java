@@ -21,7 +21,7 @@ public interface TrainingView extends IsWidget {
 
 		void goTo(Place place);
 
-		void saveResult(Long wordStatusId, boolean pass);
+		void saveResult(String wordStatusKey, boolean pass);
 
 	}
 }

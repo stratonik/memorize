@@ -16,7 +16,7 @@ public class TrainingTest implements IsSerializable {
 	private TrainingTestAction action;
 
 	private WordDTO word;
-	private Long wordStatusId;
+	private String wordStatusKey;
 
 	private String question;
 	private String answer;
@@ -46,8 +46,8 @@ public class TrainingTest implements IsSerializable {
 		return word;
 	}
 
-	public Long getWordStatusId() {
-		return wordStatusId;
+	public String getWordStatusKey() {
+		return wordStatusKey;
 	}
 
 	public void setAction(TrainingTestAction action) {
@@ -74,8 +74,8 @@ public class TrainingTest implements IsSerializable {
 		this.word = word;
 	}
 
-	public void setWordStatusId(Long wordStatusId) {
-		this.wordStatusId = wordStatusId;
+	public void setWordStatusKey(String wordStatusKey) {
+		this.wordStatusKey = wordStatusKey;
 	}
 
 }

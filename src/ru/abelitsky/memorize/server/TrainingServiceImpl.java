@@ -3,7 +3,6 @@ package ru.abelitsky.memorize.server;
 import static ru.abelitsky.memorize.server.OfyService.ofy;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,8 +35,7 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 		List<TrainingTest> tests = new ArrayList<TrainingTest>(words.size() * 4);
 		for (Word word : words) {
 			WordStatus wordStatus = new WordStatus(status, word);
-			wordStatus
-					.setNextTrainingDate(getNextSublevelTrainingDate(wordStatus));
+			wordStatus.setNextTrainingDateInFourHours();
 			wordStatuses.add(wordStatus);
 
 			tests.add(TrainingTestBuilder.createShowKanaTest(wordStatus));
@@ -62,43 +60,11 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void fail(Long wordStatusId) {
+	public void fail(String wordStatusKey) {
 		WordStatus status = ofy().load()
-				.key(Key.create(WordStatus.class, wordStatusId)).get();
-		status.setLevel(0);
-		status.setNextTrainingDate(getNextSublevelTrainingDate(status));
+				.key(Key.<WordStatus> create(wordStatusKey)).get();
+		status.fail();
 		ofy().save().entity(status);
-	}
-
-	private Date getNextLevelTrainingDate(WordStatus wordStatus) {
-		Calendar cal = Calendar.getInstance();
-		switch (wordStatus.getLevel()) {
-		case 1:
-			cal.add(Calendar.DAY_OF_MONTH, 3);
-			break;
-		case 2:
-			cal.add(Calendar.WEEK_OF_YEAR, 1);
-			break;
-		case 3:
-			cal.add(Calendar.WEEK_OF_YEAR, 2);
-			break;
-		case 4:
-			cal.add(Calendar.MONTH, 1);
-			break;
-		case 5:
-			cal.add(Calendar.MONTH, 2);
-			break;
-		case 6:
-			cal.add(Calendar.MONTH, 3);
-			break;
-		}
-		return cal.getTime();
-	}
-
-	private Date getNextSublevelTrainingDate(WordStatus wordStatus) {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.HOUR_OF_DAY, 4);
-		return cal.getTime();
 	}
 
 	@Override
@@ -120,18 +86,10 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void pass(Long wordStatusId) {
+	public void pass(String wordStatusKey) {
 		WordStatus status = ofy().load()
-				.key(Key.create(WordStatus.class, wordStatusId)).get();
-		status.setSubLevel(status.getSubLevel() + 1);
-		if ((!status.getWord().hasKanji() && (status.getSubLevel() >= 1))
-				|| (status.getSubLevel() >= 2)) {
-			status.setSubLevel(0);
-			status.setLevel(status.getLevel() + 1);
-			status.setNextTrainingDate(getNextLevelTrainingDate(status));
-		} else {
-			status.setNextTrainingDate(getNextSublevelTrainingDate(status));
-		}
+				.key(Key.<WordStatus> create(wordStatusKey)).get();
+		status.pass();
 		ofy().save().entity(status);
 	}
 

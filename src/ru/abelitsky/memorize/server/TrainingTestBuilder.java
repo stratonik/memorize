@@ -5,6 +5,8 @@ import ru.abelitsky.memorize.shared.dto.TrainingTest;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestAction;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestType;
 
+import com.googlecode.objectify.Key;
+
 public class TrainingTestBuilder {
 
 	public static TrainingTest createSelectKanaTest(WordStatus wordStatus) {
@@ -97,7 +99,9 @@ public class TrainingTestBuilder {
 
 	private static TrainingTest createTrainingTestObject(WordStatus wordStatus) {
 		TrainingTest test = new TrainingTest();
-		test.setWordStatusId(wordStatus.getId());
+		if (wordStatus.getId() != null) {
+			test.setWordStatusKey(Key.create(wordStatus).getString());
+		}
 		test.setWord(wordStatus.getWord().toDto());
 		return test;
 	}
