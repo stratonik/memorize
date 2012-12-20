@@ -194,6 +194,8 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		wordsList.setRowCount(courseInfo.getCourse().getWordsNumber());
 		if (!words.isEmpty()) {
 			wordsList.setRowData(words.get(0).getIndex() - 1, words);
+		} else {
+			wordsList.setRowData(0, words);
 		}
 	}
 

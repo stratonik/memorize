@@ -10,6 +10,7 @@ h1 {
 
 #logout {
 	font-size: 12px;
+	text-align: right;
 }
 
 /** Most GWT widgets already have a style name defined */
@@ -100,9 +101,16 @@ h1 {
 }
 
 .answerField {
-	margin: 20px;
+	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
 	font-size: 26px;
 	width: 400px;
+	padding-left: 15px;
+	padding-right: 15px;
+	border-radius: 30px;
+}
+
+.answerField:focus {
+	outline: none;
 }
 
 .answerField.right {
@@ -121,7 +129,7 @@ h1 {
 
 .value-second {
 	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
-	font-size: 1.5em;
+	font-size: 2em;
 }
 
 .additional {

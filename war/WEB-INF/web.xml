@@ -31,6 +31,16 @@
 		<url-pattern>/memorize/training</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>mainPage</servlet-name>
+		<jsp-file>/Memorize.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>mainPage</servlet-name>
+		<url-pattern>/Memorize.html</url-pattern>
+	</servlet-mapping>
+
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>Memorize.html</welcome-file>

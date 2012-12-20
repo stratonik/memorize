@@ -2,6 +2,7 @@ package ru.abelitsky.memorize.client.view;
 
 import java.util.List;
 
+import ru.abelitsky.memorize.client.UserService;
 import ru.abelitsky.memorize.client.place.AllCoursesPlace;
 import ru.abelitsky.memorize.client.place.ChangeCoursePlace;
 import ru.abelitsky.memorize.client.place.CurrentCoursesPlace;
@@ -17,6 +18,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -33,11 +35,14 @@ public class AllCoursesViewImpl extends Composite implements AllCoursesView,
 
 	@UiField
 	FlexTable list;
+	@UiField
+	Button newCourse;
 
 	private Presenter presenter;
 
 	public AllCoursesViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
+		newCourse.setVisible(UserService.getCurrentUserInfo().isAdmin());
 	}
 
 	@Override

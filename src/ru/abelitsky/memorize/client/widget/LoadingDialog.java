@@ -15,7 +15,7 @@ public class LoadingDialog extends DialogBox {
 		dialogVPanel.setHeight("150px");
 		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 		dialogVPanel.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
-		dialogVPanel.add(new Image("/ajax-loader.gif"));
+		dialogVPanel.add(new Image("/images/ajax-loader.gif"));
 		setWidget(dialogVPanel);
 	}
 

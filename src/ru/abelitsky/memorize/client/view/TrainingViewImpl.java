@@ -157,7 +157,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	@Override
 	public void prepareView() {
 		next.setEnabled(false);
-		testWidget.setWidget(new Image("/ajax-loader.gif"));
+		testWidget.setWidget(new Image("/images/ajax-loader.gif"));
 
 		enterDownHandler = RootPanel.get().addDomHandler(new KeyDownHandler() {
 			@Override

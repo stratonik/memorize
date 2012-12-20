@@ -1,3 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
+<%@page import="com.google.appengine.api.users.UserService"%>
+
+<%
+	UserService userService = UserServiceFactory.getUserService();
+%>
 <!doctype html>
 <!-- The DOCTYPE declaration above will set the     -->
 <!-- browser's rendering engine into                -->
@@ -41,9 +48,10 @@
 			application to display correctly.</div>
 	</noscript>
 	<h1>Memorize</h1>
-	<table style="width: 100%;">
-		<tr><td align="right"><div id="logout"></div></td></tr>
-	</table>
+	<div id="logout">
+		<%=userService.getCurrentUser().getNickname()%>
+		&nbsp; <a href="<%=userService.createLogoutURL("/")%>">Выход</a>
+	</div>
 	<hr />
 	<div style="color: red;" id="global-error"></div>
 	<div id="appContainer"></div>

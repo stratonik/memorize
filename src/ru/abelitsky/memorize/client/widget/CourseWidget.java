@@ -1,5 +1,6 @@
 package ru.abelitsky.memorize.client.widget;
 
+import ru.abelitsky.memorize.client.UserService;
 import ru.abelitsky.memorize.shared.dto.CourseDTO;
 
 import com.google.gwt.core.client.GWT;
@@ -8,6 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -36,6 +38,10 @@ public class CourseWidget extends Composite {
 	Label words;
 	@UiField
 	Label description;
+	@UiField
+	Button changeCourse;
+	@UiField
+	Button deleteCourse;
 
 	private final CourseDTO course;
 	private final Delegator delegator;
@@ -49,6 +55,9 @@ public class CourseWidget extends Composite {
 		title.setText(course.getName());
 		words.setText("Слов: " + course.getWordsNumber());
 		description.setText(course.getDescription());
+
+		changeCourse.setVisible(UserService.getCurrentUserInfo().isAdmin());
+		deleteCourse.setVisible(UserService.getCurrentUserInfo().isAdmin());
 	}
 
 	@UiHandler("changeCourse")

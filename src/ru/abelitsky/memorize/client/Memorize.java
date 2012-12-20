@@ -14,12 +14,8 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
@@ -30,18 +26,6 @@ public class Memorize implements EntryPoint {
 	private Place defaultPlace = new CurrentCoursesPlace();
 
 	private SimplePanel appWidget = new SimplePanel();
-
-	private Widget createLogoutWidget() {
-		HorizontalPanel panel = new HorizontalPanel();
-		panel.setSpacing(3);
-
-		Anchor logout = new Anchor("Выход");
-		logout.setHref(UserService.getCurrentUserInfo().getLogoutUrl());
-
-		panel.add(new Label(UserService.getCurrentUserInfo().getUserName()));
-		panel.add(logout);
-		return panel;
-	}
 
 	public void onModuleLoad() {
 		CoursesServiceAsync coursesService = GWT.create(CoursesService.class);
@@ -79,7 +63,6 @@ public class Memorize implements EntryPoint {
 		historyHandler.register(placeController, eventBus, defaultPlace);
 
 		RootPanel.get("appContainer").add(appWidget);
-		RootPanel.get("logout").add(createLogoutWidget());
 		// Goes to the place represented on URL else default place
 		historyHandler.handleCurrentHistory();
 	}
