@@ -2,6 +2,7 @@ package ru.abelitsky.memorize.client.service;
 
 import java.util.List;
 
+import ru.abelitsky.memorize.shared.dto.CourseInfo;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -17,7 +18,7 @@ public interface TrainingService extends RemoteService {
 	 *            идентификатор статуса прохождения курса
 	 * @return список начальных тестов для добавленных слов
 	 */
-	List<TrainingTest> addNewWordsToTraining(Long courseStatusId);
+	List<TrainingTest> addWordsToTraining(Long courseStatusId);
 
 	/**
 	 * Проверка слова прошла неудачно.
@@ -43,5 +44,23 @@ public interface TrainingService extends RemoteService {
 	 *            идентификатор записи статуса изучения слова
 	 */
 	void pass(String wordStatusKey);
+
+	/**
+	 * Создает запись о статусе для указанного курса.
+	 * 
+	 * @param courseId
+	 *            идентификатор курса
+	 * @return информация о курсе
+	 */
+	CourseInfo startTraining(Long courseId);
+
+	/**
+	 * Удаляет запись указанного статуса курса.
+	 * 
+	 * @param statusId
+	 *            идентификатор статуса
+	 * @return информация о курсе
+	 */
+	CourseInfo stopTraining(Long statusId);
 
 }

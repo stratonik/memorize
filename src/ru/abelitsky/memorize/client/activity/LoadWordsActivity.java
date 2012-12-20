@@ -34,7 +34,7 @@ public class LoadWordsActivity extends AbstractActivity implements Presenter {
 	@Override
 	public void load(String data) {
 		clientFactory.getLoadingDialog().center();
-		clientFactory.getCoursesService().loadWords(place.getCourseId(), data,
+		clientFactory.getCoursesService().importWords(place.getCourseId(), data,
 				new AsyncCallback<Void>() {
 					@Override
 					public void onFailure(Throwable caught) {

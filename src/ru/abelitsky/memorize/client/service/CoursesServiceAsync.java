@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.abelitsky.memorize.shared.dto.CourseDTO;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
+import ru.abelitsky.memorize.shared.dto.UserInfo;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -11,24 +12,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface CoursesServiceAsync {
 
 	/**
-	 * Создает запись о статусе для указанного курса.
-	 */
-	void createCourseStatus(Long courseId, AsyncCallback<CourseInfo> callback);
-
-	/**
 	 * Удаляет указанный курс.
 	 */
 	void deleteCourse(Long id, AsyncCallback<List<CourseDTO>> callback);
-
-	/**
-	 * Удаляет запись указанного статуса курса.
-	 */
-	void deleteCourseStatus(Long statusId, AsyncCallback<CourseInfo> callback);
-
-	/**
-	 * Возвращает указанный курс.
-	 */
-	void getCourse(Long id, AsyncCallback<CourseDTO> callback);
 
 	/**
 	 * Возвращает указанный курс и дополнительную информацию о нем.
@@ -46,6 +32,11 @@ public interface CoursesServiceAsync {
 	void getStatuses(AsyncCallback<List<CourseInfo>> callback);
 
 	/**
+	 * Получить данные по текущему пользователю.
+	 */
+	void getUserInfo(AsyncCallback<UserInfo> callback);
+
+	/**
 	 * Возвращает слова указанного курса.
 	 */
 	void getWords(Long courseId, int beginIndex, int count,
@@ -54,7 +45,7 @@ public interface CoursesServiceAsync {
 	/**
 	 * Загружает слова для указанного курса.
 	 */
-	void loadWords(Long courseId, String data, AsyncCallback<Void> callback);
+	void importWords(Long courseId, String data, AsyncCallback<Void> callback);
 
 	/**
 	 * Сохраняет курс в базе данных.

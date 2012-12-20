@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.abelitsky.memorize.shared.dto.CourseDTO;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
+import ru.abelitsky.memorize.shared.dto.UserInfo;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -13,15 +14,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface CoursesService extends RemoteService {
 
 	/**
-	 * Создает запись о статусе для указанного курса.
-	 * 
-	 * @param courseId
-	 *            идентификатор курса
-	 * @return информация о курсе
-	 */
-	CourseInfo createCourseStatus(Long courseId);
-
-	/**
 	 * Удаляет указанный курс.
 	 * 
 	 * @param id
@@ -29,24 +21,6 @@ public interface CoursesService extends RemoteService {
 	 * @return список оставшихся курсов
 	 */
 	List<CourseDTO> deleteCourse(Long id);
-
-	/**
-	 * Удаляет запись указанного статуса курса.
-	 * 
-	 * @param statusId
-	 *            идентификатор статуса
-	 * @return информация о курсе
-	 */
-	CourseInfo deleteCourseStatus(Long statusId);
-
-	/**
-	 * Возвращает указанный курс.
-	 * 
-	 * @param id
-	 *            идентификатор курса
-	 * @return курс
-	 */
-	CourseDTO getCourse(Long id);
 
 	/**
 	 * Возвращает указанный курс и дополнительную информацию о нем.
@@ -72,6 +46,14 @@ public interface CoursesService extends RemoteService {
 	List<CourseInfo> getStatuses();
 
 	/**
+	 * Получить данные по текущему пользователю.
+	 * 
+	 * @return информация о текущем пользователе, или <code>null</code> если
+	 *         пользователь не залогинен.
+	 */
+	UserInfo getUserInfo();
+
+	/**
 	 * Возвращает слова указанного курса.
 	 * 
 	 * @param courseId
@@ -92,7 +74,7 @@ public interface CoursesService extends RemoteService {
 	 * @param data
 	 *            список слов в csv-формате
 	 */
-	void loadWords(Long courseId, String data);
+	void importWords(Long courseId, String data);
 
 	/**
 	 * Сохранение описания курса в базе данных.

@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Set;
 
 import ru.abelitsky.memorize.client.service.TrainingService;
+import ru.abelitsky.memorize.server.model.Course;
 import ru.abelitsky.memorize.server.model.CourseStatus;
 import ru.abelitsky.memorize.server.model.Word;
 import ru.abelitsky.memorize.server.model.WordStatus;
+import ru.abelitsky.memorize.shared.dto.CourseInfo;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -24,7 +26,7 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 	private static final long serialVersionUID = -8892629311987799151L;
 
 	@Override
-	public List<TrainingTest> addNewWordsToTraining(Long courseStatusId) {
+	public List<TrainingTest> addWordsToTraining(Long courseStatusId) {
 		Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
 				courseStatusId);
 		final CourseStatus status = ofy().load().key(statusKey).get();
@@ -111,6 +113,39 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 			}
 		}
 		return words;
+	}
+
+	@Override
+	public CourseInfo startTraining(Long courseId) {
+		Key<Course> courseKey = Key.create(Course.class, courseId);
+		CourseStatus status = ofy().load().type(CourseStatus.class)
+				.filter("course", courseKey).first().get();
+		if (status == null) {
+			status = new CourseStatus(courseKey);
+			Key<CourseStatus> statusKey = ofy().save().entity(status).now();
+			status = ofy().load().key(statusKey).get();
+		}
+		CourseInfo info = new CourseInfo(status.getCourse().toDto());
+		info.setStatus(status.toDto());
+		return info;
+	}
+
+	@Override
+	public CourseInfo stopTraining(Long statusId) {
+		final Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
+				statusId);
+		CourseStatus status = ofy().load().key(statusKey).get();
+		CourseInfo info = new CourseInfo(status.getCourse().toDto());
+		ofy().transact(new VoidWork() {
+			@Override
+			public void vrun() {
+				ofy().delete().key(statusKey).now();
+				ofy().delete().keys(
+						ofy().load().type(WordStatus.class).ancestor(statusKey)
+								.keys());
+			}
+		});
+		return info;
 	}
 
 }

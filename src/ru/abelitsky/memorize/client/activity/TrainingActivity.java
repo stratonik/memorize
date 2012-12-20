@@ -76,7 +76,7 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 
 		view.prepareView();
 		if (ParameterNames.ADD_NEW_WORDS.equals(place.getMode())) {
-			clientFactory.getTrainingService().addNewWordsToTraining(
+			clientFactory.getTrainingService().addWordsToTraining(
 					place.getCourseStatusId(),
 					new AsyncCallback<List<TrainingTest>>() {
 						@Override

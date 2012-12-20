@@ -17,9 +17,11 @@ import ru.abelitsky.memorize.server.model.Word;
 import ru.abelitsky.memorize.server.model.WordStatus;
 import ru.abelitsky.memorize.shared.dto.CourseDTO;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
+import ru.abelitsky.memorize.shared.dto.UserInfo;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
@@ -30,21 +32,6 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 		CoursesService {
 
 	private static final long serialVersionUID = -3744122268386375444L;
-
-	@Override
-	public CourseInfo createCourseStatus(Long courseId) {
-		Key<Course> courseKey = Key.create(Course.class, courseId);
-		CourseStatus status = ofy().load().type(CourseStatus.class)
-				.filter("course", courseKey).first().get();
-		if (status == null) {
-			status = new CourseStatus(courseKey);
-			Key<CourseStatus> statusKey = ofy().save().entity(status).now();
-			status = ofy().load().key(statusKey).get();
-		}
-		CourseInfo info = new CourseInfo(status.getCourse().toDto());
-		info.setStatus(status.toDto());
-		return info;
-	}
 
 	@Override
 	public List<CourseDTO> deleteCourse(Long id) {
@@ -76,29 +63,6 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 		});
 
 		return getCourses();
-	}
-
-	@Override
-	public CourseInfo deleteCourseStatus(Long statusId) {
-		final Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
-				statusId);
-		CourseStatus status = ofy().load().key(statusKey).get();
-		CourseInfo info = new CourseInfo(status.getCourse().toDto());
-		ofy().transact(new VoidWork() {
-			@Override
-			public void vrun() {
-				ofy().delete().key(statusKey).now();
-				ofy().delete().keys(
-						ofy().load().type(WordStatus.class).ancestor(statusKey)
-								.keys());
-			}
-		});
-		return info;
-	}
-
-	@Override
-	public CourseDTO getCourse(Long id) {
-		return ofy().load().key(Key.create(Course.class, id)).get().toDto();
 	}
 
 	@Override
@@ -160,6 +124,20 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
+	public UserInfo getUserInfo() {
+		UserService userService = UserServiceFactory.getUserService();
+		if (userService.isUserLoggedIn()) {
+			UserInfo userInfo = new UserInfo();
+			userInfo.setUserName(userService.getCurrentUser().getNickname());
+			userInfo.setAdmin(userService.isUserAdmin());
+			userInfo.setLogoutUrl(userService.createLogoutURL("/Memorize.html"));
+			return userInfo;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
 	public List<WordDTO> getWords(Long courseId, int beginIndex, int count) {
 		Key<Course> courseKey = Key.create(Course.class, courseId);
 		List<Word> words = ofy().load().type(Word.class).ancestor(courseKey)
@@ -173,23 +151,12 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void loadWords(Long courseId, String data) {
+	public void importWords(Long courseId, String data) {
 		Ref<Course> courseRef = Ref.create(Key.create(Course.class, courseId));
 		final Course course = ofy().load().ref(courseRef).get();
 		if (course == null) {
 			return;
 		}
-
-		ofy().transact(new VoidWork() {
-			@Override
-			public void vrun() {
-				course.setWordsNumber(0);
-				ofy().save().entity(course).now();
-				ofy().delete()
-						.keys(ofy().load().type(Word.class).ancestor(course)
-								.keys()).now();
-			}
-		});
 
 		StringReader reader = new StringReader(data);
 		CSVReader csvReader = new CSVReader(reader);
@@ -209,13 +176,16 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 			reader.close();
 		} catch (IOException e) {
 		}
+		course.setWordsNumber(words.size());
 
 		ofy().transact(new VoidWork() {
 			@Override
 			public void vrun() {
-				course.setWordsNumber(words.size());
-				ofy().save().entity(course).now();
+				ofy().delete()
+						.keys(ofy().load().type(Word.class).ancestor(course)
+								.keys()).now();
 				ofy().save().entities(words).now();
+				ofy().save().entity(course).now();
 			}
 		});
 

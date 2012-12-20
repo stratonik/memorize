@@ -7,6 +7,7 @@ import ru.abelitsky.memorize.client.place.NewCoursePlace;
 import ru.abelitsky.memorize.client.view.EditCourseView;
 import ru.abelitsky.memorize.client.view.EditCourseView.Presenter;
 import ru.abelitsky.memorize.shared.dto.CourseDTO;
+import ru.abelitsky.memorize.shared.dto.CourseInfo;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -63,14 +64,15 @@ public class EditCourseActivity extends AbstractActivity implements Presenter {
 			view.setData(null);
 		} else {
 			view.prepareForEdit();
-			clientFactory.getCoursesService().getCourse(courseId,
-					new AsyncCallback<CourseDTO>() {
+			clientFactory.getCoursesService().getCourseInfo(courseId,
+					new AsyncCallback<CourseInfo>() {
 						public void onFailure(Throwable caught) {
 							clientFactory.getRPCFaultDialog().show(caught);
 						}
 
-						public void onSuccess(CourseDTO course) {
-							clientFactory.getEditCourseView().setData(course);
+						public void onSuccess(CourseInfo courseInfo) {
+							clientFactory.getEditCourseView().setData(
+									courseInfo.getCourse());
 						}
 					});
 		}

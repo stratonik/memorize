@@ -10,7 +10,6 @@ h1 {
 
 #logout {
 	font-size: 12px;
-	text-align: right;
 }
 
 /** Most GWT widgets already have a style name defined */

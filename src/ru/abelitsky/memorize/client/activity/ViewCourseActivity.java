@@ -78,7 +78,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void startCourse(CourseInfo courseInfo) {
-		clientFactory.getCoursesService().createCourseStatus(
+		clientFactory.getTrainingService().startTraining(
 				courseInfo.getCourse().getId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
@@ -98,7 +98,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void stopCourse(CourseInfo courseInfo) {
-		clientFactory.getCoursesService().deleteCourseStatus(
+		clientFactory.getTrainingService().stopTraining(
 				courseInfo.getStatus().getId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
