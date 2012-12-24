@@ -53,7 +53,7 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 	@UiField
 	Button learnNewWords;
 	@UiField
-	VerticalPanel words;
+	VerticalPanel wordsPanel;
 
 	CellTable<WordDTO> wordsList;
 
@@ -92,11 +92,11 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 				presenter.getWords(start, length);
 			}
 		});
-		words.add(wordsList);
+		wordsPanel.add(wordsList);
 
 		SimplePager pager = new SimplePager();
 		pager.setDisplay(wordsList);
-		words.add(pager);
+		wordsPanel.add(pager);
 	}
 
 	private String getProperPluralForm(int number, String form1, String form2,
@@ -150,7 +150,7 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		startCourse.setVisible(false);
 		stopCourse.setVisible(false);
 		actions.setVisible(false);
-		wordsList.setVisible(false);
+		wordsPanel.setVisible(false);
 		wordsList.setVisibleRangeAndClearData(new Range(0, WORDS_PER_PAGE),
 				false);
 	}
@@ -186,16 +186,18 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 					.setEnabled((courseInfo.getCourse().getWordsNumber() - courseInfo
 							.getStatus().getKnownWordsNumber()) > 0);
 		}
-		wordsList.setVisible(true);
+		wordsList.setRowCount(courseInfo.getCourse().getWordsNumber());
 	}
 
 	@Override
 	public void setData(List<WordDTO> words) {
-		wordsList.setRowCount(courseInfo.getCourse().getWordsNumber());
 		if (!words.isEmpty()) {
 			wordsList.setRowData(words.get(0).getIndex() - 1, words);
 		} else {
 			wordsList.setRowData(0, words);
+		}
+		if (!wordsPanel.isVisible()) {
+			wordsPanel.setVisible(true);
 		}
 	}
 

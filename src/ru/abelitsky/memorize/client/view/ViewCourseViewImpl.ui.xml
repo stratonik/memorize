@@ -24,7 +24,7 @@
 				<g:Button ui:field="learnNewWords" text="Выучить новые слова..." />
 			</g:HorizontalPanel>
 		</g:cell>
-		<g:VerticalPanel ui:field="words" horizontalAlignment="center"
+		<g:VerticalPanel ui:field="wordsPanel" horizontalAlignment="center"
 			width="100%" />
 		<g:Button ui:field="loadWords" text="Загрузить слова..." />
 	</g:VerticalPanel>
