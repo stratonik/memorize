@@ -3,7 +3,10 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HorizontalPanel width="100%">
-		<g:Button ui:field="stop" text="Прервать" addStyleNames="trainingButton" />
+		<g:VerticalPanel horizontalAlignment="center">
+			<g:Button ui:field="stop" text="Прервать" addStyleNames="trainingButton" />
+			<g:Label ui:field="counter" addStyleNames="trainingCounter" />
+		</g:VerticalPanel>
 		<g:cell width="100%" horizontalAlignment="center">
 			<g:SimplePanel ui:field="testWidget" styleName="trainingWidget" />
 		</g:cell>

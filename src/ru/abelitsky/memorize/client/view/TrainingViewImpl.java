@@ -48,7 +48,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	private final TrainingWidget showAnswerWidget = new ShowAnswerWidget();
 
 	private List<TrainingTest> tests;
-	private TrainingTest currentTest;
+	private int currentTest;
 	private boolean showAnswerMode;
 
 	@UiField
@@ -57,6 +57,8 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	Button next;
 	@UiField
 	SimplePanel testWidget;
+	@UiField
+	Label counter;
 	@UiField
 	Label timer;
 
@@ -89,22 +91,24 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	private void goToAnswer() {
 		showAnswerMode = true;
 		testWidget.setWidget(showAnswerWidget);
-		showAnswerWidget.setData(currentTest);
+		showAnswerWidget.setData(tests.get(currentTest));
 	}
 
 	private void goToNextTest() {
 		showAnswerMode = false;
-		if (tests.size() > 0) {
-			currentTest = tests.remove(0);
-			TrainingWidget widget = widgets.get(currentTest.getType()).get(
-					currentTest.getAction());
+		if (++currentTest < tests.size()) {
+			TrainingTest test = tests.get(currentTest);
+			TrainingWidget widget = widgets.get(test.getType()).get(
+					test.getAction());
 			testWidget.setWidget(widget);
-			widget.setData(currentTest);
+			widget.setData(test);
 
-			if (currentTest.getAction() != TrainingTestAction.showInfo) {
+			if (test.getAction() != TrainingTestAction.showInfo) {
 				testTimer = new TestTimer();
 				testTimer.scheduleRepeating(1000);
 			}
+			counter.setText(String.valueOf(currentTest + 1) + "/"
+					+ tests.size());
 		} else {
 			stop.click();
 		}
@@ -127,10 +131,11 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 				testTimer = null;
 			}
 
-			TrainingWidget widget = widgets.get(currentTest.getType()).get(
-					currentTest.getAction());
+			TrainingTest test = tests.get(currentTest);
+			TrainingWidget widget = widgets.get(test.getType()).get(
+					test.getAction());
 			final boolean result = widget.checkAnswer();
-			presenter.saveResult(currentTest.getWordStatusKey(), result);
+			presenter.saveResult(test.getWordStatusKey(), result);
 			new Timer() {
 				@Override
 				public void run() {
@@ -158,6 +163,8 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	public void prepareView() {
 		next.setEnabled(false);
 		testWidget.setWidget(new Image("/images/ajax-loader.gif"));
+		counter.setText("");
+		timer.setText("");
 
 		enterDownHandler = RootPanel.get().addDomHandler(new KeyDownHandler() {
 			@Override
@@ -172,7 +179,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 	@Override
 	public void setData(List<TrainingTest> data) {
 		this.tests = data;
-		currentTest = null;
+		currentTest = -1;
 		goToNextTest();
 		next.setEnabled(true);
 	}
@@ -184,7 +191,7 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 
 	private class TestTimer extends Timer {
 
-		private int seconds = 60;
+		private int seconds = 30;
 
 		public TestTimer() {
 			timer.setText(getSeconds());

@@ -37,7 +37,7 @@ public class WriteKanaWidget extends Composite implements TrainingWidget {
 
 	@Override
 	public boolean checkAnswer() {
-		kanji.setVisible(true);
+		kanji.removeStyleName("invisible");
 		if (answer.getText().trim().equals(test.getAnswer())) {
 			answer.addStyleName("right");
 			return true;
@@ -53,7 +53,7 @@ public class WriteKanaWidget extends Composite implements TrainingWidget {
 
 		WordDTO word = test.getWord();
 		kanji.setText(word.getKanji());
-		kanji.setVisible(false);
+		kanji.addStyleName("invisible");
 		translation.setText(word.getTranslation());
 		additional.setText(word.getAdditionalInfo());
 

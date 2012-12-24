@@ -81,7 +81,7 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 				return object.getTranslation();
 			}
 		};
-		translation.setCellStyleNames("translation");
+		translation.setCellStyleNames("translationColumn");
 		wordsList.addColumn(translation, "Перевод");
 		wordsList.addRangeChangeHandler(new RangeChangeEvent.Handler() {
 			@Override

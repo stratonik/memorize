@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface ViewCourseView extends IsWidget {
 
-	int WORDS_PER_PAGE = 15;
+	int WORDS_PER_PAGE = 20;
 
 	void prepareView();
 

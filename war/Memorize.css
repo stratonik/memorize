@@ -80,10 +80,14 @@ h1 {
 	margin-top: 5px;
 }
 
+.translationColumn {
+	white-space: pre-line;
+}
+
 .trainingWidget {
 	color: #3E3E3E;
 	margin: 20px;
-	width: 500px;
+	width: 600px;
 }
 
 .trainingButton {
@@ -95,18 +99,19 @@ h1 {
 	margin-bottom: 20px;
 }
 
-.trainingTimer {
+.trainingTimer,.trainingCounter {
 	font-size: 48px;
 	color: #CCC;
 }
 
 .answerField {
 	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
-	font-size: 26px;
+	font-size: 2em;
 	width: 400px;
 	padding-left: 15px;
 	padding-right: 15px;
-	border-radius: 30px;
+	border-radius: 15px;
+	margin: 10px;
 }
 
 .answerField:focus {
@@ -114,29 +119,41 @@ h1 {
 }
 
 .answerField.right {
-	background-color: lime;
+	color: white;
+	background-color: #8BC14A;
 }
 
 .answerField.wrong {
-	background-color: red;
+	color: white;
+	background-color: #E44E5A;
 }
 
 .value-main {
 	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
 	font-size: 4em;
 	padding: 5px;
+	white-space: nowrap;
 }
 
 .value-second {
 	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
 	font-size: 2em;
+	padding: 5px;
+	white-space: nowrap;
+}
+
+.value-second.invisible {
+	opacity: 0.0;
 }
 
 .additional {
 	font-size: 12px;
 	color: #999;
+	padding: 5px;
 }
 
 .translation {
+	font-size: 1.2em;
+	padding: 5px;
 	white-space: pre-line;
 }
