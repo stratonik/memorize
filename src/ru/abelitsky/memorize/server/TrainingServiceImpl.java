@@ -32,21 +32,17 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 		final CourseStatus status = ofy().load().key(statusKey).get();
 		List<Word> words = selectNewWordsForTraining(status);
 
-		final List<WordStatus> wordStatuses = new ArrayList<WordStatus>(
-				words.size());
-		List<TrainingTest> tests = new ArrayList<TrainingTest>(words.size() * 4);
+		final List<WordStatus> wordStatuses = new ArrayList<WordStatus>();
 		for (Word word : words) {
 			WordStatus wordStatus = new WordStatus(status, word);
 			wordStatus.setNextTrainingDateInFourHours();
 			wordStatuses.add(wordStatus);
-
-			tests.add(TrainingTestBuilder.createShowKanaTest(wordStatus));
-			tests.add(TrainingTestBuilder.createWriteKanaTest(wordStatus));
-			if (word.hasKanji()) {
-				tests.add(TrainingTestBuilder.createShowKanjiTest(wordStatus));
-				tests.add(TrainingTestBuilder.createWriteKanjiTest(wordStatus));
-			}
 		}
+
+		List<TrainingTest> tests = createInitialTestsList(
+				(wordStatuses.size() >= 1) ? wordStatuses.get(0) : null,
+				(wordStatuses.size() >= 2) ? wordStatuses.get(1) : null,
+				(wordStatuses.size() >= 3) ? wordStatuses.get(2) : null);
 
 		ofy().transact(new VoidWork() {
 			@Override
@@ -58,6 +54,48 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 				ofy().save().entities(wordStatuses);
 			}
 		});
+		return tests;
+	}
+
+	private List<TrainingTest> createInitialTestsList(WordStatus word1,
+			WordStatus word2, WordStatus word3) {
+		List<TrainingTest> tests = new ArrayList<TrainingTest>(3 * 4);
+		if (word1 != null) {
+			tests.add(TrainingTestBuilder.createShowKanaTest(word1));
+		}
+		if (word2 != null) {
+			tests.add(TrainingTestBuilder.createShowKanaTest(word2));
+		}
+		if (word1 != null) {
+			tests.add(TrainingTestBuilder.createWriteKanaTest(word1));
+		}
+		if (word3 != null) {
+			tests.add(TrainingTestBuilder.createShowKanaTest(word3));
+		}
+		if (word2 != null) {
+			tests.add(TrainingTestBuilder.createWriteKanaTest(word2));
+		}
+		if ((word1 != null) && word1.getWord().hasKanji()) {
+			tests.add(TrainingTestBuilder.createShowKanjiTest(word1));
+		}
+		if (word3 != null) {
+			tests.add(TrainingTestBuilder.createWriteKanaTest(word3));
+		}
+		if ((word2 != null) && word2.getWord().hasKanji()) {
+			tests.add(TrainingTestBuilder.createShowKanjiTest(word2));
+		}
+		if ((word1 != null) && word1.getWord().hasKanji()) {
+			tests.add(TrainingTestBuilder.createWriteKanjiTest(word1));
+		}
+		if ((word3 != null) && word3.getWord().hasKanji()) {
+			tests.add(TrainingTestBuilder.createShowKanjiTest(word3));
+		}
+		if ((word2 != null) && word2.getWord().hasKanji()) {
+			tests.add(TrainingTestBuilder.createWriteKanjiTest(word2));
+		}
+		if ((word3 != null) && word3.getWord().hasKanji()) {
+			tests.add(TrainingTestBuilder.createWriteKanjiTest(word3));
+		}
 		return tests;
 	}
 

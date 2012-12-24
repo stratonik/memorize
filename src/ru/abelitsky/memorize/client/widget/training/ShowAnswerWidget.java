@@ -54,6 +54,7 @@ public class ShowAnswerWidget extends Composite implements TrainingWidget {
 	public boolean checkAnswer() {
 		if (answer.getText().trim().equals(test.getAnswer())) {
 			answer.addStyleName("right");
+			answer.setReadOnly(true);
 			return true;
 		} else {
 			answer.addStyleName("wrong");
@@ -78,6 +79,7 @@ public class ShowAnswerWidget extends Composite implements TrainingWidget {
 		answer.setText("");
 		answer.removeStyleName("right");
 		answer.removeStyleName("wrong");
+		answer.setReadOnly(false);
 		answer.setFocus(true);
 	}
 
