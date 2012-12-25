@@ -62,15 +62,18 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 		List<TrainingTest> tests = new ArrayList<TrainingTest>(3 * 4);
 		if (word1 != null) {
 			tests.add(TrainingTestBuilder.createShowKanaTest(word1));
+			tests.add(TrainingTestBuilder.createSelectKanaTest(word1));
 		}
 		if (word2 != null) {
 			tests.add(TrainingTestBuilder.createShowKanaTest(word2));
+			tests.add(TrainingTestBuilder.createSelectKanaTest(word2));
 		}
 		if (word1 != null) {
 			tests.add(TrainingTestBuilder.createWriteKanaTest(word1));
 		}
 		if (word3 != null) {
 			tests.add(TrainingTestBuilder.createShowKanaTest(word3));
+			tests.add(TrainingTestBuilder.createSelectKanaTest(word3));
 		}
 		if (word2 != null) {
 			tests.add(TrainingTestBuilder.createWriteKanaTest(word2));

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:VerticalPanel width="100%">
+		<g:HorizontalPanel width="100%">
+			<g:cell width="70px">
+				<g:Image url="/images/kana.png" />
+			</g:cell>
+			<g:VerticalPanel width="100%">
+				<g:Label ui:field="additional" styleName="additional" />
+				<g:HorizontalPanel width="100%" verticalAlignment="top">
+					<g:Label ui:field="translation" styleName="translation" />
+					<g:cell horizontalAlignment="right">
+						<g:Label ui:field="kanji" styleName="value-second" />
+					</g:cell>
+				</g:HorizontalPanel>
+			</g:VerticalPanel>
+		</g:HorizontalPanel>
+		<g:HTML>
+			<hr />
+		</g:HTML>
+		<g:cell horizontalAlignment="center">
+			<g:FlexTable ui:field="variants" addStyleNames="variantsTable" />
+		</g:cell>
+	</g:VerticalPanel>
+</ui:UiBinder>

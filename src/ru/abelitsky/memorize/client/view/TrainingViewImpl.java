@@ -4,10 +4,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.abelitsky.memorize.client.widget.training.SelectKanaWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowAnswerWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowKanaWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowKanjiWidget;
 import ru.abelitsky.memorize.client.widget.training.TrainingWidget;
+import ru.abelitsky.memorize.client.widget.training.TrainingWidget.Delegator;
 import ru.abelitsky.memorize.client.widget.training.WriteKanaWidget;
 import ru.abelitsky.memorize.client.widget.training.WriteKanjiWidget;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
@@ -33,7 +35,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-public class TrainingViewImpl extends Composite implements TrainingView {
+public class TrainingViewImpl extends Composite implements TrainingView,
+		Delegator {
 
 	interface TrainingViewImplUiBinder extends
 			UiBinder<HorizontalPanel, TrainingViewImpl> {
@@ -86,6 +89,8 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 				new ShowKanaWidget());
 		widgets.get(TrainingTestType.kana).put(TrainingTestAction.writeAnswer,
 				new WriteKanaWidget());
+		widgets.get(TrainingTestType.kana).put(
+				TrainingTestAction.selectVariant, new SelectKanaWidget(this));
 	}
 
 	private void goToAnswer() {
@@ -157,6 +162,11 @@ public class TrainingViewImpl extends Composite implements TrainingView {
 			enterDownHandler = null;
 		}
 		presenter.goTo(presenter.getBackPlace());
+	}
+
+	@Override
+	public void onSelectAnswer() {
+		next.click();
 	}
 
 	@Override

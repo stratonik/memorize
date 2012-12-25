@@ -1,13 +1,13 @@
-<!-- Indices written at Mon, 24 Dec 2012 11:01:41 UTC -->
+<!-- Indices written at Tue, 25 Dec 2012 12:57:46 UTC -->
 
 <datastore-indexes>
 
-    <!-- Used 6 times in query history -->
+    <!-- Used 3 times in query history -->
     <datastore-index kind="Word" ancestor="true" source="auto">
         <property name="index" direction="asc"/>
     </datastore-index>
 
-    <!-- Used 5 times in query history -->
+    <!-- Used 3 times in query history -->
     <datastore-index kind="WordStatus" ancestor="true" source="auto">
         <property name="nextTrainingDate" direction="asc"/>
     </datastore-index>

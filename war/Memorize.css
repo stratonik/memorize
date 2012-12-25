@@ -104,6 +104,16 @@ h1 {
 	color: #CCC;
 }
 
+.right {
+	color: white;
+	background-color: #8BC14A;
+}
+
+.wrong {
+	color: white;
+	background-color: #E44E5A;
+}
+
 .answerField {
 	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
 	font-size: 2em;
@@ -118,14 +128,30 @@ h1 {
 	outline: none;
 }
 
-.answerField.right {
-	color: white;
-	background-color: #8BC14A;
+.variantsTable {
+	width: 500px;
+	margin: 10px;
 }
 
-.answerField.wrong {
-	color: white;
-	background-color: #E44E5A;
+.variantsTable td {
+	font-family: "Times New Roman", "Times", "Kai", "KaiTi", Serif;
+	font-size: 2em;
+	padding: 15px;
+	border: solid thin #3E3E3E;
+	border-radius: 5px;
+	cursor: default;
+}
+
+.variantsTable td:hover {
+	background: #EEE;
+}
+
+.variantsTable td.right:hover {
+	background: #8BC14A;
+}
+
+.variantsTable td.wrong:hover {
+	background: #E44E5A;
 }
 
 .value-main {

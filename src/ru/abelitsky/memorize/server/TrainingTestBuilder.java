@@ -1,5 +1,7 @@
 package ru.abelitsky.memorize.server;
 
+import java.util.Random;
+
 import ru.abelitsky.memorize.server.model.WordStatus;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestAction;
@@ -9,6 +11,13 @@ import com.googlecode.objectify.Key;
 
 public class TrainingTestBuilder {
 
+	private static final String KATAKANA = "アイウエオ" + "カガキギクグケゲコゴ"
+			+ "サザシジスズセゼソゾ" + "タダチヂツヅテデトド" + "ナニヌネノ" + "ハバパヒビピフブプヘベペホボポ"
+			+ "マミムメモ" + "ヤユヨ" + "ラリルレロ" + "ワ";
+	private static final String HIRAGANA = "あいうえお" + "かがきぎくぐけげこご"
+			+ "さざしじすずせぜそぞ" + "ただちぢつづてでとど" + "なにぬねの" + "はばぱひびぴふぶぷへべぺほぼぽ"
+			+ "まみむめも" + "やゆよ" + "らりるれろ" + "わ";
+
 	public static TrainingTest createSelectKanaTest(WordStatus wordStatus) {
 		TrainingTest test = createTrainingTestObject(wordStatus);
 
@@ -17,7 +26,33 @@ public class TrainingTestBuilder {
 
 		test.setQuestion(wordStatus.getWord().getTranslation());
 		test.setAnswer(wordStatus.getWord().getKana());
-		// TODO: set variants
+
+		test.setVariants(new String[6]);
+		Random random = new Random();
+		for (int i = 0; i < test.getVariants().length; i++) {
+			int index = 0;
+			if (test.getAnswer().length() > 2) {
+				index = random.nextInt(test.getAnswer().length() - 1);
+			}
+			char symbol = test.getAnswer().charAt(index);
+			String replacement;
+			if ((symbol >= 0x3040) && (symbol <= 0x309f)) {
+				replacement = HIRAGANA;
+			} else {
+				replacement = KATAKANA;
+			}
+			char newSymbol;
+			do {
+				newSymbol = replacement.charAt(random.nextInt(replacement
+						.length()));
+			} while (symbol == newSymbol);
+			test.getVariants()[i] = test.getAnswer().substring(0, index)
+					+ newSymbol
+					+ ((test.getAnswer().length() > index + 1) ? test
+							.getAnswer().substring(index + 1) : "");
+		}
+		test.getVariants()[random.nextInt(test.getVariants().length)] = test
+				.getAnswer();
 
 		return test;
 	}
@@ -90,8 +125,10 @@ public class TrainingTestBuilder {
 	public static TrainingTest createTest(WordStatus wordStatus) {
 		switch (wordStatus.getSubLevel()) {
 		case 0:
-			return createWriteKanaTest(wordStatus);
+			return createSelectKanaTest(wordStatus);
 		case 1:
+			return createWriteKanaTest(wordStatus);
+		case 2:
 			return createWriteKanjiTest(wordStatus);
 		}
 		return null;

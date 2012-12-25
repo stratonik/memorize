@@ -10,4 +10,10 @@ public interface TrainingWidget extends IsWidget {
 
 	void setData(TrainingTest test);
 
+	public interface Delegator {
+
+		void onSelectAnswer();
+
+	}
+
 }

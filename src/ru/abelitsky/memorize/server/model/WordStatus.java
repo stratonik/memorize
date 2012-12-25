@@ -64,8 +64,8 @@ public class WordStatus {
 
 	public void pass() {
 		setSubLevel(getSubLevel() + 1);
-		if ((!getWord().hasKanji() && (getSubLevel() >= 1))
-				|| (getSubLevel() >= 2)) {
+		if ((!getWord().hasKanji() && (getSubLevel() >= 2))
+				|| (getSubLevel() >= 3)) {
 			setSubLevel(0);
 			setLevel(Math.min(getLevel() + 1, 6));
 			setNextTrainingDateForCurrentLevel();
