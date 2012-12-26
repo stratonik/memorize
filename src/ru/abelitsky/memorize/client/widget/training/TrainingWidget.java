@@ -6,6 +6,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface TrainingWidget extends IsWidget {
 
+	String KANA_ICON = "/images/kana.png";
+	String KANJI_ICON = "/images/kanji.png";
+
 	boolean checkAnswer();
 
 	void setData(TrainingTest test);

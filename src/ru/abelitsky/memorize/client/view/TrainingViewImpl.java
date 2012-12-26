@@ -4,14 +4,13 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.abelitsky.memorize.client.widget.training.SelectKanaWidget;
+import ru.abelitsky.memorize.client.widget.training.SelectVariantWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowAnswerWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowKanaWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowKanjiWidget;
 import ru.abelitsky.memorize.client.widget.training.TrainingWidget;
 import ru.abelitsky.memorize.client.widget.training.TrainingWidget.Delegator;
-import ru.abelitsky.memorize.client.widget.training.WriteKanaWidget;
-import ru.abelitsky.memorize.client.widget.training.WriteKanjiWidget;
+import ru.abelitsky.memorize.client.widget.training.WriteAnswerWidget;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestAction;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestType;
@@ -71,6 +70,9 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 	public TrainingViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 
+		TrainingWidget selectVariantWidget = new SelectVariantWidget(this);
+		TrainingWidget writeAnswerWidget = new WriteAnswerWidget();
+
 		widgets = new EnumMap<TrainingTestType, Map<TrainingTestAction, TrainingWidget>>(
 				TrainingTestType.class);
 
@@ -80,7 +82,9 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 		widgets.get(TrainingTestType.kanji).put(TrainingTestAction.showInfo,
 				new ShowKanjiWidget());
 		widgets.get(TrainingTestType.kanji).put(TrainingTestAction.writeAnswer,
-				new WriteKanjiWidget());
+				writeAnswerWidget);
+		widgets.get(TrainingTestType.kanji).put(
+				TrainingTestAction.selectVariant, selectVariantWidget);
 
 		widgets.put(TrainingTestType.kana,
 				new EnumMap<TrainingTestAction, TrainingWidget>(
@@ -88,9 +92,9 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 		widgets.get(TrainingTestType.kana).put(TrainingTestAction.showInfo,
 				new ShowKanaWidget());
 		widgets.get(TrainingTestType.kana).put(TrainingTestAction.writeAnswer,
-				new WriteKanaWidget());
+				writeAnswerWidget);
 		widgets.get(TrainingTestType.kana).put(
-				TrainingTestAction.selectVariant, new SelectKanaWidget(this));
+				TrainingTestAction.selectVariant, selectVariantWidget);
 	}
 
 	private void goToAnswer() {

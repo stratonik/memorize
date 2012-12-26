@@ -1,5 +1,8 @@
 package ru.abelitsky.memorize.server;
 
+import java.lang.Character.UnicodeBlock;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import ru.abelitsky.memorize.server.model.WordStatus;
@@ -27,16 +30,16 @@ public class TrainingTestBuilder {
 		test.setQuestion(wordStatus.getWord().getTranslation());
 		test.setAnswer(wordStatus.getWord().getKana());
 
-		test.setVariants(new String[6]);
+		String[] variants = new String[6];
 		Random random = new Random();
-		for (int i = 0; i < test.getVariants().length; i++) {
+		for (int i = 0; i < variants.length; i++) {
 			int index = 0;
 			if (test.getAnswer().length() > 2) {
 				index = random.nextInt(test.getAnswer().length() - 1);
 			}
 			char symbol = test.getAnswer().charAt(index);
 			String replacement;
-			if ((symbol >= 0x3040) && (symbol <= 0x309f)) {
+			if (UnicodeBlock.of(symbol) == UnicodeBlock.HIRAGANA) {
 				replacement = HIRAGANA;
 			} else {
 				replacement = KATAKANA;
@@ -46,13 +49,13 @@ public class TrainingTestBuilder {
 				newSymbol = replacement.charAt(random.nextInt(replacement
 						.length()));
 			} while (symbol == newSymbol);
-			test.getVariants()[i] = test.getAnswer().substring(0, index)
+			variants[i] = test.getAnswer().substring(0, index)
 					+ newSymbol
 					+ ((test.getAnswer().length() > index + 1) ? test
 							.getAnswer().substring(index + 1) : "");
 		}
-		test.getVariants()[random.nextInt(test.getVariants().length)] = test
-				.getAnswer();
+		variants[random.nextInt(variants.length)] = test.getAnswer();
+		test.setVariants(variants);
 
 		return test;
 	}
@@ -65,7 +68,31 @@ public class TrainingTestBuilder {
 
 		test.setQuestion(wordStatus.getWord().getTranslation());
 		test.setAnswer(wordStatus.getWord().getKanji());
-		// TODO: set variants
+
+		List<Integer> kanjiIndexes = new ArrayList<Integer>();
+		for (int i = 0; i < test.getAnswer().length(); i++) {
+			if (UnicodeBlock.of(test.getAnswer().charAt(i)) == UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+				kanjiIndexes.add(i);
+			}
+		}
+
+		String[] variants = new String[6];
+		Random random = new Random();
+		for (int i = 0; i < variants.length; i++) {
+			int index = kanjiIndexes.get(random.nextInt(kanjiIndexes.size()));
+			char symbol = test.getAnswer().charAt(index);
+			char newSymbol;
+			do {
+				newSymbol = (char) (0x4e00 + random
+						.nextInt(0x9faf - 0x4e00 + 1));
+			} while (symbol == newSymbol);
+			variants[i] = test.getAnswer().substring(0, index)
+					+ newSymbol
+					+ ((test.getAnswer().length() > index + 1) ? test
+							.getAnswer().substring(index + 1) : "");
+		}
+		variants[random.nextInt(variants.length)] = test.getAnswer();
+		test.setVariants(variants);
 
 		return test;
 	}
@@ -129,6 +156,8 @@ public class TrainingTestBuilder {
 		case 1:
 			return createWriteKanaTest(wordStatus);
 		case 2:
+			return createSelectKanjiTest(wordStatus);
+		case 3:
 			return createWriteKanjiTest(wordStatus);
 		}
 		return null;

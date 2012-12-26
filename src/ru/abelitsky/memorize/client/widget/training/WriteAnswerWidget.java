@@ -2,26 +2,30 @@ package ru.abelitsky.memorize.client.widget.training;
 
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
+import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class WriteKanaWidget extends Composite implements TrainingWidget {
+public class WriteAnswerWidget extends Composite implements TrainingWidget {
 
-	interface WriteKanaWidgetUiBinder extends
-			UiBinder<VerticalPanel, WriteKanaWidget> {
+	interface WriteAnswerWidgetUiBinder extends
+			UiBinder<VerticalPanel, WriteAnswerWidget> {
 	}
 
-	private static WriteKanaWidgetUiBinder uiBinder = GWT
-			.create(WriteKanaWidgetUiBinder.class);
+	private static WriteAnswerWidgetUiBinder uiBinder = GWT
+			.create(WriteAnswerWidgetUiBinder.class);
 
 	@UiField
-	Label kanji;
+	Image icon;
+	@UiField
+	Label secondValue;
 	@UiField
 	Label translation;
 	@UiField
@@ -31,13 +35,13 @@ public class WriteKanaWidget extends Composite implements TrainingWidget {
 
 	private TrainingTest test;
 
-	public WriteKanaWidget() {
+	public WriteAnswerWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
 	public boolean checkAnswer() {
-		kanji.removeStyleName("invisible");
+		secondValue.removeStyleName("invisible");
 		answer.setReadOnly(true);
 		if (answer.getText().trim().equals(test.getAnswer())) {
 			answer.addStyleName("right");
@@ -53,10 +57,16 @@ public class WriteKanaWidget extends Composite implements TrainingWidget {
 		this.test = test;
 
 		WordDTO word = test.getWord();
-		kanji.setText(word.getKanji());
-		kanji.addStyleName("invisible");
 		translation.setText(word.getTranslation());
 		additional.setText(word.getAdditionalInfo());
+		secondValue.addStyleName("invisible");
+		if (test.getType() == TrainingTestType.kana) {
+			secondValue.setText(word.getKanji());
+			icon.setUrl(KANA_ICON);
+		} else {
+			secondValue.setText(word.getKana());
+			icon.setUrl(KANJI_ICON);
+		}
 
 		answer.setText("");
 		answer.removeStyleName("right");

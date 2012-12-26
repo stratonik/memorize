@@ -80,18 +80,21 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 		}
 		if ((word1 != null) && word1.getWord().hasKanji()) {
 			tests.add(TrainingTestBuilder.createShowKanjiTest(word1));
+			tests.add(TrainingTestBuilder.createSelectKanjiTest(word1));
 		}
 		if (word3 != null) {
 			tests.add(TrainingTestBuilder.createWriteKanaTest(word3));
 		}
 		if ((word2 != null) && word2.getWord().hasKanji()) {
 			tests.add(TrainingTestBuilder.createShowKanjiTest(word2));
+			tests.add(TrainingTestBuilder.createSelectKanjiTest(word2));
 		}
 		if ((word1 != null) && word1.getWord().hasKanji()) {
 			tests.add(TrainingTestBuilder.createWriteKanjiTest(word1));
 		}
 		if ((word3 != null) && word3.getWord().hasKanji()) {
 			tests.add(TrainingTestBuilder.createShowKanjiTest(word3));
+			tests.add(TrainingTestBuilder.createSelectKanjiTest(word3));
 		}
 		if ((word2 != null) && word2.getWord().hasKanji()) {
 			tests.add(TrainingTestBuilder.createWriteKanjiTest(word2));
