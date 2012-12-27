@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.abelitsky.memorize.client.widget.training.SelectTranslationWidget;
 import ru.abelitsky.memorize.client.widget.training.SelectVariantWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowAnswerWidget;
 import ru.abelitsky.memorize.client.widget.training.ShowKanaWidget;
@@ -71,6 +72,8 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 		initWidget(uiBinder.createAndBindUi(this));
 
 		TrainingWidget selectVariantWidget = new SelectVariantWidget(this);
+		TrainingWidget selectTranslationWidget = new SelectTranslationWidget(
+				this);
 		TrainingWidget writeAnswerWidget = new WriteAnswerWidget();
 
 		widgets = new EnumMap<TrainingTestType, Map<TrainingTestAction, TrainingWidget>>(
@@ -85,6 +88,8 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 				writeAnswerWidget);
 		widgets.get(TrainingTestType.kanji).put(
 				TrainingTestAction.selectVariant, selectVariantWidget);
+		widgets.get(TrainingTestType.kanji).put(
+				TrainingTestAction.selectTranslation, selectTranslationWidget);
 
 		widgets.put(TrainingTestType.kana,
 				new EnumMap<TrainingTestAction, TrainingWidget>(
@@ -95,6 +100,8 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 				writeAnswerWidget);
 		widgets.get(TrainingTestType.kana).put(
 				TrainingTestAction.selectVariant, selectVariantWidget);
+		widgets.get(TrainingTestType.kana).put(
+				TrainingTestAction.selectTranslation, selectTranslationWidget);
 	}
 
 	private void goToAnswer() {
@@ -140,7 +147,7 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 				testTimer = null;
 			}
 
-			TrainingTest test = tests.get(currentTest);
+			final TrainingTest test = tests.get(currentTest);
 			TrainingWidget widget = widgets.get(test.getType()).get(
 					test.getAction());
 			final boolean result = widget.checkAnswer();
@@ -149,7 +156,8 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 				@Override
 				public void run() {
 					timer.setText("");
-					if (result) {
+					if (result
+							|| (test.getAction() == TrainingTestAction.selectTranslation)) {
 						goToNextTest();
 					} else {
 						goToAnswer();

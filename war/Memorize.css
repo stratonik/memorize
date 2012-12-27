@@ -106,12 +106,12 @@ h1 {
 
 .right {
 	color: white;
-	background-color: #8BC14A;
+	background: #8BC14A;
 }
 
 .wrong {
 	color: white;
-	background-color: #E44E5A;
+	background: #E44E5A;
 }
 
 .answerField {
