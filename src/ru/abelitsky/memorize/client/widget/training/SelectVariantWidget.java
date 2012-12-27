@@ -1,5 +1,6 @@
 package ru.abelitsky.memorize.client.widget.training;
 
+import ru.abelitsky.memorize.client.Resources;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestType;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
@@ -81,10 +82,10 @@ public class SelectVariantWidget extends Composite implements TrainingWidget,
 		secondValue.addStyleName("invisible");
 		if (test.getType() == TrainingTestType.kana) {
 			secondValue.setText(word.getKanji());
-			icon.setUrl(KANA_ICON);
+			icon.setResource(Resources.getTrainingWidgetImageBundle().kana());
 		} else {
 			secondValue.setText(word.getKana());
-			icon.setUrl(KANJI_ICON);
+			icon.setResource(Resources.getTrainingWidgetImageBundle().kanji());
 		}
 
 		variants.removeAllRows();

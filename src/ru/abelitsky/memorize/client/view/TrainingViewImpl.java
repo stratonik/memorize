@@ -176,7 +176,7 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 	@Override
 	public void prepareView() {
 		next.setEnabled(false);
-		testWidget.setWidget(new Image("/images/ajax-loader.gif"));
+		testWidget.setWidget(new Image("ajax-loader.gif"));
 		counter.setText("");
 		timer.setText("");
 
