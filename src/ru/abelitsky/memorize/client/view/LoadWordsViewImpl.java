@@ -11,12 +11,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class LoadWordsViewImpl extends Composite implements LoadWordsView {
 
-	interface LoadWordsViewImplUiBinder extends
-			UiBinder<VerticalPanel, LoadWordsViewImpl> {
+	interface LoadWordsViewImplUiBinder extends UiBinder<VerticalPanel, LoadWordsViewImpl> {
 	}
 
-	private static LoadWordsViewImplUiBinder uiBinder = GWT
-			.create(LoadWordsViewImplUiBinder.class);
+	private static LoadWordsViewImplUiBinder uiBinder = GWT.create(LoadWordsViewImplUiBinder.class);
 
 	private Presenter presenter;
 

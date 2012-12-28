@@ -29,26 +29,21 @@ public class AppActivityMapper implements ActivityMapper {
 	@Override
 	public Activity getActivity(Place place) {
 		if (place instanceof CurrentCoursesPlace) {
-			return new CurrentCoursesActivity((CurrentCoursesPlace) place,
-					clientFactory);
+			return new CurrentCoursesActivity((CurrentCoursesPlace) place, clientFactory);
 		} else if (place instanceof AllCoursesPlace) {
-			return new AllCoursesActivity((AllCoursesPlace) place,
-					clientFactory);
+			return new AllCoursesActivity((AllCoursesPlace) place, clientFactory);
 		} else if (place instanceof NewCoursePlace) {
 			return new EditCourseActivity((NewCoursePlace) place, clientFactory);
 		} else if (place instanceof ChangeCoursePlace) {
-			return new EditCourseActivity((ChangeCoursePlace) place,
-					clientFactory);
+			return new EditCourseActivity((ChangeCoursePlace) place, clientFactory);
 		} else if (place instanceof ViewCoursePlace) {
-			return new ViewCourseActivity((ViewCoursePlace) place,
-					clientFactory);
+			return new ViewCourseActivity((ViewCoursePlace) place, clientFactory);
 		} else if (place instanceof LoadWordsPlace) {
 			return new LoadWordsActivity((LoadWordsPlace) place, clientFactory);
 		} else if (place instanceof TrainingPlace) {
 			return new TrainingActivity((TrainingPlace) place, clientFactory);
 		}
-		return new CurrentCoursesActivity(new CurrentCoursesPlace(),
-				clientFactory);
+		return new CurrentCoursesActivity(new CurrentCoursesPlace(), clientFactory);
 	}
 
 }

@@ -4,15 +4,27 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TrainingTest implements IsSerializable {
 
-	public enum TrainingTestAction {
-		showInfo, writeAnswer, selectVariant, selectTranslation
-	}
-
 	public enum TrainingTestType {
 		kana, kanji
 	}
 
-	private TrainingTestType type;
+	public enum TrainingTestAction {
+		showKanaInfo(TrainingTestType.kana), showKanjiInfo(TrainingTestType.kanji),
+		writeKana(TrainingTestType.kana), writeKanji(TrainingTestType.kanji),
+		writeKanaByKanji(TrainingTestType.kana), selectKana(TrainingTestType.kana),
+		selectKanji(TrainingTestType.kanji);
+
+		private TrainingTestType type;
+
+		private TrainingTestAction(TrainingTestType type) {
+			this.type = type;
+		}
+
+		public TrainingTestType getType() {
+			return type;
+		}
+	}
+
 	private TrainingTestAction action;
 
 	private WordDTO word;
@@ -32,10 +44,6 @@ public class TrainingTest implements IsSerializable {
 
 	public String getQuestion() {
 		return question;
-	}
-
-	public TrainingTestType getType() {
-		return type;
 	}
 
 	public String[] getVariants() {
@@ -60,10 +68,6 @@ public class TrainingTest implements IsSerializable {
 
 	public void setQuestion(String question) {
 		this.question = question;
-	}
-
-	public void setType(TrainingTestType type) {
-		this.type = type;
 	}
 
 	public void setVariants(String[] variants) {

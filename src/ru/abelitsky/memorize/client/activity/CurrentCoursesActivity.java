@@ -14,13 +14,11 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
-public class CurrentCoursesActivity extends AbstractActivity implements
-		Presenter {
+public class CurrentCoursesActivity extends AbstractActivity implements Presenter {
 
 	private ClientFactory clientFactory;
 
-	public CurrentCoursesActivity(CurrentCoursesPlace place,
-			ClientFactory clientFactory) {
+	public CurrentCoursesActivity(CurrentCoursesPlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 	}
 
@@ -30,17 +28,15 @@ public class CurrentCoursesActivity extends AbstractActivity implements
 		view.setPresenter(this);
 		panel.setWidget(view);
 
-		clientFactory.getCoursesService().getStatuses(
-				new AsyncCallback<List<CourseInfo>>() {
-					public void onFailure(Throwable caught) {
-						clientFactory.getRPCFaultDialog().show(caught);
-					}
+		clientFactory.getCoursesService().getStatuses(new AsyncCallback<List<CourseInfo>>() {
+			public void onFailure(Throwable caught) {
+				clientFactory.getRPCFaultDialog().show(caught);
+			}
 
-					public void onSuccess(List<CourseInfo> courseInfo) {
-						clientFactory.getCurrentCoursesView().setData(
-								courseInfo);
-					}
-				});
+			public void onSuccess(List<CourseInfo> courseInfo) {
+				clientFactory.getCurrentCoursesView().setData(courseInfo);
+			}
+		});
 	}
 
 	@Override

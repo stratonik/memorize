@@ -12,12 +12,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ShowKanjiWidget extends Composite implements TrainingWidget {
 
-	interface ShowKanjiWidgetUiBinder extends
-			UiBinder<VerticalPanel, ShowKanjiWidget> {
+	interface ShowKanjiWidgetUiBinder extends UiBinder<VerticalPanel, ShowKanjiWidget> {
 	}
 
-	private static ShowKanjiWidgetUiBinder uiBinder = GWT
-			.create(ShowKanjiWidgetUiBinder.class);
+	private static ShowKanjiWidgetUiBinder uiBinder = GWT.create(ShowKanjiWidgetUiBinder.class);
 
 	@UiField
 	Label kanji;

@@ -17,11 +17,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class SelectVariantWidget extends Composite implements TrainingWidget,
-		ClickHandler {
+public class SelectVariantWidget extends Composite implements TrainingWidget, ClickHandler {
 
-	interface SelectVariantWidgetUiBinder extends
-			UiBinder<VerticalPanel, SelectVariantWidget> {
+	interface SelectVariantWidgetUiBinder extends UiBinder<VerticalPanel, SelectVariantWidget> {
 	}
 
 	private static SelectVariantWidgetUiBinder uiBinder = GWT
@@ -51,7 +49,7 @@ public class SelectVariantWidget extends Composite implements TrainingWidget,
 
 	@Override
 	public boolean checkAnswer() {
-		return result;
+		return (result != null) ? result : false;
 	}
 
 	@Override
@@ -80,7 +78,7 @@ public class SelectVariantWidget extends Composite implements TrainingWidget,
 		translation.setText(word.getTranslation());
 		additional.setText(word.getAdditionalInfo());
 		secondValue.addStyleName("invisible");
-		if (test.getType() == TrainingTestType.kana) {
+		if (test.getAction().getType() == TrainingTestType.kana) {
 			secondValue.setText(word.getKanji());
 			icon.setResource(Resources.getTrainingWidgetImageBundle().kana());
 		} else {

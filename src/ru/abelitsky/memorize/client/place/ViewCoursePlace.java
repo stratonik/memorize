@@ -37,8 +37,8 @@ public class ViewCoursePlace extends Place {
 				backPlace = new CurrentCoursesPlace();
 			}
 
-			return new ViewCoursePlace(Long.parseLong(params
-					.get(ParameterNames.COURSE_PARAM)), backPlace);
+			return new ViewCoursePlace(Long.parseLong(params.get(ParameterNames.COURSE_PARAM)),
+					backPlace);
 		}
 
 		@Override
@@ -49,8 +49,8 @@ public class ViewCoursePlace extends Place {
 			} else {
 				backPlaceString = ParameterNames.CURRENT_COURSES_PLACE;
 			}
-			return ParameterNames.COURSE_PARAM + "=" + place.getCourseId()
-					+ "&" + ParameterNames.RETURN_PARAM + "=" + backPlaceString;
+			return ParameterNames.COURSE_PARAM + "=" + place.getCourseId() + "&"
+					+ ParameterNames.RETURN_PARAM + "=" + backPlaceString;
 		}
 
 	}

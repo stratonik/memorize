@@ -4,12 +4,12 @@
 	<g:VerticalPanel width="100%">
 		<g:HorizontalPanel width="100%">
 			<g:cell width="70px">
-				<g:Image ui:field="icon" url="/images/kana.png" />
+				<g:Image ui:field="icon" />
 			</g:cell>
 			<g:VerticalPanel width="100%">
 				<g:Label ui:field="additional" styleName="additional" />
 				<g:HorizontalPanel width="100%" verticalAlignment="top">
-					<g:Label ui:field="translation" styleName="translation" />
+					<g:Label ui:field="question" />
 					<g:cell horizontalAlignment="right">
 						<g:Label ui:field="secondValue" styleName="value-second" />
 					</g:cell>

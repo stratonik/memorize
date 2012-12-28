@@ -22,8 +22,7 @@ public class ChangeCoursePlace extends Place {
 		@Override
 		public ChangeCoursePlace getPlace(String token) {
 			Map<String, String> params = ParameterNames.parseParamsToken(token);
-			return new ChangeCoursePlace(Long.parseLong(params
-					.get(ParameterNames.COURSE_PARAM)));
+			return new ChangeCoursePlace(Long.parseLong(params.get(ParameterNames.COURSE_PARAM)));
 		}
 
 		@Override

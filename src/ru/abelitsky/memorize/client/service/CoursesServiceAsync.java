@@ -39,8 +39,7 @@ public interface CoursesServiceAsync {
 	/**
 	 * Возвращает слова указанного курса.
 	 */
-	void getWords(Long courseId, int beginIndex, int count,
-			AsyncCallback<List<WordDTO>> callback);
+	void getWords(Long courseId, int beginIndex, int count, AsyncCallback<List<WordDTO>> callback);
 
 	/**
 	 * Загружает слова для указанного курса.

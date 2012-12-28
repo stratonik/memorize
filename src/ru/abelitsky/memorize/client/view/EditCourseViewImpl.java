@@ -19,8 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class EditCourseViewImpl extends Composite implements EditCourseView {
 
-	interface EditCourseViewImplUiBinder extends
-			UiBinder<VerticalPanel, EditCourseViewImpl> {
+	interface EditCourseViewImplUiBinder extends UiBinder<VerticalPanel, EditCourseViewImpl> {
 	}
 
 	private static EditCourseViewImplUiBinder uiBinder = GWT
@@ -53,8 +52,7 @@ public class EditCourseViewImpl extends Composite implements EditCourseView {
 	void onClickSave(ClickEvent event) {
 		RootPanel.get("global-error").clear();
 		if (name.getText().trim().isEmpty()) {
-			RootPanel.get("global-error").add(
-					new HTML("Наименование не может быть пустым."));
+			RootPanel.get("global-error").add(new HTML("Наименование не может быть пустым."));
 		} else {
 			course.setName(name.getText());
 			course.setDescription(description.getText());

@@ -20,15 +20,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
-public class TrainingServiceImpl extends RemoteServiceServlet implements
-		TrainingService {
+public class TrainingServiceImpl extends RemoteServiceServlet implements TrainingService {
 
 	private static final long serialVersionUID = -8892629311987799151L;
 
 	@Override
 	public List<TrainingTest> addWordsToTraining(Long courseStatusId) {
-		Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
-				courseStatusId);
+		Key<CourseStatus> statusKey = Key.create(CourseStatus.class, courseStatusId);
 		final CourseStatus status = ofy().load().key(statusKey).get();
 		List<Word> words = selectNewWordsForTraining(status);
 
@@ -47,8 +45,8 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 		ofy().transact(new VoidWork() {
 			@Override
 			public void vrun() {
-				status.setKnownWordsNumber(ofy().load().type(WordStatus.class)
-						.ancestor(status).count()
+				status.setKnownWordsNumber(ofy().load().type(WordStatus.class).ancestor(status)
+						.count()
 						+ wordStatuses.size());
 				ofy().save().entity(status);
 				ofy().save().entities(wordStatuses);
@@ -57,8 +55,8 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 		return tests;
 	}
 
-	private List<TrainingTest> createInitialTestsList(WordStatus word1,
-			WordStatus word2, WordStatus word3) {
+	private List<TrainingTest> createInitialTestsList(WordStatus word1, WordStatus word2,
+			WordStatus word3) {
 		List<TrainingTest> tests = new ArrayList<TrainingTest>(3 * 4);
 		if (word1 != null) {
 			tests.add(TrainingTestBuilder.createShowKanaTest(word1));
@@ -107,21 +105,17 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void fail(String wordStatusKey) {
-		WordStatus status = ofy().load()
-				.key(Key.<WordStatus> create(wordStatusKey)).get();
+		WordStatus status = ofy().load().key(Key.<WordStatus> create(wordStatusKey)).get();
 		status.fail();
 		ofy().save().entity(status);
 	}
 
 	@Override
 	public List<TrainingTest> getWordsForTraining(Long courseStatusId) {
-		Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
-				courseStatusId);
-		List<WordStatus> wordStatuses = ofy().load().type(WordStatus.class)
-				.ancestor(statusKey).filter("nextTrainingDate <", new Date())
-				.list();
-		List<TrainingTest> tests = new ArrayList<TrainingTest>(
-				wordStatuses.size());
+		Key<CourseStatus> statusKey = Key.create(CourseStatus.class, courseStatusId);
+		List<WordStatus> wordStatuses = ofy().load().type(WordStatus.class).ancestor(statusKey)
+				.filter("nextTrainingDate <", new Date()).list();
+		List<TrainingTest> tests = new ArrayList<TrainingTest>(wordStatuses.size());
 		for (WordStatus wordStatus : wordStatuses) {
 			TrainingTest test = TrainingTestBuilder.createTest(wordStatus);
 			if (test != null) {
@@ -133,22 +127,19 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void pass(String wordStatusKey) {
-		WordStatus status = ofy().load()
-				.key(Key.<WordStatus> create(wordStatusKey)).get();
+		WordStatus status = ofy().load().key(Key.<WordStatus> create(wordStatusKey)).get();
 		status.pass();
 		ofy().save().entity(status);
 	}
 
 	private List<Word> selectNewWordsForTraining(CourseStatus status) {
-		List<WordStatus> wordStatuses = ofy().load().type(WordStatus.class)
-				.ancestor(status).list();
+		List<WordStatus> wordStatuses = ofy().load().type(WordStatus.class).ancestor(status).list();
 		Set<Integer> wordIndexes = new HashSet<Integer>(wordStatuses.size());
 		for (WordStatus wordStatus : wordStatuses) {
 			wordIndexes.add(wordStatus.getWord().getIndex());
 		}
 		List<Word> words = new ArrayList<Word>();
-		for (Word word : ofy().load().type(Word.class)
-				.ancestor(status.getCourse()).order("index")) {
+		for (Word word : ofy().load().type(Word.class).ancestor(status.getCourse()).order("index")) {
 			if (!wordIndexes.contains(word.getIndex())) {
 				words.add(word);
 				if (words.size() >= 3) {
@@ -162,8 +153,8 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public CourseInfo startTraining(Long courseId) {
 		Key<Course> courseKey = Key.create(Course.class, courseId);
-		CourseStatus status = ofy().load().type(CourseStatus.class)
-				.filter("course", courseKey).first().get();
+		CourseStatus status = ofy().load().type(CourseStatus.class).filter("course", courseKey)
+				.first().get();
 		if (status == null) {
 			status = new CourseStatus(courseKey);
 			Key<CourseStatus> statusKey = ofy().save().entity(status).now();
@@ -176,17 +167,14 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public CourseInfo stopTraining(Long statusId) {
-		final Key<CourseStatus> statusKey = Key.create(CourseStatus.class,
-				statusId);
+		final Key<CourseStatus> statusKey = Key.create(CourseStatus.class, statusId);
 		CourseStatus status = ofy().load().key(statusKey).get();
 		CourseInfo info = new CourseInfo(status.getCourse().toDto());
 		ofy().transact(new VoidWork() {
 			@Override
 			public void vrun() {
 				ofy().delete().key(statusKey).now();
-				ofy().delete().keys(
-						ofy().load().type(WordStatus.class).ancestor(statusKey)
-								.keys());
+				ofy().delete().keys(ofy().load().type(WordStatus.class).ancestor(statusKey).keys());
 			}
 		});
 		return info;

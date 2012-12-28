@@ -18,11 +18,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
-public class CurrentCoursesViewImpl extends Composite implements
-		CurrentCoursesView, Delegator {
+public class CurrentCoursesViewImpl extends Composite implements CurrentCoursesView, Delegator {
 
-	interface CurrentCoursesViewImplUiBinder extends
-			UiBinder<HTMLPanel, CurrentCoursesViewImpl> {
+	interface CurrentCoursesViewImplUiBinder extends UiBinder<HTMLPanel, CurrentCoursesViewImpl> {
 	}
 
 	private static CurrentCoursesViewImplUiBinder uiBinder = GWT
@@ -55,8 +53,7 @@ public class CurrentCoursesViewImpl extends Composite implements
 			list.setHTML(0, 0, "Нет выбранных курсов");
 		} else {
 			for (CourseInfo courseInfo : info) {
-				list.setWidget(list.getRowCount(), 0, new CourseStatusWidget(
-						courseInfo, this));
+				list.setWidget(list.getRowCount(), 0, new CourseStatusWidget(courseInfo, this));
 			}
 		}
 	}

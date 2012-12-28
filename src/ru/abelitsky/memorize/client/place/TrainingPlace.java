@@ -11,8 +11,7 @@ public class TrainingPlace extends Place {
 	private final String mode;
 	private final ViewCoursePlace viewCoursePlace;
 
-	public TrainingPlace(Long courseStatusId, String mode,
-			ViewCoursePlace backPlace) {
+	public TrainingPlace(Long courseStatusId, String mode, ViewCoursePlace backPlace) {
 		this.courseStatusId = courseStatusId;
 		this.mode = mode;
 		this.viewCoursePlace = backPlace;
@@ -36,17 +35,14 @@ public class TrainingPlace extends Place {
 		public TrainingPlace getPlace(String token) {
 			Map<String, String> params = ParameterNames.parseParamsToken(token);
 			ViewCoursePlace.Tokenizer tokenizer = new ViewCoursePlace.Tokenizer();
-			return new TrainingPlace(Long.parseLong(params
-					.get(ParameterNames.TRAINING_PARAM)),
-					params.get(ParameterNames.MODE_PARAM),
-					tokenizer.getPlace(token));
+			return new TrainingPlace(Long.parseLong(params.get(ParameterNames.TRAINING_PARAM)),
+					params.get(ParameterNames.MODE_PARAM), tokenizer.getPlace(token));
 		}
 
 		@Override
 		public String getToken(TrainingPlace place) {
 			ViewCoursePlace.Tokenizer tokenizer = new ViewCoursePlace.Tokenizer();
-			return ParameterNames.TRAINING_PARAM + "="
-					+ place.getCourseStatusId() + "&"
+			return ParameterNames.TRAINING_PARAM + "=" + place.getCourseStatusId() + "&"
 					+ ParameterNames.MODE_PARAM + "=" + place.getMode() + "&"
 					+ tokenizer.getToken(place.getBackPlace());
 		}

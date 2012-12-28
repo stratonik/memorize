@@ -12,8 +12,7 @@ public interface TrainingServiceAsync {
 	/**
 	 * Добавить новые слова в изучение.
 	 */
-	void addWordsToTraining(Long courseStatusId,
-			AsyncCallback<List<TrainingTest>> callback);
+	void addWordsToTraining(Long courseStatusId, AsyncCallback<List<TrainingTest>> callback);
 
 	/**
 	 * Проверка слова прошла неудачно.
@@ -23,8 +22,7 @@ public interface TrainingServiceAsync {
 	/**
 	 * Получить слова для повторения.
 	 */
-	void getWordsForTraining(Long courseStatusId,
-			AsyncCallback<List<TrainingTest>> callback);
+	void getWordsForTraining(Long courseStatusId, AsyncCallback<List<TrainingTest>> callback);
 
 	/**
 	 * Проверка слова прошла удачно.

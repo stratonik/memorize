@@ -16,12 +16,10 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 public class ShowAnswerWidget extends Composite implements TrainingWidget {
 
-	interface ShowAnswerWidgetUiBinder extends
-			UiBinder<VerticalPanel, ShowAnswerWidget> {
+	interface ShowAnswerWidgetUiBinder extends UiBinder<VerticalPanel, ShowAnswerWidget> {
 	}
 
-	private static ShowAnswerWidgetUiBinder uiBinder = GWT
-			.create(ShowAnswerWidgetUiBinder.class);
+	private static ShowAnswerWidgetUiBinder uiBinder = GWT.create(ShowAnswerWidgetUiBinder.class);
 
 	private final ShowKanaWidget showKanaWidget = new ShowKanaWidget();
 	private final ShowKanjiWidget showKanjiWidget = new ShowKanjiWidget();
@@ -59,8 +57,7 @@ public class ShowAnswerWidget extends Composite implements TrainingWidget {
 		} else {
 			answer.addStyleName("wrong");
 			answer.selectAll();
-			keyDownHandlerRegistration = answer
-					.addKeyDownHandler(keyDownHandler);
+			keyDownHandlerRegistration = answer.addKeyDownHandler(keyDownHandler);
 			return false;
 		}
 	}
@@ -68,7 +65,7 @@ public class ShowAnswerWidget extends Composite implements TrainingWidget {
 	@Override
 	public void setData(TrainingTest test) {
 		this.test = test;
-		if (test.getType() == TrainingTestType.kana) {
+		if (test.getAction().getType() == TrainingTestType.kana) {
 			showKanaWidget.setData(test);
 			info.setWidget(showKanaWidget);
 		} else {

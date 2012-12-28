@@ -2,6 +2,7 @@ package ru.abelitsky.memorize.client.widget.training;
 
 import ru.abelitsky.memorize.client.Resources;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
+import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestAction;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestType;
 
@@ -16,19 +17,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class WriteAnswerWidget extends Composite implements TrainingWidget {
 
-	interface WriteAnswerWidgetUiBinder extends
-			UiBinder<VerticalPanel, WriteAnswerWidget> {
+	interface WriteAnswerWidgetUiBinder extends UiBinder<VerticalPanel, WriteAnswerWidget> {
 	}
 
-	private static WriteAnswerWidgetUiBinder uiBinder = GWT
-			.create(WriteAnswerWidgetUiBinder.class);
+	private static WriteAnswerWidgetUiBinder uiBinder = GWT.create(WriteAnswerWidgetUiBinder.class);
 
 	@UiField
 	Image icon;
 	@UiField
 	Label secondValue;
 	@UiField
-	Label translation;
+	Label question;
 	@UiField
 	Label additional;
 	@UiField
@@ -58,15 +57,25 @@ public class WriteAnswerWidget extends Composite implements TrainingWidget {
 		this.test = test;
 
 		WordDTO word = test.getWord();
-		translation.setText(word.getTranslation());
+		question.setText(test.getQuestion());
 		additional.setText(word.getAdditionalInfo());
 		secondValue.addStyleName("invisible");
-		if (test.getType() == TrainingTestType.kana) {
-			secondValue.setText(word.getKanji());
-			icon.setResource(Resources.getTrainingWidgetImageBundle().kana());
-		} else {
+		if (test.getAction() == TrainingTestAction.writeKanaByKanji) {
+			question.removeStyleName("translation");
+			question.addStyleName("value-main");
 			secondValue.setText(word.getKana());
-			icon.setResource(Resources.getTrainingWidgetImageBundle().kanji());
+			icon.setVisible(false);
+		} else {
+			question.removeStyleName("value-main");
+			question.addStyleName("translation");
+			icon.setVisible(true);
+			if (test.getAction().getType() == TrainingTestType.kana) {
+				secondValue.setText(word.getKanji());
+				icon.setResource(Resources.getTrainingWidgetImageBundle().kana());
+			} else {
+				secondValue.setText(word.getKana());
+				icon.setResource(Resources.getTrainingWidgetImageBundle().kanji());
+			}
 		}
 
 		answer.setText("");

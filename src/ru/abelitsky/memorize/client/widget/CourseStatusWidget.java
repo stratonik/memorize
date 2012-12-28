@@ -21,8 +21,7 @@ public class CourseStatusWidget extends Composite {
 
 	}
 
-	interface CourseStatusWidgetUiBinder extends
-			UiBinder<VerticalPanel, CourseStatusWidget> {
+	interface CourseStatusWidgetUiBinder extends UiBinder<VerticalPanel, CourseStatusWidget> {
 	}
 
 	private static CourseStatusWidgetUiBinder uiBinder = GWT
@@ -45,11 +44,8 @@ public class CourseStatusWidget extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		title.setText(courseInfo.getCourse().getName());
-		status.setText(NumberFormat.getFormat("0.0%").format(
-				getCompleteProcent(courseInfo))
-				+ " ("
-				+ courseInfo.getStatus().getKnownWordsNumber()
-				+ " из "
+		status.setText(NumberFormat.getFormat("0.0%").format(getCompleteProcent(courseInfo)) + " ("
+				+ courseInfo.getStatus().getKnownWordsNumber() + " из "
 				+ courseInfo.getCourse().getWordsNumber() + ")");
 		description.setText(courseInfo.getCourse().getDescription());
 	}

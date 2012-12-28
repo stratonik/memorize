@@ -14,7 +14,7 @@ public interface AllCoursesView extends IsWidget {
 	void setPresenter(Presenter presenter);
 
 	interface Presenter {
-		
+
 		void deleteCourse(CourseDTO course);
 
 		void goTo(Place place);

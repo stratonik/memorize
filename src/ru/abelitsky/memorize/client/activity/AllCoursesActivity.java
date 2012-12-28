@@ -28,16 +28,15 @@ public class AllCoursesActivity extends AbstractActivity implements Presenter {
 		view.setPresenter(this);
 		panel.setWidget(view);
 
-		clientFactory.getCoursesService().getCourses(
-				new AsyncCallback<List<CourseDTO>>() {
-					public void onFailure(Throwable caught) {
-						clientFactory.getRPCFaultDialog().show(caught);
-					}
+		clientFactory.getCoursesService().getCourses(new AsyncCallback<List<CourseDTO>>() {
+			public void onFailure(Throwable caught) {
+				clientFactory.getRPCFaultDialog().show(caught);
+			}
 
-					public void onSuccess(List<CourseDTO> courses) {
-						clientFactory.getAllCoursesView().setData(courses);
-					}
-				});
+			public void onSuccess(List<CourseDTO> courses) {
+				clientFactory.getAllCoursesView().setData(courses);
+			}
+		});
 	}
 
 	@Override

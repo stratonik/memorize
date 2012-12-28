@@ -23,11 +23,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
-public class AllCoursesViewImpl extends Composite implements AllCoursesView,
-		Delegator {
+public class AllCoursesViewImpl extends Composite implements AllCoursesView, Delegator {
 
-	interface AllCoursesViewImplUiBinder extends
-			UiBinder<HTMLPanel, AllCoursesViewImpl> {
+	interface AllCoursesViewImplUiBinder extends UiBinder<HTMLPanel, AllCoursesViewImpl> {
 	}
 
 	private static AllCoursesViewImplUiBinder uiBinder = GWT
@@ -69,8 +67,7 @@ public class AllCoursesViewImpl extends Composite implements AllCoursesView,
 
 	@Override
 	public void selectCourse(CourseDTO course) {
-		presenter.goTo(new ViewCoursePlace(course.getId(),
-				new AllCoursesPlace()));
+		presenter.goTo(new ViewCoursePlace(course.getId(), new AllCoursesPlace()));
 	}
 
 	@Override
@@ -80,8 +77,7 @@ public class AllCoursesViewImpl extends Composite implements AllCoursesView,
 			list.setHTML(0, 0, "Нет курсов");
 		} else {
 			for (CourseDTO course : courses) {
-				list.setWidget(list.getRowCount(), 0, new CourseWidget(course,
-						this));
+				list.setWidget(list.getRowCount(), 0, new CourseWidget(course, this));
 			}
 		}
 	}

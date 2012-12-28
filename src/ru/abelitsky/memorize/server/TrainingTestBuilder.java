@@ -8,25 +8,20 @@ import java.util.Random;
 import ru.abelitsky.memorize.server.model.WordStatus;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestAction;
-import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestType;
 
 import com.googlecode.objectify.Key;
 
 public class TrainingTestBuilder {
 
-	private static final String KATAKANA = "アイウエオ" + "カガキギクグケゲコゴ"
-			+ "サザシジスズセゼソゾ" + "タダチヂツヅテデトド" + "ナニヌネノ" + "ハバパヒビピフブプヘベペホボポ"
-			+ "マミムメモ" + "ヤユヨ" + "ラリルレロ" + "ワ";
-	private static final String HIRAGANA = "あいうえお" + "かがきぎくぐけげこご"
-			+ "さざしじすずせぜそぞ" + "ただちぢつづてでとど" + "なにぬねの" + "はばぱひびぴふぶぷへべぺほぼぽ"
-			+ "まみむめも" + "やゆよ" + "らりるれろ" + "わ";
+	private static final String KATAKANA = "アイウエオ" + "カガキギクグケゲコゴ" + "サザシジスズセゼソゾ" + "タダチヂツヅテデトド"
+			+ "ナニヌネノ" + "ハバパヒビピフブプヘベペホボポ" + "マミムメモ" + "ヤユヨ" + "ラリルレロ" + "ワ";
+	private static final String HIRAGANA = "あいうえお" + "かがきぎくぐけげこご" + "さざしじすずせぜそぞ" + "ただちぢつづてでとど"
+			+ "なにぬねの" + "はばぱひびぴふぶぷへべぺほぼぽ" + "まみむめも" + "やゆよ" + "らりるれろ" + "わ";
 
 	public static TrainingTest createSelectKanaTest(WordStatus wordStatus) {
 		TrainingTest test = createTrainingTestObject(wordStatus);
 
-		test.setType(TrainingTestType.kana);
-		test.setAction(TrainingTestAction.selectVariant);
-
+		test.setAction(TrainingTestAction.selectKana);
 		test.setQuestion(wordStatus.getWord().getTranslation());
 		test.setAnswer(wordStatus.getWord().getKana());
 
@@ -46,13 +41,12 @@ public class TrainingTestBuilder {
 			}
 			char newSymbol;
 			do {
-				newSymbol = replacement.charAt(random.nextInt(replacement
-						.length()));
+				newSymbol = replacement.charAt(random.nextInt(replacement.length()));
 			} while (symbol == newSymbol);
 			variants[i] = test.getAnswer().substring(0, index)
 					+ newSymbol
-					+ ((test.getAnswer().length() > index + 1) ? test
-							.getAnswer().substring(index + 1) : "");
+					+ ((test.getAnswer().length() > index + 1) ? test.getAnswer().substring(
+							index + 1) : "");
 		}
 		variants[random.nextInt(variants.length)] = test.getAnswer();
 		test.setVariants(variants);
@@ -63,9 +57,7 @@ public class TrainingTestBuilder {
 	public static TrainingTest createSelectKanjiTest(WordStatus wordStatus) {
 		TrainingTest test = createTrainingTestObject(wordStatus);
 
-		test.setType(TrainingTestType.kanji);
-		test.setAction(TrainingTestAction.selectVariant);
-
+		test.setAction(TrainingTestAction.selectKanji);
 		test.setQuestion(wordStatus.getWord().getTranslation());
 		test.setAnswer(wordStatus.getWord().getKanji());
 
@@ -83,44 +75,15 @@ public class TrainingTestBuilder {
 			char symbol = test.getAnswer().charAt(index);
 			char newSymbol;
 			do {
-				newSymbol = (char) (0x4e00 + random
-						.nextInt(0x9faf - 0x4e00 + 1));
+				newSymbol = (char) (0x4e00 + random.nextInt(0x9faf - 0x4e00 + 1));
 			} while (symbol == newSymbol);
 			variants[i] = test.getAnswer().substring(0, index)
 					+ newSymbol
-					+ ((test.getAnswer().length() > index + 1) ? test
-							.getAnswer().substring(index + 1) : "");
+					+ ((test.getAnswer().length() > index + 1) ? test.getAnswer().substring(
+							index + 1) : "");
 		}
 		variants[random.nextInt(variants.length)] = test.getAnswer();
 		test.setVariants(variants);
-
-		return test;
-	}
-
-	public static TrainingTest createSelectTranslationByKanaTest(
-			WordStatus wordStatus) {
-		TrainingTest test = createTrainingTestObject(wordStatus);
-
-		test.setType(TrainingTestType.kana);
-		test.setAction(TrainingTestAction.selectTranslation);
-
-		test.setQuestion(wordStatus.getWord().getKana());
-		test.setAnswer(wordStatus.getWord().getTranslation());
-		// TODO: set variants
-
-		return test;
-	}
-
-	public static TrainingTest createSelectTranslationByKanjiTest(
-			WordStatus wordStatus) {
-		TrainingTest test = createTrainingTestObject(wordStatus);
-
-		test.setType(TrainingTestType.kanji);
-		test.setAction(TrainingTestAction.selectTranslation);
-
-		test.setQuestion(wordStatus.getWord().getKanji());
-		test.setAnswer(wordStatus.getWord().getTranslation());
-		// TODO: set variants
 
 		return test;
 	}
@@ -129,9 +92,7 @@ public class TrainingTestBuilder {
 		TrainingTest test = new TrainingTest();
 		test.setWord(wordStatus.getWord().toDto());
 
-		test.setType(TrainingTestType.kana);
-		test.setAction(TrainingTestAction.showInfo);
-
+		test.setAction(TrainingTestAction.showKanaInfo);
 		test.setQuestion(wordStatus.getWord().getKana());
 
 		return test;
@@ -141,9 +102,7 @@ public class TrainingTestBuilder {
 		TrainingTest test = new TrainingTest();
 		test.setWord(wordStatus.getWord().toDto());
 
-		test.setType(TrainingTestType.kanji);
-		test.setAction(TrainingTestAction.showInfo);
-
+		test.setAction(TrainingTestAction.showKanjiInfo);
 		test.setQuestion(wordStatus.getWord().getKanji());
 
 		return test;
@@ -159,6 +118,8 @@ public class TrainingTestBuilder {
 			return createSelectKanjiTest(wordStatus);
 		case 3:
 			return createWriteKanjiTest(wordStatus);
+		case 4:
+			return createWriteKanaByKanjiTest(wordStatus);
 		}
 		return null;
 	}
@@ -175,10 +136,18 @@ public class TrainingTestBuilder {
 	public static TrainingTest createWriteKanaTest(WordStatus wordStatus) {
 		TrainingTest test = createTrainingTestObject(wordStatus);
 
-		test.setType(TrainingTestType.kana);
-		test.setAction(TrainingTestAction.writeAnswer);
-
+		test.setAction(TrainingTestAction.writeKana);
 		test.setQuestion(wordStatus.getWord().getTranslation());
+		test.setAnswer(wordStatus.getWord().getKana());
+
+		return test;
+	}
+
+	public static TrainingTest createWriteKanaByKanjiTest(WordStatus wordStatus) {
+		TrainingTest test = createTrainingTestObject(wordStatus);
+
+		test.setAction(TrainingTestAction.writeKanaByKanji);
+		test.setQuestion(wordStatus.getWord().getKanji());
 		test.setAnswer(wordStatus.getWord().getKana());
 
 		return test;
@@ -187,9 +156,7 @@ public class TrainingTestBuilder {
 	public static TrainingTest createWriteKanjiTest(WordStatus wordStatus) {
 		TrainingTest test = createTrainingTestObject(wordStatus);
 
-		test.setType(TrainingTestType.kanji);
-		test.setAction(TrainingTestAction.writeAnswer);
-
+		test.setAction(TrainingTestAction.writeKanji);
 		test.setQuestion(wordStatus.getWord().getTranslation());
 		test.setAnswer(wordStatus.getWord().getKanji());
 

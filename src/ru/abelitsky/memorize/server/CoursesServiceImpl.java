@@ -28,8 +28,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.VoidWork;
 
-public class CoursesServiceImpl extends RemoteServiceServlet implements
-		CoursesService {
+public class CoursesServiceImpl extends RemoteServiceServlet implements CoursesService {
 
 	private static final long serialVersionUID = -3744122268386375444L;
 
@@ -37,17 +36,15 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	public List<CourseDTO> deleteCourse(Long id) {
 		final Key<Course> courseKey = Key.create(Course.class, id);
 
-		List<Key<CourseStatus>> courseStatusKeys = new ArrayList<Key<CourseStatus>>(
-				ofy().load().type(CourseStatus.class)
-						.filter("course", courseKey).keys().list());
+		List<Key<CourseStatus>> courseStatusKeys = new ArrayList<Key<CourseStatus>>(ofy().load()
+				.type(CourseStatus.class).filter("course", courseKey).keys().list());
 		for (final Key<CourseStatus> courseStatusKey : courseStatusKeys) {
 			ofy().transact(new VoidWork() {
 				@Override
 				public void vrun() {
 					ofy().delete().key(courseStatusKey).now();
 					ofy().delete().keys(
-							ofy().load().type(WordStatus.class)
-									.ancestor(courseStatusKey).keys());
+							ofy().load().type(WordStatus.class).ancestor(courseStatusKey).keys());
 				}
 			});
 		}
@@ -56,9 +53,7 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 			@Override
 			public void vrun() {
 				ofy().delete().key(courseKey).now();
-				ofy().delete().keys(
-						ofy().load().type(Word.class).ancestor(courseKey)
-								.keys());
+				ofy().delete().keys(ofy().load().type(Word.class).ancestor(courseKey).keys());
 			}
 		});
 
@@ -68,20 +63,14 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public CourseInfo getCourseInfo(Long id) {
 		Key<Course> courseKey = Key.create(Course.class, id);
-		CourseStatus status = ofy()
-				.load()
-				.type(CourseStatus.class)
-				.filter("course", courseKey)
-				.filter("user",
-						UserServiceFactory.getUserService().getCurrentUser())
-				.first().get();
+		CourseStatus status = ofy().load().type(CourseStatus.class).filter("course", courseKey)
+				.filter("user", UserServiceFactory.getUserService().getCurrentUser()).first().get();
 
 		CourseInfo info;
 		if (status != null) {
 			info = new CourseInfo(status.getCourse().toDto());
 			info.setStatus(status.toDto());
-			info.getStatus().setReadyForTrainingWordsNumber(
-					getReadyForTrainingWordsNumber(status));
+			info.getStatus().setReadyForTrainingWordsNumber(getReadyForTrainingWordsNumber(status));
 		} else {
 			info = new CourseInfo(ofy().load().key(courseKey).get().toDto());
 		}
@@ -100,18 +89,13 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public List<CourseInfo> getStatuses() {
-		List<CourseStatus> statuses = ofy()
-				.load()
-				.type(CourseStatus.class)
-				.filter("user",
-						UserServiceFactory.getUserService().getCurrentUser())
-				.list();
+		List<CourseStatus> statuses = ofy().load().type(CourseStatus.class)
+				.filter("user", UserServiceFactory.getUserService().getCurrentUser()).list();
 		List<CourseInfo> infos = new ArrayList<CourseInfo>(statuses.size());
 		for (CourseStatus status : statuses) {
 			CourseInfo info = new CourseInfo(status.getCourse().toDto());
 			info.setStatus(status.toDto());
-			info.getStatus().setReadyForTrainingWordsNumber(
-					getReadyForTrainingWordsNumber(status));
+			info.getStatus().setReadyForTrainingWordsNumber(getReadyForTrainingWordsNumber(status));
 			infos.add(info);
 		}
 		Collections.sort(infos);
@@ -140,9 +124,8 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public List<WordDTO> getWords(Long courseId, int beginIndex, int count) {
 		Key<Course> courseKey = Key.create(Course.class, courseId);
-		List<Word> words = ofy().load().type(Word.class).ancestor(courseKey)
-				.order("index").filter("index >=", beginIndex).limit(count)
-				.list();
+		List<Word> words = ofy().load().type(Word.class).ancestor(courseKey).order("index")
+				.filter("index >=", beginIndex).limit(count).list();
 		List<WordDTO> result = new ArrayList<WordDTO>(words.size());
 		for (Word word : words) {
 			result.add(word.toDto());
@@ -181,9 +164,7 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 		ofy().transact(new VoidWork() {
 			@Override
 			public void vrun() {
-				ofy().delete()
-						.keys(ofy().load().type(Word.class).ancestor(course)
-								.keys()).now();
+				ofy().delete().keys(ofy().load().type(Word.class).ancestor(course).keys()).now();
 				ofy().save().entities(words).now();
 				ofy().save().entity(course).now();
 			}
@@ -193,12 +174,12 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	}
 
 	private void removeObsoleteWordStatuses(Ref<Course> courseRef) {
-		List<CourseStatus> courseStatuses = ofy().load()
-				.type(CourseStatus.class).filter("course", courseRef).list();
+		List<CourseStatus> courseStatuses = ofy().load().type(CourseStatus.class)
+				.filter("course", courseRef).list();
 		for (final CourseStatus courseStatus : courseStatuses) {
 			final List<WordStatus> obsoleteWordStatuses = new LinkedList<WordStatus>();
-			final List<WordStatus> wordStatuses = ofy().load()
-					.type(WordStatus.class).ancestor(courseStatus).list();
+			final List<WordStatus> wordStatuses = ofy().load().type(WordStatus.class)
+					.ancestor(courseStatus).list();
 			for (WordStatus wordStatus : wordStatuses) {
 				if (wordStatus.getWord() == null) {
 					obsoleteWordStatuses.add(wordStatus);
@@ -221,8 +202,7 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements
 	public void saveCourse(CourseDTO courseDto) {
 		Course course = null;
 		if (courseDto.getId() != null) {
-			course = ofy().load()
-					.key(Key.create(Course.class, courseDto.getId())).get();
+			course = ofy().load().key(Key.create(Course.class, courseDto.getId())).get();
 		}
 		if (course == null) {
 			course = new Course();

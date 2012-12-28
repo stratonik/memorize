@@ -25,8 +25,7 @@ import com.google.gwt.view.client.RangeChangeEvent;
 
 public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 
-	interface ViewCourseViewImplUiBinder extends
-			UiBinder<VerticalPanel, ViewCourseViewImpl> {
+	interface ViewCourseViewImplUiBinder extends UiBinder<VerticalPanel, ViewCourseViewImpl> {
 	}
 
 	private static ViewCourseViewImplUiBinder uiBinder = GWT
@@ -99,13 +98,11 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		wordsPanel.add(pager);
 	}
 
-	private String getProperPluralForm(int number, String form1, String form2,
-			String form3) {
+	private String getProperPluralForm(int number, String form1, String form2, String form3) {
 		int lastDigit = number % 10;
 		if ((lastDigit == 1) && (number != 11)) {
 			return form1;
-		} else if ((lastDigit > 1 && lastDigit < 5)
-				&& (number < 11 || number > 14)) {
+		} else if ((lastDigit > 1 && lastDigit < 5) && (number < 11 || number > 14)) {
 			return form2;
 		} else {
 			return form3;
@@ -151,8 +148,7 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		stopCourse.setVisible(false);
 		actions.setVisible(false);
 		wordsPanel.setVisible(false);
-		wordsList.setVisibleRangeAndClearData(new Range(0, WORDS_PER_PAGE),
-				false);
+		wordsList.setVisibleRangeAndClearData(new Range(0, WORDS_PER_PAGE), false);
 	}
 
 	@Override
@@ -162,29 +158,21 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		title.setText(courseInfo.getCourse().getName());
 		description.setText(courseInfo.getCourse().getDescription());
 		if (courseInfo.getStatus() == null) {
-			wordsNumber.setText("Слов: "
-					+ courseInfo.getCourse().getWordsNumber());
+			wordsNumber.setText("Слов: " + courseInfo.getCourse().getWordsNumber());
 		} else {
-			wordsNumber.setText("Слов: "
-					+ courseInfo.getCourse().getWordsNumber()
-					+ " (из них изучено: "
-					+ courseInfo.getStatus().getKnownWordsNumber() + ")");
+			wordsNumber.setText("Слов: " + courseInfo.getCourse().getWordsNumber()
+					+ " (из них изучено: " + courseInfo.getStatus().getKnownWordsNumber() + ")");
 		}
 		startCourse.setVisible(courseInfo.getStatus() == null);
 		stopCourse.setVisible(courseInfo.getStatus() != null);
 		actions.setVisible(courseInfo.getStatus() != null);
 		if (courseInfo.getStatus() != null) {
-			int readyWordNumber = courseInfo.getStatus()
-					.getReadyForTrainingWordsNumber();
-			repeatWords.setText("Повторить слова ("
-					+ readyWordNumber
-					+ " "
-					+ getProperPluralForm(readyWordNumber, "слово", "слова",
-							"слов") + ")...");
+			int readyWordNumber = courseInfo.getStatus().getReadyForTrainingWordsNumber();
+			repeatWords.setText("Повторить слова (" + readyWordNumber + " "
+					+ getProperPluralForm(readyWordNumber, "слово", "слова", "слов") + ")...");
 			repeatWords.setEnabled(readyWordNumber > 0);
-			learnNewWords
-					.setEnabled((courseInfo.getCourse().getWordsNumber() - courseInfo
-							.getStatus().getKnownWordsNumber()) > 0);
+			learnNewWords.setEnabled((courseInfo.getCourse().getWordsNumber() - courseInfo
+					.getStatus().getKnownWordsNumber()) > 0);
 		}
 		wordsList.setRowCount(courseInfo.getCourse().getWordsNumber());
 	}

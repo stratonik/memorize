@@ -16,8 +16,7 @@ public class CourseInfo implements IsSerializable, Comparable<CourseInfo> {
 
 	@Override
 	public int compareTo(CourseInfo o) {
-		return getCourse().getName().compareToIgnoreCase(
-				o.getCourse().getName());
+		return getCourse().getName().compareToIgnoreCase(o.getCourse().getName());
 	}
 
 	public CourseDTO getCourse() {

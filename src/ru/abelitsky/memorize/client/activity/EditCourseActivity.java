@@ -26,8 +26,7 @@ public class EditCourseActivity extends AbstractActivity implements Presenter {
 		this.courseId = null;
 	}
 
-	public EditCourseActivity(ChangeCoursePlace place,
-			ClientFactory clientFactory) {
+	public EditCourseActivity(ChangeCoursePlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 		this.courseId = place.getCourseId();
 	}
@@ -39,18 +38,17 @@ public class EditCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void save(CourseDTO course) {
-		clientFactory.getCoursesService().saveCourse(course,
-				new AsyncCallback<Void>() {
-					@Override
-					public void onFailure(Throwable caught) {
-						clientFactory.getRPCFaultDialog().show(caught);
-					}
+		clientFactory.getCoursesService().saveCourse(course, new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				clientFactory.getRPCFaultDialog().show(caught);
+			}
 
-					@Override
-					public void onSuccess(Void result) {
-						goTo(new AllCoursesPlace());
-					}
-				});
+			@Override
+			public void onSuccess(Void result) {
+				goTo(new AllCoursesPlace());
+			}
+		});
 	}
 
 	@Override
@@ -71,8 +69,7 @@ public class EditCourseActivity extends AbstractActivity implements Presenter {
 						}
 
 						public void onSuccess(CourseInfo courseInfo) {
-							clientFactory.getEditCourseView().setData(
-									courseInfo.getCourse());
+							clientFactory.getEditCourseView().setData(courseInfo.getCourse());
 						}
 					});
 		}

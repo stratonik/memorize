@@ -11,9 +11,9 @@ import ru.abelitsky.memorize.client.place.ViewCoursePlace;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 
-@WithTokenizers({ AllCoursesPlace.Tokenizer.class,
-		ChangeCoursePlace.Tokenizer.class, CurrentCoursesPlace.Tokenizer.class,
-		LoadWordsPlace.Tokenizer.class, NewCoursePlace.Tokenizer.class,
-		TrainingPlace.Tokenizer.class, ViewCoursePlace.Tokenizer.class })
+@WithTokenizers({ AllCoursesPlace.Tokenizer.class, ChangeCoursePlace.Tokenizer.class,
+		CurrentCoursesPlace.Tokenizer.class, LoadWordsPlace.Tokenizer.class,
+		NewCoursePlace.Tokenizer.class, TrainingPlace.Tokenizer.class,
+		ViewCoursePlace.Tokenizer.class })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }

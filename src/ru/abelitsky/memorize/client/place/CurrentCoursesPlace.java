@@ -5,8 +5,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 
 public class CurrentCoursesPlace extends Place {
 
-	public static class Tokenizer implements
-			PlaceTokenizer<CurrentCoursesPlace> {
+	public static class Tokenizer implements PlaceTokenizer<CurrentCoursesPlace> {
 
 		@Override
 		public CurrentCoursesPlace getPlace(String token) {

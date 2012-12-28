@@ -27,13 +27,10 @@ import com.google.web.bindery.event.shared.EventBus;
 public class ClientFactoryImpl implements ClientFactory {
 
 	private final EventBus eventBus = new SimpleEventBus();
-	private final PlaceController placeController = new PlaceController(
-			eventBus);
+	private final PlaceController placeController = new PlaceController(eventBus);
 
-	private final CoursesServiceAsync coursesService = GWT
-			.create(CoursesService.class);
-	private final TrainingServiceAsync trainingService = GWT
-			.create(TrainingService.class);
+	private final CoursesServiceAsync coursesService = GWT.create(CoursesService.class);
+	private final TrainingServiceAsync trainingService = GWT.create(TrainingService.class);
 
 	private final LoadingDialog loadingDialog = new LoadingDialog();
 	private final RPCFaultDialog rpcFaultDialog = new RPCFaultDialog();

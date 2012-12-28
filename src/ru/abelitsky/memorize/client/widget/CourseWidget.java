@@ -29,8 +29,7 @@ public class CourseWidget extends Composite {
 	interface CourseWidgetUiBinder extends UiBinder<CellPanel, CourseWidget> {
 	}
 
-	private static CourseWidgetUiBinder uiBinder = GWT
-			.create(CourseWidgetUiBinder.class);
+	private static CourseWidgetUiBinder uiBinder = GWT.create(CourseWidgetUiBinder.class);
 
 	@UiField
 	Anchor title;

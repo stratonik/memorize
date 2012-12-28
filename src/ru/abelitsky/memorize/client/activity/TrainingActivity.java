@@ -39,31 +39,29 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 	public void saveResult(String wordStatusKey, boolean pass) {
 		if (wordStatusKey != null) {
 			if (pass) {
-				clientFactory.getTrainingService().pass(wordStatusKey,
-						new AsyncCallback<Void>() {
-							@Override
-							public void onSuccess(Void result) {
-								// Ничего не делаем
-							}
+				clientFactory.getTrainingService().pass(wordStatusKey, new AsyncCallback<Void>() {
+					@Override
+					public void onSuccess(Void result) {
+						// Ничего не делаем
+					}
 
-							@Override
-							public void onFailure(Throwable caught) {
-								// Ничего не делаем
-							}
-						});
+					@Override
+					public void onFailure(Throwable caught) {
+						// Ничего не делаем
+					}
+				});
 			} else {
-				clientFactory.getTrainingService().fail(wordStatusKey,
-						new AsyncCallback<Void>() {
-							@Override
-							public void onSuccess(Void result) {
-								// Ничего не делаем
-							}
+				clientFactory.getTrainingService().fail(wordStatusKey, new AsyncCallback<Void>() {
+					@Override
+					public void onSuccess(Void result) {
+						// Ничего не делаем
+					}
 
-							@Override
-							public void onFailure(Throwable caught) {
-								// Ничего не делаем
-							}
-						});
+					@Override
+					public void onFailure(Throwable caught) {
+						// Ничего не делаем
+					}
+				});
 			}
 		}
 	}
@@ -76,8 +74,7 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 
 		view.prepareView();
 		if (ParameterNames.ADD_NEW_WORDS.equals(place.getMode())) {
-			clientFactory.getTrainingService().addWordsToTraining(
-					place.getCourseStatusId(),
+			clientFactory.getTrainingService().addWordsToTraining(place.getCourseStatusId(),
 					new AsyncCallback<List<TrainingTest>>() {
 						@Override
 						public void onFailure(Throwable caught) {
@@ -90,8 +87,7 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 						}
 					});
 		} else {
-			clientFactory.getTrainingService().getWordsForTraining(
-					place.getCourseStatusId(),
+			clientFactory.getTrainingService().getWordsForTraining(place.getCourseStatusId(),
 					new AsyncCallback<List<TrainingTest>>() {
 						@Override
 						public void onFailure(Throwable caught) {

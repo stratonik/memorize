@@ -38,8 +38,7 @@ public class Memorize implements EntryPoint {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Ошибка при загрузке приложения: "
-						+ caught.getMessage());
+				Window.alert("Ошибка при загрузке приложения: " + caught.getMessage());
 			}
 		});
 	}
@@ -51,15 +50,12 @@ public class Memorize implements EntryPoint {
 
 		// Start ActivityManager for the main widget with our ActivityMapper
 		ActivityMapper activityMapper = new AppActivityMapper(clientFactory);
-		ActivityManager activityManager = new ActivityManager(activityMapper,
-				eventBus);
+		ActivityManager activityManager = new ActivityManager(activityMapper, eventBus);
 		activityManager.setDisplay(appWidget);
 
 		// Start PlaceHistoryHandler with our PlaceHistoryMapper
-		AppPlaceHistoryMapper historyMapper = GWT
-				.create(AppPlaceHistoryMapper.class);
-		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(
-				historyMapper);
+		AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
+		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 		historyHandler.register(placeController, eventBus, defaultPlace);
 
 		RootPanel.get("appContainer").add(appWidget);

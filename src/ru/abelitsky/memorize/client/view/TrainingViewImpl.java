@@ -13,7 +13,6 @@ import ru.abelitsky.memorize.client.widget.training.TrainingWidget.Delegator;
 import ru.abelitsky.memorize.client.widget.training.WriteAnswerWidget;
 import ru.abelitsky.memorize.shared.dto.TrainingTest;
 import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestAction;
-import ru.abelitsky.memorize.shared.dto.TrainingTest.TrainingTestType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -34,19 +33,16 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-public class TrainingViewImpl extends Composite implements TrainingView,
-		Delegator {
+public class TrainingViewImpl extends Composite implements TrainingView, Delegator {
 
-	interface TrainingViewImplUiBinder extends
-			UiBinder<HorizontalPanel, TrainingViewImpl> {
+	interface TrainingViewImplUiBinder extends UiBinder<HorizontalPanel, TrainingViewImpl> {
 	}
 
-	private static TrainingViewImplUiBinder uiBinder = GWT
-			.create(TrainingViewImplUiBinder.class);
+	private static TrainingViewImplUiBinder uiBinder = GWT.create(TrainingViewImplUiBinder.class);
 
 	private Presenter presenter;
 
-	private final Map<TrainingTestType, Map<TrainingTestAction, TrainingWidget>> widgets;
+	private final Map<TrainingTestAction, TrainingWidget> widgets;
 	private final TrainingWidget showAnswerWidget = new ShowAnswerWidget();
 
 	private List<TrainingTest> tests;
@@ -73,28 +69,15 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 		TrainingWidget selectVariantWidget = new SelectVariantWidget(this);
 		TrainingWidget writeAnswerWidget = new WriteAnswerWidget();
 
-		widgets = new EnumMap<TrainingTestType, Map<TrainingTestAction, TrainingWidget>>(
-				TrainingTestType.class);
+		widgets = new EnumMap<TrainingTestAction, TrainingWidget>(TrainingTestAction.class);
 
-		widgets.put(TrainingTestType.kanji,
-				new EnumMap<TrainingTestAction, TrainingWidget>(
-						TrainingTestAction.class));
-		widgets.get(TrainingTestType.kanji).put(TrainingTestAction.showInfo,
-				new ShowKanjiWidget());
-		widgets.get(TrainingTestType.kanji).put(TrainingTestAction.writeAnswer,
-				writeAnswerWidget);
-		widgets.get(TrainingTestType.kanji).put(
-				TrainingTestAction.selectVariant, selectVariantWidget);
-
-		widgets.put(TrainingTestType.kana,
-				new EnumMap<TrainingTestAction, TrainingWidget>(
-						TrainingTestAction.class));
-		widgets.get(TrainingTestType.kana).put(TrainingTestAction.showInfo,
-				new ShowKanaWidget());
-		widgets.get(TrainingTestType.kana).put(TrainingTestAction.writeAnswer,
-				writeAnswerWidget);
-		widgets.get(TrainingTestType.kana).put(
-				TrainingTestAction.selectVariant, selectVariantWidget);
+		widgets.put(TrainingTestAction.showKanaInfo, new ShowKanaWidget());
+		widgets.put(TrainingTestAction.showKanjiInfo, new ShowKanjiWidget());
+		widgets.put(TrainingTestAction.writeKana, writeAnswerWidget);
+		widgets.put(TrainingTestAction.writeKanaByKanji, writeAnswerWidget);
+		widgets.put(TrainingTestAction.writeKanji, writeAnswerWidget);
+		widgets.put(TrainingTestAction.selectKana, selectVariantWidget);
+		widgets.put(TrainingTestAction.selectKanji, selectVariantWidget);
 	}
 
 	private void goToAnswer() {
@@ -107,17 +90,16 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 		showAnswerMode = false;
 		if (++currentTest < tests.size()) {
 			TrainingTest test = tests.get(currentTest);
-			TrainingWidget widget = widgets.get(test.getType()).get(
-					test.getAction());
+			TrainingWidget widget = widgets.get(test.getAction());
 			testWidget.setWidget(widget);
 			widget.setData(test);
 
-			if (test.getAction() != TrainingTestAction.showInfo) {
+			if ((test.getAction() != TrainingTestAction.showKanaInfo)
+					&& (test.getAction() != TrainingTestAction.showKanjiInfo)) {
 				testTimer = new TestTimer();
 				testTimer.scheduleRepeating(1000);
 			}
-			counter.setText(String.valueOf(currentTest + 1) + "/"
-					+ tests.size());
+			counter.setText(String.valueOf(currentTest + 1) + "/" + tests.size());
 		} else {
 			stop.click();
 		}
@@ -141,8 +123,7 @@ public class TrainingViewImpl extends Composite implements TrainingView,
 			}
 
 			TrainingTest test = tests.get(currentTest);
-			TrainingWidget widget = widgets.get(test.getType()).get(
-					test.getAction());
+			TrainingWidget widget = widgets.get(test.getAction());
 			final boolean result = widget.checkAnswer();
 			presenter.saveResult(test.getWordStatusKey(), result);
 			new Timer() {

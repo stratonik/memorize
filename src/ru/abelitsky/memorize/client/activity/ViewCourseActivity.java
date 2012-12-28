@@ -39,8 +39,8 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void getWords(int from, int count) {
-		clientFactory.getCoursesService().getWords(place.getCourseId(),
-				from + 1, count, new AsyncCallback<List<WordDTO>>() {
+		clientFactory.getCoursesService().getWords(place.getCourseId(), from + 1, count,
+				new AsyncCallback<List<WordDTO>>() {
 					public void onFailure(Throwable caught) {
 						clientFactory.getRPCFaultDialog().show(caught);
 					}
@@ -78,8 +78,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void startCourse(CourseInfo courseInfo) {
-		clientFactory.getTrainingService().startTraining(
-				courseInfo.getCourse().getId(),
+		clientFactory.getTrainingService().startTraining(courseInfo.getCourse().getId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
 						clientFactory.getRPCFaultDialog().show(caught);
@@ -98,8 +97,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void stopCourse(CourseInfo courseInfo) {
-		clientFactory.getTrainingService().stopTraining(
-				courseInfo.getStatus().getId(),
+		clientFactory.getTrainingService().stopTraining(courseInfo.getStatus().getId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
 						clientFactory.getRPCFaultDialog().show(caught);
