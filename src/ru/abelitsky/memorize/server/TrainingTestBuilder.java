@@ -106,6 +106,7 @@ public class TrainingTestBuilder {
 
 		test.setQuestion(wordStatus.getWord().getKana());
 		test.setAnswer(wordStatus.getWord().getTranslation());
+		// TODO: set variants
 
 		return test;
 	}
@@ -119,6 +120,7 @@ public class TrainingTestBuilder {
 
 		test.setQuestion(wordStatus.getWord().getKanji());
 		test.setAnswer(wordStatus.getWord().getTranslation());
+		// TODO: set variants
 
 		return test;
 	}

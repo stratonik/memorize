@@ -51,7 +51,7 @@ public class SelectVariantWidget extends Composite implements TrainingWidget,
 
 	@Override
 	public boolean checkAnswer() {
-		return (result != null) ? result : false;
+		return result;
 	}
 
 	@Override
