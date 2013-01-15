@@ -19,6 +19,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -33,7 +34,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-public class TrainingViewImpl extends Composite implements TrainingView, Delegator {
+public class TrainingViewImpl extends Composite implements TrainingView, Delegator,
+		AttachEvent.Handler {
 
 	interface TrainingViewImplUiBinder extends UiBinder<HorizontalPanel, TrainingViewImpl> {
 	}
@@ -65,6 +67,7 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 
 	public TrainingViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
+		addAttachHandler(this);
 
 		TrainingWidget selectVariantWidget = new SelectVariantWidget(this);
 		TrainingWidget writeAnswerWidget = new WriteAnswerWidget();
@@ -105,6 +108,25 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 		}
 	}
 
+	@Override
+	public void onAttachOrDetach(AttachEvent event) {
+		if (event.isAttached()) {
+			enterDownHandler = RootPanel.get().addDomHandler(new KeyDownHandler() {
+				@Override
+				public void onKeyDown(KeyDownEvent event) {
+					if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+						next.click();
+					}
+				}
+			}, KeyDownEvent.getType());
+		} else {
+			if (enterDownHandler != null) {
+				enterDownHandler.removeHandler();
+				enterDownHandler = null;
+			}
+		}
+	}
+
 	@UiHandler("next")
 	void onClickNext(ClickEvent event) {
 		if (showAnswerMode) {
@@ -142,10 +164,6 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 
 	@UiHandler("stop")
 	void onClickStop(ClickEvent event) {
-		if (enterDownHandler != null) {
-			enterDownHandler.removeHandler();
-			enterDownHandler = null;
-		}
 		presenter.goTo(presenter.getBackPlace());
 	}
 
@@ -160,15 +178,6 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 		testWidget.setWidget(new Image("ajax-loader.gif"));
 		counter.setText("");
 		timer.setText("");
-
-		enterDownHandler = RootPanel.get().addDomHandler(new KeyDownHandler() {
-			@Override
-			public void onKeyDown(KeyDownEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					next.click();
-				}
-			}
-		}, KeyDownEvent.getType());
 	}
 
 	@Override
