@@ -16,7 +16,7 @@ public interface TrainingWidget extends IsWidget {
 
 	}
 
-	boolean checkAnswer();
+	boolean checkAnswer() throws Exception;
 
 	void setData(TrainingTest test);
 

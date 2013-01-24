@@ -86,7 +86,7 @@ h1 {
 
 .trainingWidget {
 	color: #3E3E3E;
-	margin: 20px;
+	margin: 20px 20px 0px 20px;
 	width: 600px;
 }
 
@@ -112,6 +112,10 @@ h1 {
 .wrong {
 	color: white;
 	background-color: #E44E5A;
+}
+
+.error {
+	background-color: yellow;
 }
 
 .answerField {
@@ -182,4 +186,8 @@ h1 {
 	font-size: 1.2em;
 	padding: 5px;
 	white-space: pre-line;
+}
+
+.trainingError {
+	color: #E44E5A;
 }

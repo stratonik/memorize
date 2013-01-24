@@ -40,10 +40,31 @@ public class WriteAnswerWidget extends Composite implements TrainingWidget {
 	}
 
 	@Override
-	public boolean checkAnswer() {
+	public boolean checkAnswer() throws Exception {
+		String answerText = answer.getText().trim();
+
+		answer.removeStyleName("error");
+		if (answerText.length() > 0) {
+			String error = null;
+			if (test.getAction().getType() == TrainingTestType.kana) {
+				if (answerText.equals(test.getWord().getKanji())) {
+					error = "Ответ нужно написать с помощью каны";
+				}
+			} else {
+				if (answerText.equals(test.getWord().getKana())) {
+					error = "Ответ нужно написать с помощью кандзи";
+				}
+			}
+			if (error != null) {
+				answer.addStyleName("error");
+				answer.selectAll();
+				throw new Exception(error);
+			}
+		}
+
 		secondValue.removeStyleName("invisible");
 		answer.setReadOnly(true);
-		if (answer.getText().trim().equals(test.getAnswer())) {
+		if (answerText.equals(test.getAnswer())) {
 			answer.addStyleName("right");
 			return true;
 		} else {
@@ -81,6 +102,7 @@ public class WriteAnswerWidget extends Composite implements TrainingWidget {
 		answer.setText("");
 		answer.removeStyleName("right");
 		answer.removeStyleName("wrong");
+		answer.removeStyleName("error");
 		answer.setReadOnly(false);
 		answer.setFocus(true);
 	}

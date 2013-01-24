@@ -58,12 +58,14 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 	@UiField
 	SimplePanel testWidget;
 	@UiField
+	Label testError;
+	@UiField
 	Label counter;
 	@UiField
 	Label timer;
 
 	private HandlerRegistration enterDownHandler;
-	private Timer testTimer;
+	private TestTimer testTimer;
 
 	public TrainingViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -84,12 +86,14 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 	}
 
 	private void goToAnswer() {
+		testError.setVisible(false);
 		showAnswerMode = true;
 		testWidget.setWidget(showAnswerWidget);
 		showAnswerWidget.setData(tests.get(currentTest));
 	}
 
 	private void goToNextTest() {
+		testError.setVisible(false);
 		showAnswerMode = false;
 		if (++currentTest < tests.size()) {
 			TrainingTest test = tests.get(currentTest);
@@ -130,35 +134,58 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 	@UiHandler("next")
 	void onClickNext(ClickEvent event) {
 		if (showAnswerMode) {
-			if (showAnswerWidget.checkAnswer()) {
+			try {
+				if (showAnswerWidget.checkAnswer()) {
+					new Timer() {
+						@Override
+						public void run() {
+							goToNextTest();
+						}
+					}.schedule(1000);
+				}
+			} catch (Exception ex) {
+			}
+		} else {
+			testError.setVisible(false);
+
+			TrainingTest test = tests.get(currentTest);
+			TrainingWidget widget = widgets.get(test.getAction());
+
+			boolean result;
+			try {
+				result = widget.checkAnswer();
+			} catch (Exception ex) {
+				if ((testTimer != null) && !testTimer.isOff()) {
+					testError.setText(ex.getMessage());
+					testError.setVisible(true);
+					return;
+				} else {
+					result = false;
+				}
+			}
+			presenter.saveResult(test.getWordStatusKey(), result);
+			if (result) {
 				new Timer() {
 					@Override
 					public void run() {
+						timer.setText("");
 						goToNextTest();
 					}
 				}.schedule(1000);
+			} else {
+				new Timer() {
+					@Override
+					public void run() {
+						timer.setText("");
+						goToAnswer();
+					}
+				}.schedule(1000);
 			}
-		} else {
+
 			if (testTimer != null) {
 				testTimer.cancel();
 				testTimer = null;
 			}
-
-			TrainingTest test = tests.get(currentTest);
-			TrainingWidget widget = widgets.get(test.getAction());
-			final boolean result = widget.checkAnswer();
-			presenter.saveResult(test.getWordStatusKey(), result);
-			new Timer() {
-				@Override
-				public void run() {
-					timer.setText("");
-					if (result) {
-						goToNextTest();
-					} else {
-						goToAnswer();
-					}
-				}
-			}.schedule(1000);
 		}
 	}
 
@@ -205,13 +232,18 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 		public void run() {
 			seconds--;
 			timer.setText(getSeconds());
-			if (seconds <= 0) {
+			if (isOff()) {
+				cancel();
 				next.click();
 			}
 		}
 
 		public String getSeconds() {
 			return NumberFormat.getFormat("00").format(seconds);
+		}
+
+		public boolean isOff() {
+			return (seconds <= 0);
 		}
 
 	}

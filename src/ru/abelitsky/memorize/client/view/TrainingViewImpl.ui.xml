@@ -7,9 +7,10 @@
 			<g:Button ui:field="stop" text="Прервать" addStyleNames="trainingButton" />
 			<g:Label ui:field="counter" addStyleNames="trainingCounter" />
 		</g:VerticalPanel>
-		<g:cell width="100%" horizontalAlignment="center">
+		<g:VerticalPanel width="100%" horizontalAlignment="center">
 			<g:SimplePanel ui:field="testWidget" styleName="trainingWidget" />
-		</g:cell>
+			<g:Label ui:field="testError" visible="false" styleName="trainingError" />
+		</g:VerticalPanel>
 		<g:VerticalPanel horizontalAlignment="center">
 			<g:Button ui:field="next" text="Дальше >" addStyleNames="trainingButton" />
 			<g:Label ui:field="timer" addStyleNames="trainingTimer" />
