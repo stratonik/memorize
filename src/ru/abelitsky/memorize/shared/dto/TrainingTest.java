@@ -4,10 +4,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TrainingTest implements IsSerializable {
 
-	public enum TrainingTestType {
-		kana, kanji
-	}
-
 	public enum TrainingTestAction {
 		showKanaInfo(TrainingTestType.kana), showKanjiInfo(TrainingTestType.kanji),
 		writeKana(TrainingTestType.kana), writeKanji(TrainingTestType.kanji),
@@ -25,6 +21,10 @@ public class TrainingTest implements IsSerializable {
 		}
 	}
 
+	public enum TrainingTestType {
+		kana, kanji
+	}
+
 	private TrainingTestAction action;
 
 	private WordDTO word;
@@ -33,6 +33,7 @@ public class TrainingTest implements IsSerializable {
 	private String question;
 	private String answer;
 	private String[] variants;
+	private String wrongAnswer;
 
 	public TrainingTestAction getAction() {
 		return action;
@@ -58,6 +59,10 @@ public class TrainingTest implements IsSerializable {
 		return wordStatusKey;
 	}
 
+	public String getWrongAnswer() {
+		return wrongAnswer;
+	}
+
 	public void setAction(TrainingTestAction action) {
 		this.action = action;
 	}
@@ -80,6 +85,10 @@ public class TrainingTest implements IsSerializable {
 
 	public void setWordStatusKey(String wordStatusKey) {
 		this.wordStatusKey = wordStatusKey;
+	}
+
+	public void setWrongAnswer(String wrongAnswer) {
+		this.wrongAnswer = wrongAnswer;
 	}
 
 }

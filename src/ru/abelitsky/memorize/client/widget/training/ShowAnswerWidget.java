@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -29,6 +30,8 @@ public class ShowAnswerWidget extends Composite implements TrainingWidget {
 
 	@UiField
 	SimplePanel info;
+	@UiField
+	Label wrongAnswer;
 	@UiField
 	TextBox answer;
 
@@ -71,6 +74,14 @@ public class ShowAnswerWidget extends Composite implements TrainingWidget {
 		} else {
 			showKanjiWidget.setData(test);
 			info.setWidget(showKanjiWidget);
+		}
+
+		if ((test.getWrongAnswer() != null) && (test.getWrongAnswer().trim().length() > 0)) {
+			wrongAnswer.setText("Ваш ответ: "+test.getWrongAnswer());
+			wrongAnswer.setVisible(true);
+		} else {
+			wrongAnswer.setText("");
+			wrongAnswer.setVisible(false);
 		}
 
 		answer.setText("");

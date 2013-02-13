@@ -116,7 +116,7 @@ public class WordStatus {
 
 	public void setNextTrainingDateInFourHours() {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.HOUR_OF_DAY, 4);
+		cal.add(Calendar.HOUR_OF_DAY, 4 * Math.max(1, getLevel()));
 		setNextTrainingDate(cal.getTime());
 	}
 

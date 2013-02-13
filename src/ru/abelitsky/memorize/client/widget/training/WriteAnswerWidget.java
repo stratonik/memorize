@@ -69,6 +69,7 @@ public class WriteAnswerWidget extends Composite implements TrainingWidget {
 			return true;
 		} else {
 			answer.addStyleName("wrong");
+			test.setWrongAnswer(answerText);
 			return false;
 		}
 	}

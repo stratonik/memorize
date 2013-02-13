@@ -14,6 +14,7 @@ import ru.abelitsky.memorize.shared.dto.WordDTO;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -21,6 +22,8 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	private ClientFactory clientFactory;
 	private ViewCoursePlace place;
+
+	private Timer refreshTimer;
 
 	public ViewCourseActivity(ViewCoursePlace place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -56,13 +59,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 		clientFactory.getPlaceController().goTo(place);
 	}
 
-	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		ViewCourseView view = clientFactory.getViewCourseView();
-		view.setPresenter(this);
-		panel.setWidget(view);
-
-		view.prepareView();
+	private void refreshCourseInfo() {
 		clientFactory.getCoursesService().getCourseInfo(place.getCourseId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
@@ -73,7 +70,34 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 						clientFactory.getViewCourseView().setData(info);
 					}
 				});
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		if (refreshTimer != null) {
+			refreshTimer.cancel();
+		}
+		refreshTimer = null;
+	}
+
+	@Override
+	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		ViewCourseView view = clientFactory.getViewCourseView();
+		view.setPresenter(this);
+		panel.setWidget(view);
+
+		view.prepareView();
+		refreshCourseInfo();
 		getWords(0, ViewCourseView.WORDS_PER_PAGE);
+
+		refreshTimer = new Timer() {
+			@Override
+			public void run() {
+				refreshCourseInfo();
+			}
+		};
+		refreshTimer.scheduleRepeating(60 * 60 * 1000);
 	}
 
 	@Override

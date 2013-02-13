@@ -99,6 +99,9 @@ public class SelectVariantWidget extends Composite implements TrainingWidget, Cl
 			if (index < test.getVariants().length) {
 				secondValue.removeStyleName("invisible");
 				result = test.getVariants()[index].equals(test.getAnswer());
+				if (!result) {
+					test.setWrongAnswer(test.getVariants()[index]);
+				}
 
 				int rowNumber = test.getVariants().length / 2 + test.getVariants().length % 2;
 				variants.getCellFormatter().addStyleName(index % rowNumber, index / rowNumber,

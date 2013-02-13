@@ -7,6 +7,9 @@
 			<hr />
 		</g:HTML>
 		<g:cell horizontalAlignment="center">
+			<g:Label ui:field="wrongAnswer" addStyleNames="value-second error" />
+		</g:cell>
+		<g:cell horizontalAlignment="center">
 			<g:TextBox ui:field="answer" addStyleNames="answerField" />
 		</g:cell>
 	</g:VerticalPanel>
