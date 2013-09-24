@@ -6,7 +6,7 @@
 		<g:Label text="Список курсов:" styleName="title" />
 		<g:FlexTable ui:field="list" width="100%" />
 		<div class="actions">
-			<g:Button ui:field="addCourse" text="Добавить курс..." />
+			<g:Button ui:field="addCourse" text="Взять новый курс для изучения..." />
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
