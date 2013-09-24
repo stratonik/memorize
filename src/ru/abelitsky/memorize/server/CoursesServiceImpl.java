@@ -64,7 +64,7 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements CoursesS
 	public CourseInfo getCourseInfo(Long id) {
 		Key<Course> courseKey = Key.create(Course.class, id);
 		CourseStatus status = ofy().load().type(CourseStatus.class).filter("course", courseKey)
-				.filter("user", UserServiceFactory.getUserService().getCurrentUser()).first().get();
+				.filter("user", UserServiceFactory.getUserService().getCurrentUser()).first().now();
 
 		CourseInfo info;
 		if (status != null) {
@@ -72,7 +72,7 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements CoursesS
 			info.setStatus(status.toDto());
 			info.getStatus().setReadyForTrainingWordsNumber(getReadyForTrainingWordsNumber(status));
 		} else {
-			info = new CourseInfo(ofy().load().key(courseKey).get().toDto());
+			info = new CourseInfo(ofy().load().key(courseKey).now().toDto());
 		}
 		return info;
 	}
@@ -136,7 +136,7 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements CoursesS
 	@Override
 	public void importWords(Long courseId, String data) {
 		Ref<Course> courseRef = Ref.create(Key.create(Course.class, courseId));
-		final Course course = ofy().load().ref(courseRef).get();
+		final Course course = ofy().load().ref(courseRef).now();
 		if (course == null) {
 			return;
 		}
@@ -202,7 +202,7 @@ public class CoursesServiceImpl extends RemoteServiceServlet implements CoursesS
 	public void saveCourse(CourseDTO courseDto) {
 		Course course = null;
 		if (courseDto.getId() != null) {
-			course = ofy().load().key(Key.create(Course.class, courseDto.getId())).get();
+			course = ofy().load().key(Key.create(Course.class, courseDto.getId())).now();
 		}
 		if (course == null) {
 			course = new Course();

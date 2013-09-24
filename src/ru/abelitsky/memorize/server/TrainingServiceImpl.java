@@ -27,7 +27,7 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements Trainin
 	@Override
 	public List<TrainingTest> addWordsToTraining(Long courseStatusId) {
 		Key<CourseStatus> statusKey = Key.create(CourseStatus.class, courseStatusId);
-		final CourseStatus status = ofy().load().key(statusKey).get();
+		final CourseStatus status = ofy().load().key(statusKey).now();
 		List<Word> words = selectNewWordsForTraining(status);
 
 		final List<WordStatus> wordStatuses = new ArrayList<WordStatus>();
@@ -105,7 +105,7 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements Trainin
 
 	@Override
 	public void fail(String wordStatusKey) {
-		WordStatus status = ofy().load().key(Key.<WordStatus> create(wordStatusKey)).get();
+		WordStatus status = ofy().load().key(Key.<WordStatus> create(wordStatusKey)).now();
 		status.fail();
 		ofy().save().entity(status);
 	}
@@ -114,7 +114,7 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements Trainin
 	public List<TrainingTest> getWordsForTraining(Long courseStatusId) {
 		Key<CourseStatus> statusKey = Key.create(CourseStatus.class, courseStatusId);
 		List<WordStatus> wordStatuses = ofy().load().type(WordStatus.class).ancestor(statusKey)
-				.filter("nextTrainingDate <", new Date()).list();
+				.filter("nextTrainingDate <", new Date()).limit(30).list();
 		List<TrainingTest> tests = new ArrayList<TrainingTest>(wordStatuses.size());
 		for (WordStatus wordStatus : wordStatuses) {
 			TrainingTest test = TrainingTestBuilder.createTest(wordStatus);
@@ -127,7 +127,7 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements Trainin
 
 	@Override
 	public void pass(String wordStatusKey) {
-		WordStatus status = ofy().load().key(Key.<WordStatus> create(wordStatusKey)).get();
+		WordStatus status = ofy().load().key(Key.<WordStatus> create(wordStatusKey)).now();
 		status.pass();
 		ofy().save().entity(status);
 	}
@@ -154,11 +154,11 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements Trainin
 	public CourseInfo startTraining(Long courseId) {
 		Key<Course> courseKey = Key.create(Course.class, courseId);
 		CourseStatus status = ofy().load().type(CourseStatus.class).filter("course", courseKey)
-				.first().get();
+				.first().now();
 		if (status == null) {
 			status = new CourseStatus(courseKey);
 			Key<CourseStatus> statusKey = ofy().save().entity(status).now();
-			status = ofy().load().key(statusKey).get();
+			status = ofy().load().key(statusKey).now();
 		}
 		CourseInfo info = new CourseInfo(status.getCourse().toDto());
 		info.setStatus(status.toDto());
@@ -168,7 +168,7 @@ public class TrainingServiceImpl extends RemoteServiceServlet implements Trainin
 	@Override
 	public CourseInfo stopTraining(Long statusId) {
 		final Key<CourseStatus> statusKey = Key.create(CourseStatus.class, statusId);
-		CourseStatus status = ofy().load().key(statusKey).get();
+		CourseStatus status = ofy().load().key(statusKey).now();
 		CourseInfo info = new CourseInfo(status.getCourse().toDto());
 		ofy().transact(new VoidWork() {
 			@Override
