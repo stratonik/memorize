@@ -128,6 +128,10 @@ public class TrainingViewImpl extends Composite implements TrainingView, Delegat
 				enterDownHandler.removeHandler();
 				enterDownHandler = null;
 			}
+			if (testTimer != null) {
+				testTimer.cancel();
+				testTimer = null;
+			}
 		}
 	}
 
