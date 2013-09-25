@@ -3,6 +3,7 @@ package ru.abelitsky.memorize.client.view;
 import java.util.List;
 
 import ru.abelitsky.memorize.client.place.ParameterNames;
+import ru.abelitsky.memorize.client.ui.RepeatWordsButton;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
 import ru.abelitsky.memorize.shared.dto.WordDTO;
 
@@ -48,7 +49,7 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 	@UiField
 	Panel actions;
 	@UiField
-	Button repeatWords;
+	RepeatWordsButton repeatWords;
 	@UiField
 	Button learnNewWords;
 	@UiField
@@ -96,17 +97,6 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		SimplePager pager = new SimplePager();
 		pager.setDisplay(wordsList);
 		wordsPanel.add(pager);
-	}
-
-	private String getProperPluralForm(int number, String form1, String form2, String form3) {
-		int lastDigit = number % 10;
-		if ((lastDigit == 1) && (number != 11)) {
-			return form1;
-		} else if ((lastDigit > 1 && lastDigit < 5) && (number < 11 || number > 14)) {
-			return form2;
-		} else {
-			return form3;
-		}
 	}
 
 	@UiHandler("courses")
@@ -167,10 +157,7 @@ public class ViewCourseViewImpl extends Composite implements ViewCourseView {
 		stopCourse.setVisible(courseInfo.getStatus() != null);
 		actions.setVisible(courseInfo.getStatus() != null);
 		if (courseInfo.getStatus() != null) {
-			int readyWordNumber = courseInfo.getStatus().getReadyForTrainingWordsNumber();
-			repeatWords.setText("Повторить слова (" + readyWordNumber + " "
-					+ getProperPluralForm(readyWordNumber, "слово", "слова", "слов") + ")...");
-			repeatWords.setEnabled(readyWordNumber > 0);
+			repeatWords.setWordsCount(courseInfo.getStatus().getReadyForTrainingWordsNumber());
 			learnNewWords.setEnabled((courseInfo.getCourse().getWordsNumber() - courseInfo
 					.getStatus().getKnownWordsNumber()) > 0);
 		}

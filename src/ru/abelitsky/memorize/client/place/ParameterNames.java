@@ -10,10 +10,6 @@ public class ParameterNames {
 	public static final String TRAINING_PARAM = "training";
 	public static final String MODE_PARAM = "mode";
 
-	// Значения для параметра return
-	public static final String ALL_COURSES_PLACE = "all";
-	public static final String CURRENT_COURSES_PLACE = "current";
-
 	// Значения для параметра mode
 	public static final String ADD_NEW_WORDS = "new";
 	public static final String REPEAT_WORDS = "repeat";

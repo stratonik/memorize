@@ -2,6 +2,10 @@ package ru.abelitsky.memorize.client.place;
 
 import java.util.Map;
 
+import ru.abelitsky.memorize.client.AppPlaceHistoryMapper;
+
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 
@@ -25,32 +29,22 @@ public class ViewCoursePlace extends Place {
 
 	public static class Tokenizer implements PlaceTokenizer<ViewCoursePlace> {
 
+		private static final AppPlaceHistoryMapper tokenizer = GWT
+				.create(AppPlaceHistoryMapper.class);
+
 		@Override
 		public ViewCoursePlace getPlace(String token) {
 			Map<String, String> params = ParameterNames.parseParamsToken(token);
-
-			Place backPlace;
-			String returnParam = params.get(ParameterNames.RETURN_PARAM);
-			if (ParameterNames.ALL_COURSES_PLACE.equals(returnParam)) {
-				backPlace = new AllCoursesPlace();
-			} else {
-				backPlace = new CurrentCoursesPlace();
-			}
-
 			return new ViewCoursePlace(Long.parseLong(params.get(ParameterNames.COURSE_PARAM)),
-					backPlace);
+					tokenizer.getPlace(URL.decodeQueryString(params
+							.get(ParameterNames.RETURN_PARAM))));
 		}
 
 		@Override
 		public String getToken(ViewCoursePlace place) {
-			String backPlaceString;
-			if (place.getBackPlace() instanceof AllCoursesPlace) {
-				backPlaceString = ParameterNames.ALL_COURSES_PLACE;
-			} else {
-				backPlaceString = ParameterNames.CURRENT_COURSES_PLACE;
-			}
 			return ParameterNames.COURSE_PARAM + "=" + place.getCourseId() + "&"
-					+ ParameterNames.RETURN_PARAM + "=" + backPlaceString;
+					+ ParameterNames.RETURN_PARAM + "="
+					+ URL.encodeQueryString(tokenizer.getToken(place.getBackPlace()));
 		}
 
 	}

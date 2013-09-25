@@ -4,6 +4,8 @@ import java.util.List;
 
 import ru.abelitsky.memorize.client.place.AllCoursesPlace;
 import ru.abelitsky.memorize.client.place.CurrentCoursesPlace;
+import ru.abelitsky.memorize.client.place.ParameterNames;
+import ru.abelitsky.memorize.client.place.TrainingPlace;
 import ru.abelitsky.memorize.client.place.ViewCoursePlace;
 import ru.abelitsky.memorize.client.widget.CourseStatusWidget;
 import ru.abelitsky.memorize.client.widget.CourseStatusWidget.Delegator;
@@ -44,6 +46,12 @@ public class CurrentCoursesViewImpl extends Composite implements CurrentCoursesV
 	public void selectCourse(CourseInfo courseInfo) {
 		presenter.goTo(new ViewCoursePlace(courseInfo.getCourse().getId(),
 				new CurrentCoursesPlace()));
+	}
+
+	@Override
+	public void startTraining(CourseInfo courseInfo) {
+		presenter.goTo(new TrainingPlace(courseInfo.getStatus().getId(),
+				ParameterNames.REPEAT_WORDS, new CurrentCoursesPlace()));
 	}
 
 	@Override
