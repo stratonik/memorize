@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<g:VerticalPanel styleName="course">
-		<g:Anchor ui:field="title" styleName="course-title" />
-		<g:Label ui:field="description" styleName="course-description" />
-		<g:HorizontalPanel width="100%">
+	<g:HorizontalPanel styleName="course">
+		<g:VerticalPanel>
+			<g:Anchor ui:field="title" styleName="course-title" />
+			<g:Label ui:field="description" styleName="course-description" />
 			<g:Label ui:field="words" styleName="course-words" />
-			<g:cell horizontalAlignment="right">
-				<g:HorizontalPanel spacing="1">
-					<g:Button ui:field="changeCourse" text="Изменить" width="100%" />
-					<g:Button ui:field="deleteCourse" text="Удалить" width="100%" />
-				</g:HorizontalPanel>
-			</g:cell>
-		</g:HorizontalPanel>
-	</g:VerticalPanel>
+		</g:VerticalPanel>
+		<g:cell horizontalAlignment="right" verticalAlignment="bottom">
+			<g:HorizontalPanel spacing="1">
+				<g:Button ui:field="changeCourse" text="Изменить" width="100%" />
+				<g:Button ui:field="deleteCourse" text="Удалить" width="100%" />
+			</g:HorizontalPanel>
+		</g:cell>
+	</g:HorizontalPanel>
 </ui:UiBinder>
