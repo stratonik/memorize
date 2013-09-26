@@ -16,10 +16,10 @@ import com.google.gwt.user.client.ui.Label;
 
 public class CourseStatusWidget extends Composite {
 
-	public interface Delegator {
+	public interface CourseStatusWidgetPresenter {
 
 		void selectCourse(CourseInfo course);
-		
+
 		void startTraining(CourseInfo couurse);
 
 	}
@@ -37,14 +37,14 @@ public class CourseStatusWidget extends Composite {
 	@UiField
 	Label status;
 	@UiField
-	RepeatWordsButton repeatWords; 
-	
-	private final CourseInfo course;
-	private final Delegator delegator;
+	RepeatWordsButton repeatWords;
 
-	public CourseStatusWidget(CourseInfo courseInfo, Delegator delegator) {
+	private final CourseInfo course;
+	private final CourseStatusWidgetPresenter presenter;
+
+	public CourseStatusWidget(CourseInfo courseInfo, CourseStatusWidgetPresenter presenter) {
 		this.course = courseInfo;
-		this.delegator = delegator;
+		this.presenter = presenter;
 
 		initWidget(uiBinder.createAndBindUi(this));
 
@@ -53,7 +53,7 @@ public class CourseStatusWidget extends Composite {
 				+ courseInfo.getStatus().getKnownWordsNumber() + " из "
 				+ courseInfo.getCourse().getWordsNumber() + ")");
 		description.setText(courseInfo.getCourse().getDescription());
-		
+
 		repeatWords.setWordsCount(courseInfo.getStatus().getReadyForTrainingWordsNumber());
 	}
 
@@ -68,12 +68,12 @@ public class CourseStatusWidget extends Composite {
 
 	@UiHandler("repeatWords")
 	void onClickRepeatWords(ClickEvent event) {
-		delegator.startTraining(course);
+		presenter.startTraining(course);
 	}
 
 	@UiHandler("title")
 	void onClickTitle(ClickEvent event) {
-		delegator.selectCourse(course);
+		presenter.selectCourse(course);
 	}
 
 }

@@ -95,7 +95,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 				refreshCourseInfo();
 			}
 		};
-		refreshTimer.scheduleRepeating(60 * 60 * 1000);
+		refreshTimer.scheduleRepeating(10 * 60 * 1000);
 	}
 
 	@Override

@@ -7,7 +7,7 @@
 			<g:Label ui:field="status" styleName="course-status" />
 		</g:VerticalPanel>
 		<g:cell horizontalAlignment="right" verticalAlignment="bottom">
-			<my:RepeatWordsButton ui:field="repeatWords" />
+			<my:RepeatWordsButton ui:field="repeatWords" width="20em" />
 		</g:cell>
 	</g:HorizontalPanel>
 </ui:UiBinder>

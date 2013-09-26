@@ -3,12 +3,7 @@ package ru.abelitsky.memorize.client.view;
 import java.util.List;
 
 import ru.abelitsky.memorize.client.place.AllCoursesPlace;
-import ru.abelitsky.memorize.client.place.CurrentCoursesPlace;
-import ru.abelitsky.memorize.client.place.ParameterNames;
-import ru.abelitsky.memorize.client.place.TrainingPlace;
-import ru.abelitsky.memorize.client.place.ViewCoursePlace;
 import ru.abelitsky.memorize.client.widget.CourseStatusWidget;
-import ru.abelitsky.memorize.client.widget.CourseStatusWidget.Delegator;
 import ru.abelitsky.memorize.shared.dto.CourseInfo;
 
 import com.google.gwt.core.client.GWT;
@@ -20,7 +15,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
-public class CurrentCoursesViewImpl extends Composite implements CurrentCoursesView, Delegator {
+public class CurrentCoursesViewImpl extends Composite implements CurrentCoursesView {
 
 	interface CurrentCoursesViewImplUiBinder extends UiBinder<HTMLPanel, CurrentCoursesViewImpl> {
 	}
@@ -31,7 +26,7 @@ public class CurrentCoursesViewImpl extends Composite implements CurrentCoursesV
 	@UiField
 	FlexTable list;
 
-	private Presenter presenter;
+	private CurrentCoursesPresenter presenter;
 
 	public CurrentCoursesViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -43,31 +38,19 @@ public class CurrentCoursesViewImpl extends Composite implements CurrentCoursesV
 	}
 
 	@Override
-	public void selectCourse(CourseInfo courseInfo) {
-		presenter.goTo(new ViewCoursePlace(courseInfo.getCourse().getId(),
-				new CurrentCoursesPlace()));
-	}
-
-	@Override
-	public void startTraining(CourseInfo courseInfo) {
-		presenter.goTo(new TrainingPlace(courseInfo.getStatus().getId(),
-				ParameterNames.REPEAT_WORDS, new CurrentCoursesPlace()));
-	}
-
-	@Override
 	public void setData(List<CourseInfo> info) {
 		list.removeAllRows();
 		if (info.isEmpty()) {
 			list.setHTML(0, 0, "Нет выбранных курсов");
 		} else {
 			for (CourseInfo courseInfo : info) {
-				list.setWidget(list.getRowCount(), 0, new CourseStatusWidget(courseInfo, this));
+				list.setWidget(list.getRowCount(), 0, new CourseStatusWidget(courseInfo, presenter));
 			}
 		}
 	}
 
 	@Override
-	public void setPresenter(Presenter presenter) {
+	public void setPresenter(CurrentCoursesPresenter presenter) {
 		this.presenter = presenter;
 	}
 
