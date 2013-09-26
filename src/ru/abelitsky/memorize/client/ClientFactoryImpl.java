@@ -22,6 +22,7 @@ import ru.abelitsky.memorize.client.widget.RPCFaultDialog;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.web.bindery.event.shared.EventBus;
 
 public class ClientFactoryImpl implements ClientFactory {
@@ -31,6 +32,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private final CoursesServiceAsync coursesService = GWT.create(CoursesService.class);
 	private final TrainingServiceAsync trainingService = GWT.create(TrainingService.class);
+	private final PlaceHistoryMapper placeHistoryMapper = GWT.create(AppPlaceHistoryMapper.class);
 
 	private final LoadingDialog loadingDialog = new LoadingDialog();
 	private final RPCFaultDialog rpcFaultDialog = new RPCFaultDialog();
@@ -80,6 +82,11 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public PlaceController getPlaceController() {
 		return placeController;
+	}
+
+	@Override
+	public PlaceHistoryMapper getPlaceHistoryMapper() {
+		return placeHistoryMapper;
 	}
 
 	@Override

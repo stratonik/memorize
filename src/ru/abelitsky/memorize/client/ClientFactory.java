@@ -11,11 +11,15 @@ import ru.abelitsky.memorize.client.view.ViewCourseView;
 import ru.abelitsky.memorize.client.widget.LoadingDialog;
 import ru.abelitsky.memorize.client.widget.RPCFaultDialog;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.web.bindery.event.shared.EventBus;
 
 public interface ClientFactory {
 
+	public static final ClientFactory INSTANCE = GWT.create(ClientFactory.class);
+	
 	AllCoursesView getAllCoursesView();
 
 	CurrentCoursesView getCurrentCoursesView();
@@ -31,6 +35,8 @@ public interface ClientFactory {
 	LoadWordsView getLoadWordsView();
 
 	PlaceController getPlaceController();
+	
+	PlaceHistoryMapper getPlaceHistoryMapper();
 
 	RPCFaultDialog getRPCFaultDialog();
 

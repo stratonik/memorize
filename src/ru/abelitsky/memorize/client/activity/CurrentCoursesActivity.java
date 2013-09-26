@@ -16,32 +16,29 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class CurrentCoursesActivity extends AbstractActivity implements Presenter {
 
-	private ClientFactory clientFactory;
-
-	public CurrentCoursesActivity(CurrentCoursesPlace place, ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
-	}
-
-	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		CurrentCoursesView view = clientFactory.getCurrentCoursesView();
-		view.setPresenter(this);
-		panel.setWidget(view);
-
-		clientFactory.getCoursesService().getStatuses(new AsyncCallback<List<CourseInfo>>() {
-			public void onFailure(Throwable caught) {
-				clientFactory.getRPCFaultDialog().show(caught);
-			}
-
-			public void onSuccess(List<CourseInfo> courseInfo) {
-				clientFactory.getCurrentCoursesView().setData(courseInfo);
-			}
-		});
+	public CurrentCoursesActivity(CurrentCoursesPlace place) {
 	}
 
 	@Override
 	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
+		ClientFactory.INSTANCE.getPlaceController().goTo(place);
+	}
+
+	@Override
+	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		CurrentCoursesView view = ClientFactory.INSTANCE.getCurrentCoursesView();
+		view.setPresenter(this);
+		panel.setWidget(view);
+
+		ClientFactory.INSTANCE.getCoursesService().getStatuses(new AsyncCallback<List<CourseInfo>>() {
+			public void onFailure(Throwable caught) {
+				ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
+			}
+
+			public void onSuccess(List<CourseInfo> courseInfo) {
+				ClientFactory.INSTANCE.getCurrentCoursesView().setData(courseInfo);
+			}
+		});
 	}
 
 }

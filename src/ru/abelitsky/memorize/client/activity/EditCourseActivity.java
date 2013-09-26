@@ -17,31 +17,27 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class EditCourseActivity extends AbstractActivity implements Presenter {
 
-	private ClientFactory clientFactory;
-
 	private Long courseId;
 
-	public EditCourseActivity(NewCoursePlace place, ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+	public EditCourseActivity(NewCoursePlace place) {
 		this.courseId = null;
 	}
 
-	public EditCourseActivity(ChangeCoursePlace place, ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+	public EditCourseActivity(ChangeCoursePlace place) {
 		this.courseId = place.getCourseId();
 	}
 
 	@Override
 	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
+		ClientFactory.INSTANCE.getPlaceController().goTo(place);
 	}
 
 	@Override
 	public void save(CourseDTO course) {
-		clientFactory.getCoursesService().saveCourse(course, new AsyncCallback<Void>() {
+		ClientFactory.INSTANCE.getCoursesService().saveCourse(course, new AsyncCallback<Void>() {
 			@Override
 			public void onFailure(Throwable caught) {
-				clientFactory.getRPCFaultDialog().show(caught);
+				ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 			}
 
 			@Override
@@ -53,7 +49,7 @@ public class EditCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		EditCourseView view = clientFactory.getEditCourseView();
+		EditCourseView view = ClientFactory.INSTANCE.getEditCourseView();
 		view.setPresenter(this);
 		panel.setWidget(view);
 
@@ -62,14 +58,15 @@ public class EditCourseActivity extends AbstractActivity implements Presenter {
 			view.setData(null);
 		} else {
 			view.prepareForEdit();
-			clientFactory.getCoursesService().getCourseInfo(courseId,
+			ClientFactory.INSTANCE.getCoursesService().getCourseInfo(courseId,
 					new AsyncCallback<CourseInfo>() {
 						public void onFailure(Throwable caught) {
-							clientFactory.getRPCFaultDialog().show(caught);
+							ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 						}
 
 						public void onSuccess(CourseInfo courseInfo) {
-							clientFactory.getEditCourseView().setData(courseInfo.getCourse());
+							ClientFactory.INSTANCE.getEditCourseView().setData(
+									courseInfo.getCourse());
 						}
 					});
 		}

@@ -17,11 +17,9 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class TrainingActivity extends AbstractActivity implements Presenter {
 
-	private ClientFactory clientFactory;
 	private TrainingPlace place;
 
-	public TrainingActivity(TrainingPlace place, ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+	public TrainingActivity(TrainingPlace place) {
 		this.place = place;
 	}
 
@@ -32,71 +30,73 @@ public class TrainingActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
+		ClientFactory.INSTANCE.getPlaceController().goTo(place);
 	}
 
 	@Override
 	public void saveResult(String wordStatusKey, boolean pass) {
 		if (wordStatusKey != null) {
 			if (pass) {
-				clientFactory.getTrainingService().pass(wordStatusKey, new AsyncCallback<Void>() {
-					@Override
-					public void onSuccess(Void result) {
-						// Ничего не делаем
-					}
+				ClientFactory.INSTANCE.getTrainingService().pass(wordStatusKey,
+						new AsyncCallback<Void>() {
+							@Override
+							public void onSuccess(Void result) {
+								// Ничего не делаем
+							}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						// Ничего не делаем
-					}
-				});
+							@Override
+							public void onFailure(Throwable caught) {
+								// Ничего не делаем
+							}
+						});
 			} else {
-				clientFactory.getTrainingService().fail(wordStatusKey, new AsyncCallback<Void>() {
-					@Override
-					public void onSuccess(Void result) {
-						// Ничего не делаем
-					}
+				ClientFactory.INSTANCE.getTrainingService().fail(wordStatusKey,
+						new AsyncCallback<Void>() {
+							@Override
+							public void onSuccess(Void result) {
+								// Ничего не делаем
+							}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						// Ничего не делаем
-					}
-				});
+							@Override
+							public void onFailure(Throwable caught) {
+								// Ничего не делаем
+							}
+						});
 			}
 		}
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		TrainingView view = clientFactory.getTrainingView();
+		TrainingView view = ClientFactory.INSTANCE.getTrainingView();
 		view.setPresenter(this);
 		panel.setWidget(view);
 
 		view.prepareView();
 		if (ParameterNames.ADD_NEW_WORDS.equals(place.getMode())) {
-			clientFactory.getTrainingService().addWordsToTraining(place.getCourseStatusId(),
-					new AsyncCallback<List<TrainingTest>>() {
+			ClientFactory.INSTANCE.getTrainingService().addWordsToTraining(
+					place.getCourseStatusId(), new AsyncCallback<List<TrainingTest>>() {
 						@Override
 						public void onFailure(Throwable caught) {
-							clientFactory.getRPCFaultDialog().show(caught);
+							ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 						}
 
 						@Override
 						public void onSuccess(List<TrainingTest> result) {
-							clientFactory.getTrainingView().setData(result);
+							ClientFactory.INSTANCE.getTrainingView().setData(result);
 						}
 					});
 		} else {
-			clientFactory.getTrainingService().getWordsForTraining(place.getCourseStatusId(),
-					new AsyncCallback<List<TrainingTest>>() {
+			ClientFactory.INSTANCE.getTrainingService().getWordsForTraining(
+					place.getCourseStatusId(), new AsyncCallback<List<TrainingTest>>() {
 						@Override
 						public void onFailure(Throwable caught) {
-							clientFactory.getRPCFaultDialog().show(caught);
+							ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 						}
 
 						@Override
 						public void onSuccess(List<TrainingTest> result) {
-							clientFactory.getTrainingView().setData(result);
+							ClientFactory.INSTANCE.getTrainingView().setData(result);
 						}
 					});
 		}

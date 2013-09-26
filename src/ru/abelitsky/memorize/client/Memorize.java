@@ -12,6 +12,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -44,17 +45,17 @@ public class Memorize implements EntryPoint {
 	}
 
 	private void startApplication() {
-		ClientFactory clientFactory = GWT.create(ClientFactory.class);
+		ClientFactory clientFactory = ClientFactory.INSTANCE;
 		EventBus eventBus = clientFactory.getEventBus();
 		PlaceController placeController = clientFactory.getPlaceController();
 
 		// Start ActivityManager for the main widget with our ActivityMapper
-		ActivityMapper activityMapper = new AppActivityMapper(clientFactory);
+		ActivityMapper activityMapper = new AppActivityMapper();
 		ActivityManager activityManager = new ActivityManager(activityMapper, eventBus);
 		activityManager.setDisplay(appWidget);
 
 		// Start PlaceHistoryHandler with our PlaceHistoryMapper
-		AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
+		PlaceHistoryMapper historyMapper = clientFactory.getPlaceHistoryMapper();
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 		historyHandler.register(placeController, eventBus, defaultPlace);
 

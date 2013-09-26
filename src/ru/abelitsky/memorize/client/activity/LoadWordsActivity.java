@@ -13,11 +13,9 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class LoadWordsActivity extends AbstractActivity implements Presenter {
 
-	private ClientFactory clientFactory;
 	private LoadWordsPlace place;
 
-	public LoadWordsActivity(LoadWordsPlace place, ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+	public LoadWordsActivity(LoadWordsPlace place) {
 		this.place = place;
 	}
 
@@ -28,23 +26,23 @@ public class LoadWordsActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
+		ClientFactory.INSTANCE.getPlaceController().goTo(place);
 	}
 
 	@Override
 	public void load(String data) {
-		clientFactory.getLoadingDialog().center();
-		clientFactory.getCoursesService().importWords(place.getCourseId(), data,
+		ClientFactory.INSTANCE.getLoadingDialog().center();
+		ClientFactory.INSTANCE.getCoursesService().importWords(place.getCourseId(), data,
 				new AsyncCallback<Void>() {
 					@Override
 					public void onFailure(Throwable caught) {
-						clientFactory.getLoadingDialog().hide();
-						clientFactory.getRPCFaultDialog().show(caught);
+						ClientFactory.INSTANCE.getLoadingDialog().hide();
+						ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 					}
 
 					@Override
 					public void onSuccess(Void result) {
-						clientFactory.getLoadingDialog().hide();
+						ClientFactory.INSTANCE.getLoadingDialog().hide();
 						goTo(getBackPlace());
 					}
 				});
@@ -52,7 +50,7 @@ public class LoadWordsActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		LoadWordsView view = clientFactory.getLoadWordsView();
+		LoadWordsView view = ClientFactory.INSTANCE.getLoadWordsView();
 		view.setPresenter(this);
 		view.prepareView();
 		panel.setWidget(view);

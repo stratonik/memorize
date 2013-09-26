@@ -20,13 +20,11 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
-	private ClientFactory clientFactory;
 	private ViewCoursePlace place;
 
 	private Timer refreshTimer;
 
-	public ViewCourseActivity(ViewCoursePlace place, ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+	public ViewCourseActivity(ViewCoursePlace place) {
 		this.place = place;
 	}
 
@@ -42,32 +40,32 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void getWords(int from, int count) {
-		clientFactory.getCoursesService().getWords(place.getCourseId(), from + 1, count,
+		ClientFactory.INSTANCE.getCoursesService().getWords(place.getCourseId(), from + 1, count,
 				new AsyncCallback<List<WordDTO>>() {
 					public void onFailure(Throwable caught) {
-						clientFactory.getRPCFaultDialog().show(caught);
+						ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 					}
 
 					public void onSuccess(List<WordDTO> words) {
-						clientFactory.getViewCourseView().setData(words);
+						ClientFactory.INSTANCE.getViewCourseView().setData(words);
 					}
 				});
 	}
 
 	@Override
 	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
+		ClientFactory.INSTANCE.getPlaceController().goTo(place);
 	}
 
 	private void refreshCourseInfo() {
-		clientFactory.getCoursesService().getCourseInfo(place.getCourseId(),
+		ClientFactory.INSTANCE.getCoursesService().getCourseInfo(place.getCourseId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
-						clientFactory.getRPCFaultDialog().show(caught);
+						ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 					}
 
 					public void onSuccess(CourseInfo info) {
-						clientFactory.getViewCourseView().setData(info);
+						ClientFactory.INSTANCE.getViewCourseView().setData(info);
 					}
 				});
 	}
@@ -83,7 +81,7 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		ViewCourseView view = clientFactory.getViewCourseView();
+		ViewCourseView view = ClientFactory.INSTANCE.getViewCourseView();
 		view.setPresenter(this);
 		panel.setWidget(view);
 
@@ -102,14 +100,14 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void startCourse(CourseInfo courseInfo) {
-		clientFactory.getTrainingService().startTraining(courseInfo.getCourse().getId(),
+		ClientFactory.INSTANCE.getTrainingService().startTraining(courseInfo.getCourse().getId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
-						clientFactory.getRPCFaultDialog().show(caught);
+						ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 					}
 
 					public void onSuccess(CourseInfo info) {
-						clientFactory.getViewCourseView().setData(info);
+						ClientFactory.INSTANCE.getViewCourseView().setData(info);
 					}
 				});
 	}
@@ -121,14 +119,14 @@ public class ViewCourseActivity extends AbstractActivity implements Presenter {
 
 	@Override
 	public void stopCourse(CourseInfo courseInfo) {
-		clientFactory.getTrainingService().stopTraining(courseInfo.getStatus().getId(),
+		ClientFactory.INSTANCE.getTrainingService().stopTraining(courseInfo.getStatus().getId(),
 				new AsyncCallback<CourseInfo>() {
 					public void onFailure(Throwable caught) {
-						clientFactory.getRPCFaultDialog().show(caught);
+						ClientFactory.INSTANCE.getRPCFaultDialog().show(caught);
 					}
 
 					public void onSuccess(CourseInfo info) {
-						clientFactory.getViewCourseView().setData(info);
+						ClientFactory.INSTANCE.getViewCourseView().setData(info);
 					}
 				});
 	}
