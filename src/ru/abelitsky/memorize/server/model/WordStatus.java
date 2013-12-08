@@ -34,7 +34,8 @@ public class WordStatus {
 	}
 
 	public void fail() {
-		setLevel(0);
+		setLevel(1);
+		setSubLevel(0);
 		setNextTrainingDateInFourHours();
 	}
 
@@ -63,10 +64,18 @@ public class WordStatus {
 	}
 
 	public void pass() {
-		setSubLevel(getSubLevel() + 1);
+		if (getLevel() <= 1) {
+			setSubLevel(getSubLevel() + 1);	
+		} else {
+			if (getSubLevel() <= 1) {
+				setSubLevel(4);
+			} else {
+				setSubLevel(5);
+			}
+		}
 		if ((!getWord().hasKanji() && (getSubLevel() >= 2)) || (getSubLevel() >= 5)) {
-			setSubLevel(0);
 			setLevel(Math.min(getLevel() + 1, 6));
+			setSubLevel((getLevel() <= 1)? 0 : 1);
 			setNextTrainingDateForCurrentLevel();
 		} else {
 			setNextTrainingDateInFourHours();
@@ -105,10 +114,10 @@ public class WordStatus {
 			cal.add(Calendar.MONTH, 1);
 			break;
 		case 5:
-			cal.add(Calendar.MONTH, 2);
+			cal.add(Calendar.MONTH, 3);
 			break;
 		case 6:
-			cal.add(Calendar.MONTH, 3);
+			cal.add(Calendar.MONTH, 6);
 			break;
 		}
 		setNextTrainingDate(cal.getTime());
